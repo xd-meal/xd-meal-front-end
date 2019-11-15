@@ -794,6 +794,11 @@
   resolved "https://registry.npm.taobao.org/@types/minimatch/download/@types/minimatch-3.0.3.tgz#3dca0e3f33b200fc7d1139c0cd96c1268cadfd9d"
   integrity sha1-PcoOPzOyAPx9ETnAzZbBJoyt/Z0=
 
+"@types/mockjs@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.npmjs.org/@types/mockjs/-/mockjs-1.0.2.tgz#89887151c9b903028e9b569a28b4ad079d79943b"
+  integrity sha512-9LJSOlMKDVYRuCoJJU31hf55F8GtdGZBxorpiAHRkcBZ8fukO70vMvWBTZUCNdd6f90c0oUgsOyDIiKwFFUHSA==
+
 "@types/node@*":
   version "12.11.7"
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.11.7.tgz?cache=0&sync_timestamp=1571938812856&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-12.11.7.tgz#57682a9771a3f7b09c2497f28129a0462966524a"
@@ -1672,6 +1677,14 @@ aws4@^1.8.0:
   version "1.8.0"
   resolved "https://registry.npm.taobao.org/aws4/download/aws4-1.8.0.tgz#f0e003d9ca9e7f59c7a508945d7b2ef9a04a542f"
   integrity sha1-8OAD2cqef1nHpQiUXXsu+aBKVC8=
+
+axios@^0.19.0:
+  version "0.19.0"
+  resolved "https://registry.npmjs.org/axios/-/axios-0.19.0.tgz#8e09bff3d9122e133f7b8101c8fbdd00ed3d2ab8"
+  integrity sha512-1uvKqKQta3KBxIz14F2v06AEHZ/dIoeKfbTRkK1E5oqjDnuEerLmYTgJB5AiQZHJcljpg1TuRzdjDR06qNk0DQ==
+  dependencies:
+    follow-redirects "1.5.10"
+    is-buffer "^2.0.2"
 
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -2648,6 +2661,11 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
+commander@*:
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/commander/-/commander-4.0.0.tgz#e782b6afe6a0f1b1408be59429919e1305160e3f"
+  integrity sha512-SEa2abMBTZuEjLVYpNrAFoRgxPwG4rXP3+SGY6CM/HZGeDzIA7Pzp+7H3AHDukKEpyy2SoSGGPShKqqfH9T9AQ==
+
 commander@2.17.x:
   version "2.17.1"
   resolved "https://registry.npm.taobao.org/commander/download/commander-2.17.1.tgz?cache=0&sync_timestamp=1570772537716&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fcommander%2Fdownload%2Fcommander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
@@ -3167,6 +3185,13 @@ debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
   resolved "https://registry.npm.taobao.org/debug/download/debug-2.6.9.tgz#5d128515df134ff327e90a4c93f4e077a536341f"
   integrity sha1-XRKFFd8TT/Mn6QpMk/Tgd6U2NB8=
+  dependencies:
+    ms "2.0.0"
+
+debug@=3.1.0:
+  version "3.1.0"
+  resolved "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz#5bb5a0672628b64149566ba16819e61518c67261"
+  integrity sha512-OX8XqP7/1a9cqkxYw2yXss15f26NKWBpDXQd0/uK/KPqdQhxbPa994hnzjcE2VqQpDslf55723cKPUOGSmMY3g==
   dependencies:
     ms "2.0.0"
 
@@ -4438,6 +4463,13 @@ flush-write-stream@^1.0.0:
     inherits "^2.0.3"
     readable-stream "^2.3.6"
 
+follow-redirects@1.5.10:
+  version "1.5.10"
+  resolved "https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.5.10.tgz#7b7a9f9aea2fdff36786a94ff643ed07f4ff5e2a"
+  integrity sha512-0V5l4Cizzvqt5D44aTXbFZz+FtyXV1vrDN6qrelxtfYQKW0KO0W2T/hkE8xvGa/540LkZlkaUjO4ailYTFtHVQ==
+  dependencies:
+    debug "=3.1.0"
+
 follow-redirects@^1.0.0:
   version "1.9.0"
   resolved "https://registry.npm.taobao.org/follow-redirects/download/follow-redirects-1.9.0.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Ffollow-redirects%2Fdownload%2Ffollow-redirects-1.9.0.tgz#8d5bcdc65b7108fe1508649c79c12d732dcedb4f"
@@ -5428,6 +5460,11 @@ is-buffer@^1.1.5:
   version "1.1.6"
   resolved "https://registry.npm.taobao.org/is-buffer/download/is-buffer-1.1.6.tgz?cache=0&sync_timestamp=1569905349018&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fis-buffer%2Fdownload%2Fis-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha1-76ouqdqg16suoTqXsritUf776L4=
+
+is-buffer@^2.0.2:
+  version "2.0.4"
+  resolved "https://registry.npmjs.org/is-buffer/-/is-buffer-2.0.4.tgz#3e572f23c8411a5cfd9557c849e3665e0b290623"
+  integrity sha512-Kq1rokWXOPXWuaMAqZiJW4XxsmD9zGx9q4aePabbn3qCRGedtH7Cm+zV8WETitMfu1wdh+Rvd6w5egwSngUX2A==
 
 is-callable@^1.1.4:
   version "1.1.4"
@@ -7082,6 +7119,13 @@ mkdirp@0.5.1, mkdirp@0.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdirp
   integrity sha1-MAV0OOrGz3+MR2fzhkjWaX11yQM=
   dependencies:
     minimist "0.0.8"
+
+mockjs@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/mockjs/-/mockjs-1.1.0.tgz#e6a0c378e91906dbaff20911cc0273b3c7d75b06"
+  integrity sha512-eQsKcWzIaZzEZ07NuEyO4Nw65g0hdWAyurVol1IPl1gahRwY+svqzfgfey8U8dahLwG44d6/RwEzuK52rSa/JQ==
+  dependencies:
+    commander "*"
 
 move-concurrently@^1.0.1:
   version "1.0.1"
