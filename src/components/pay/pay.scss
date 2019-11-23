@@ -1,0 +1,66 @@
+.pay {
+  position: relative;
+  &-circle {
+    width: 975px;
+    height: 975px;
+    border-radius: 975px;
+    background-color: #f4f4f4;
+    position: absolute;
+    left: 50%;
+    top: 42px;
+    transform: translateX(-50%);
+  }
+  &-logo {
+    width: 29.227%;
+    padding-top: 15.458%;
+    margin: 10px auto 44px;
+    background-color: #ff6600;
+    position: relative;
+    z-index: 1;
+  }
+  &-container {
+    position: relative;
+    margin: 0 auto;
+    z-index: 1;
+    width: 87.92%;
+    padding-top: 87.92%;
+    background-color: #fff;
+    border-radius: 24px;
+  }
+  &-wrap {
+    top: 50%;
+    position: absolute;
+    width: 100%;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+  &-qr {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 74.1758242%;
+    padding-top: 74.1758242%;
+    margin-top: 12px;
+    &-tips {
+      font-size: 14px;
+      position: absolute;
+      line-height: 20px;
+      top: -20px;
+      width: 100%;
+      text-align: center;
+      color: #CBCBCB;
+    }
+    &-code {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      canvas {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+}
