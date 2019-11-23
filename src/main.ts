@@ -1,5 +1,6 @@
 import Vue from 'vue';
-import './cube-ui';
+import './vendor/cube-ui';
+import './vendor/qriously';
 import App from './App.vue';
 import router from './router';
 import store from './store';
