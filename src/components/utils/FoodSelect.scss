@@ -1,0 +1,19 @@
+.food-select {
+  text-align: left;
+  padding: 28px 25px 25px 22px;
+  white-space: normal;
+  &-title {
+    margin-bottom: 20px;
+
+  }
+  &-spliter {
+    margin-bottom: 35px;
+    width: 100%;
+    height: 1px;
+    background-color: #DDDDDD;
+  }
+
+  .food-checkbox {
+    margin-bottom: 28px;
+  }
+}

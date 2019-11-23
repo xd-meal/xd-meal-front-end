@@ -1,0 +1,32 @@
+.food-checkbox {
+  display: flex;
+  &-content {
+    width: 234px;
+  }
+  &-title {
+    line-height: 22px;
+    font-size: 16px;
+  }
+  &-subtitle {
+    line-height: 14px;
+    font-size: 10px;
+    color: #999999;
+  }
+  &-control {
+  }
+  &-check {
+    width: 25px;
+    height: 25px;
+    background-color: #ddd;
+    border-radius: 25px;
+    text-align: center;
+    i {
+      color: #fff;
+      line-height: 25px;
+    }
+    &_active {
+      background-color: #ff6600;
+    }
+  }
+
+}
