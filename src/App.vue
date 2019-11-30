@@ -1,8 +1,19 @@
 <template>
-  <div id="app">
+  <div id="app" :class="nowClass">
     <router-view />
   </div>
 </template>
+
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+
+@Component
+export default class Home extends Vue {
+  private get nowClass() {
+    return this.$router.currentRoute.fullPath.match(/pc/g) ? 'pc' : '';
+  }
+}
+</script>
 
 <style lang="scss">
 #app {
