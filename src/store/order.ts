@@ -27,7 +27,7 @@ const state: IOrderGlobal = {
     {
       id: 1,
       time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁1',
+      title: '鱼香肉丝炒宫爆鸡丁1(微辣)',
       desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
       type: MENU_TIME_TYPE.LUNCH,
       menuType: MENU_TYPE.BUFFE,

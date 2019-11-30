@@ -2,7 +2,7 @@ import './Order.scss';
 
 import lodash from 'lodash';
 import { VNode } from 'vue';
-import { Component, Ref } from 'vue-property-decorator';
+import { Component, Ref, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import { MENU_TIME_TYPE } from '@/store/menu';
@@ -157,6 +157,7 @@ export default class Order extends tsx.Component<any> {
       </div>
     );
   }
+
   // events
   protected mounted() {
     const orderList = lodash.clone(this.$store.state.order.list);
@@ -195,6 +196,7 @@ export default class Order extends tsx.Component<any> {
     const deltaX = (x / slideScrollerWidth) * tabItemWidth;
     tabNav.setSliderTransform(deltaX);
   }
+
   private changePage(current: number) {
     this.currentSelectTime = Object.keys(this.tabList)[
       current
@@ -326,4 +328,5 @@ export default class Order extends tsx.Component<any> {
   private get listByTimeKeys() {
     return lodash.keys(this.listByTime);
   }
+
 }

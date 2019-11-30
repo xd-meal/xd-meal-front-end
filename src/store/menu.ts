@@ -6,15 +6,18 @@ export enum MENU_TIME_TYPE {
   DINNER = 'dinner',
   FRUIT = 'fruit',
 }
+
 export interface ISingleMenuItem {
   time: string;
   title: string;
   desc: string;
   type: MENU_TIME_TYPE;
 }
+
 export interface IMenuGlobal {
   list: ISingleMenuItem[];
 }
+
 const state: IMenuGlobal = {
   list: [
     {
@@ -68,6 +71,7 @@ const state: IMenuGlobal = {
     },
   ],
 };
+
 export const MENU_NAMESPACE = 'menu/';
 export enum MENU {}
 
