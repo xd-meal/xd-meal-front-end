@@ -92,6 +92,7 @@ export default class Index extends tsx.Component<any> {
                     }}
                   >
                     {_(menus)
+                      .sortBy('time')
                       .map((item: ISingleMenuItem) => (
                         <div class='app-day-menu'>
                           <div class='app-day-menu-time'>
