@@ -1,31 +1,19 @@
-import { getDay } from '@/components/utils/time.ts';
-
-import { MENU_TIME_TYPE } from '@/store/menu';
-import { IOrderSingleItem, MENU_TYPE } from '@/store/order';
+import './Order.scss';
 
 import _ from 'lodash';
-import moment from 'moment';
-
 import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
-import './Order.scss';
+
+import { getDay, timeParser } from '@/components/utils/time.ts';
+
+import { MENU_TIME_TYPE } from '@/store/menu';
+import { IOrderSingleItem, MENU_TYPE } from '@/store/order';
 
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
 }
 
-function timeParser(time: string) {
-  return moment(time)
-    .format('MM月DD日 星期(e)')
-    .replace(
-      /\(\d\)/,
-      (d: string) =>
-        ['日', '一', '二', '三', '四', '五', '六'][
-          parseInt(d.replace(/[()]/g, ''), 10)
-        ],
-    );
-}
 @Component
 export default class Order extends tsx.Component<any> {
   // protected orderList: IOrderSingleItemWithChecked[] = [];
