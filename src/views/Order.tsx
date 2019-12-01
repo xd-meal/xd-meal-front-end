@@ -1,15 +1,14 @@
 import './Order.scss';
 
-import lodash from 'lodash';
+import _ from 'lodash';
 import { VNode } from 'vue';
-import { Component, Ref } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
+
+import { getDay, timeParser } from '@/components/utils/time.ts';
 
 import { MENU_TIME_TYPE } from '@/store/menu';
 import { IOrderSingleItem, MENU_TYPE } from '@/store/order';
-
-import FoodSelect from '@/components/utils/FoodSelect';
-import { getDay } from '@/components/utils/time.ts';
 
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
@@ -17,101 +16,16 @@ export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
 
 @Component
 export default class Order extends tsx.Component<any> {
-  // TODO: 逻辑太乱，待整理存在多个或多个不同的方式获取同一份数据
-  protected scrollY: number[] = [0, 0];
-  protected currentTime: string | undefined = '';
-  protected current: any | undefined;
-  protected data: any[] = [];
-  protected currentSelectTime: MENU_TIME_TYPE = MENU_TIME_TYPE.LUNCH;
-  protected tabList: { [keys: string]: { name: string } } = {
-    [MENU_TIME_TYPE.LUNCH]: {
-      name: '午餐',
-    },
-    [MENU_TIME_TYPE.DINNER]: {
-      name: '晚餐',
-    },
-  };
+  // protected orderList: IOrderSingleItemWithChecked[] = [];
+  // 首先
+  protected list: Array<{
+    key: string;
+    value: IOrderSingleItemWithChecked[];
+  }> = [];
+  protected current: any = null;
+  protected errorText: string = 'sss';
 
-  protected orderList: IOrderSingleItemWithChecked[] = [];
-
-  @Ref('hammerDom') private hammerDom: any;
-  @Ref('tabNav') private tabNav: any;
-  @Ref('slide') private slide: any;
-  @Ref('pageSticky') private pageSticky: any;
-
-  private scrollOptions = {
-    directionLockThreshold: 0,
-    click: false,
-    bounce: {
-      top: false,
-      bottom: true,
-      left: true,
-      right: true,
-    },
-  };
-
-  private slideOptions = {
-    listenScroll: true,
-    probeType: 3,
-    directionLockThreshold: 0,
-  };
   protected render(): VNode {
-    // XXX: 拆分小组件
-    const orderMain = (
-      <cube-slide
-        ref='slide'
-        loop={false}
-        initial-index={this.initialIndex}
-        auto-play={false}
-        show-dots={false}
-        options={this.slideOptions}
-        onScroll={this.scroll.bind(this)}
-        onChange={this.changePage.bind(this)}
-      >
-        {[this.Lunch, this.Dinner].map((list, index) => (
-          <cube-slide-item>
-            <cube-sticky
-              pos={this.scrollY[this.initialIndex]}
-              onChange={this.pageStickyChangeHandler.bind(this)}
-              ref='pageSticky'
-            >
-              <cube-scroll
-                scroll-events={['scroll', 'scroll-end']}
-                options={this.scrollOptions}
-                onScroll={this.yScroll.bind(this, index)}
-              >
-                {lodash(list)
-                  .groupBy('time')
-                  .map((item: IOrderSingleItemWithChecked[], key: string) => {
-                    return (
-                      <div>
-                        <cube-sticky-ele ele-key={getDay(key)} />
-                        <FoodSelect
-                          value={item}
-                          onToggle={(payload: {
-                            item: IOrderSingleItemWithChecked;
-                            value: boolean;
-                          }) => this.setItemToggle(payload, item)}
-                        />
-                      </div>
-                    );
-                  })
-                  .value()}
-              </cube-scroll>
-            </cube-sticky>
-          </cube-slide-item>
-        ))}
-      </cube-slide>
-    );
-    const timeTxts = this.timeTxts;
-    const orderSide = (
-      <cube-scroll-nav-bar
-        direction='vertical'
-        txts={timeTxts}
-        current={this.currentTime}
-        labels={timeTxts}
-      />
-    );
     return (
       <div class='order'>
         <div class='order-header'>
@@ -123,32 +37,104 @@ export default class Order extends tsx.Component<any> {
           </div>
         </div>
         <div class='order-body'>
-          <cube-tab-bar
-            vModel={this.currentSelectTime}
-            show-slider
-            ref='tabNav'
+          <cube-scroll-nav
+            side={true}
+            data={this.list}
+            current={this.current}
+            onChange={this.changeHandler}
+            // onSticky-change={this.stickyChangeHandler}
           >
-            {Object.keys(this.tabList).map((key) => {
-              return (
-                <cube-tab
-                  label={this.tabList[key].name}
-                  key={key}
-                  value={key}
-                />
-              );
-            })}
-          </cube-tab-bar>
-          <div class='order-body-content'>
-            <div class='order-body-content-wrap'>
-              <div class='order-body-content-side'>{orderSide}</div>
-              <div class='order-body-content-main'>{orderMain}</div>
-            </div>
-          </div>
+            <cube-scroll-nav-bar
+              labels={this.scrollNavBarLabels}
+              slot='bar'
+              current={this.current}
+              txts={this.scrollNavBarTxts}
+              direction='vertical'
+            />
+
+            {this.list.map((item) => (
+              <cube-scroll-nav-panel
+                key={item.key}
+                label={item.key}
+                title={timeParser(item.key)}
+              >
+                {_(item.value)
+                  .groupBy('type')
+                  .map(
+                    (
+                      dayMenus: IOrderSingleItemWithChecked[],
+                      key: MENU_TIME_TYPE,
+                    ) => {
+                      return (
+                        <div>
+                          {key === MENU_TIME_TYPE.LUNCH && (
+                            <div class='menu-title'>午餐</div>
+                          )}
+                          {key === MENU_TIME_TYPE.DINNER && (
+                            <div class='menu-title'>晚餐</div>
+                          )}
+                          {/*先这样写以后有空在拆分*/}
+                          {dayMenus.map(
+                            (dayMenu: IOrderSingleItemWithChecked) => {
+                              return (
+                                <div
+                                  class='menu-checkbox'
+                                  onClick={this.toggleDayMenu.bind(
+                                    this,
+                                    dayMenu,
+                                    dayMenus,
+                                  )}
+                                >
+                                  <div class='menu-checkbox-wrap'>
+                                    <div class='menu-checkbox-title'>
+                                      {dayMenu.title}
+                                    </div>
+                                    <div
+                                      class={
+                                        'menu-checkbox-check' +
+                                        (dayMenu.checked
+                                          ? ' menu-checkbox-check_active'
+                                          : '')
+                                      }
+                                    >
+                                      {dayMenu.checked}
+                                    </div>
+                                  </div>
+                                  <div class='menu-checkbox-wrap'>
+                                    {dayMenu.desc.split(/[,，]/).map((str) => (
+                                      <div class='menu-checkbox-desc'>
+                                        {str}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              );
+                            },
+                          )}
+                        </div>
+                      );
+                    },
+                  )
+                  .value()}
+              </cube-scroll-nav-panel>
+            ))}
+          </cube-scroll-nav>
         </div>
         <div class='order-footer'>
-          <div onClick={() => this.selectAllBuffet()}>全自助</div>
-          <div onClick={() => this.selectAllRandom()}>随机选</div>
-          <div>
+          <div class='order-footer-error'>{this.errorText}</div>
+          <div class='order-footer-wrap'>
+            <div
+              class='order-footer-text-btn'
+              onClick={() => this.selectAllBuffet()}
+            >
+              全自助
+            </div>
+            <div
+              class='order-footer-text-btn'
+              onClick={() => this.selectAllRandom()}
+            >
+              随机选
+            </div>
             <button class='submit' onClick={this.submit.bind(this)}>
               下单
             </button>
@@ -157,110 +143,64 @@ export default class Order extends tsx.Component<any> {
       </div>
     );
   }
+  // getter
+  protected get scrollNavBarLabels() {
+    return _(this.list)
+      .map((item) => item.key)
+      .value();
+  }
+  protected get scrollNavBarTxts() {
+    return _(this.list)
+      .map((item) => getDay(item.key))
+      .value();
+  }
+  protected get scrollNavBarCurrent() {
+    return getDay(this.current);
+  }
   // events
   protected mounted() {
-    const orderList = lodash.clone(this.$store.state.order.list);
-    this.orderList = orderList.map((order: IOrderSingleItemWithChecked) => {
-      order.checked = false;
-      return order;
-    });
-
-    this.$nextTick(() => {
-      // XXX: 可能有需要？不确定，先使用 nextTick 包起来
-      this.refresh();
-    });
+    const transferList = _(this.$store.state.order.list)
+      // 先添加需要用来选内容的
+      .map(
+        (item) => ({ ...item, selected: false } as IOrderSingleItemWithChecked),
+      )
+      // 然后分组
+      .groupBy('time')
+      .value();
+    this.list = _(transferList)
+      .map((value, key) => ({ value, key }))
+      .value();
+    this.current = this.list[0].key;
+    // window.console.log(value);
   }
   // method
-  private refresh() {
-    (this.$refs.pageSticky as any).refresh();
-  }
-  private yScroll(index: number, pos: any) {
-    this.$set(this.scrollY, index, -pos.y);
-  }
-  private pageStickyChangeHandler(current: any) {
-    window.console.log(current);
-    lodash(this.timeTxts)
-      .map((item) => ({ label: item }))
-      .find();
-    this.currentTime = current;
-  }
-
-  private scroll(pos: any) {
-    const x = Math.abs(pos.x);
-    // cube 没有完成全部 ts ，这里只能定义为 any
-    const tabNav = this.$refs.tabNav as any;
-    const slide = this.$refs.slide as any;
-    const tabItemWidth = tabNav.$el.clientWidth;
-    const slideScrollerWidth = slide.slide.scrollerWidth;
-    const deltaX = (x / slideScrollerWidth) * tabItemWidth;
-    tabNav.setSliderTransform(deltaX);
-  }
-  private changePage(current: number) {
-    this.currentSelectTime = Object.keys(this.tabList)[
-      current
-    ] as MENU_TIME_TYPE;
-    this.$nextTick(() => {
-      this.refresh();
-    });
-  }
-  private goBack() {
-    this.$router.back();
-  }
   private selectAllBuffet() {
-    const dinner = this.orderList.filter(
-      (item) => item.type === MENU_TIME_TYPE.DINNER,
-    );
-    const lunch = this.orderList.filter(
-      (item) => item.type === MENU_TIME_TYPE.LUNCH,
-    );
-    // TODO: 先随便写写，性能巨差以后优化
-    const setBuffe = (listByTime: IOrderSingleItemWithChecked[]) => {
-      lodash(listByTime)
-        .groupBy('time')
-        .forEach((listOfDay: IOrderSingleItemWithChecked[]) => {
-          for (const item of listOfDay) {
-            const index = this.orderList.indexOf(item);
-            this.$set(this.orderList, `${index}`, {
-              ...item,
-              checked: item.menuType === MENU_TYPE.BUFFE,
-            });
-          }
+    _.forEach(this.list, (day) => {
+      _(day.value)
+        .groupBy('type')
+        .forEach((list: IOrderSingleItemWithChecked[], type: string) => {
+          _.forEach(list, (item: IOrderSingleItemWithChecked) => {
+            if (item.menuType === MENU_TYPE.BUFFE) {
+              item.checked = true;
+            } else {
+              item.checked = false;
+            }
+          });
         });
-    };
-    setBuffe(lunch);
-    setBuffe(dinner);
+    });
+    this.refreshList();
   }
-
   private selectAllRandom() {
-    const dinner = this.orderList.filter(
-      (item) => item.type === MENU_TIME_TYPE.DINNER,
-    );
-    const lunch = this.orderList.filter(
-      (item) => item.type === MENU_TIME_TYPE.LUNCH,
-    );
-    // TODO: 先随便写写，性能巨差以后优化
-    const setRandom = (listByTime: IOrderSingleItemWithChecked[]) => {
-      lodash(listByTime)
-        .groupBy('time')
-        .forEach((listOfDay: IOrderSingleItemWithChecked[]) => {
-          const randomIndex = Math.floor(listOfDay.length * Math.random());
-          for (let i = 0; i < listOfDay.length; i++) {
-            const item = listOfDay[i];
-            const index = this.orderList.indexOf(item);
-            this.$set(this.orderList, `${index}`, {
-              ...item,
-              checked: randomIndex === i,
-            });
-          }
+    _.forEach(this.list, (day) => {
+      _(day.value)
+        .groupBy('type')
+        .forEach((list: IOrderSingleItemWithChecked[]) => {
+          const index = Math.floor(list.length * Math.random());
+          list.forEach((item) => (item.checked = false));
+          list[index].checked = true;
         });
-    };
-    setRandom(lunch);
-    setRandom(dinner);
-  }
-  private get listByTime(): {
-    [key: string]: IOrderSingleItem[];
-  } {
-    return lodash.groupBy(this.list, 'time');
+    });
+    this.refreshList();
   }
   private submit() {
     (this as any)
@@ -277,53 +217,26 @@ export default class Order extends tsx.Component<any> {
       })
       .show();
   }
-  private setItemToggle(
-    {
-      item,
-      value,
-    }: {
-      item: IOrderSingleItemWithChecked;
-      value: boolean;
-    },
-    targetList: IOrderSingleItemWithChecked[],
+  // 返回上一级页面
+  private goBack() {
+    this.$router.back();
+  }
+
+  private changeHandler(label: any) {
+    this.current = label;
+  }
+  private toggleDayMenu(
+    dayMenu: IOrderSingleItemWithChecked,
+    dayMenus: IOrderSingleItemWithChecked[],
   ) {
-    targetList.forEach((target) => {
-      const index = this.orderList.indexOf(target);
-      this.$set(this.orderList, `${index}`, {
-        ...target,
-        checked: target === item ? value : false,
-      });
+    dayMenus.forEach((item) => {
+      item.checked = false;
     });
+    dayMenu.checked = true;
+    this.refreshList();
   }
-  // getter
-  private get timeTxts() {
-    return lodash(this.orderList)
-      .groupBy('time')
-      .keys()
-      .map((item) => getDay(item))
-      .value();
-  }
-  private get initialIndex() {
-    const index = [MENU_TIME_TYPE.LUNCH, MENU_TIME_TYPE.DINNER].indexOf(
-      this.currentSelectTime,
-    );
-    return index >= 0 ? index : 0;
-  }
-
-  private get list(): IOrderSingleItem[] {
-    return this.orderList.filter((item: IOrderSingleItem) => {
-      return item.type === this.currentSelectTime;
-    });
-  }
-
-  private get Dinner() {
-    return this.orderList.filter((item) => item.type === MENU_TIME_TYPE.DINNER);
-  }
-  private get Lunch() {
-    return this.orderList.filter((item) => item.type === MENU_TIME_TYPE.LUNCH);
-  }
-
-  private get listByTimeKeys() {
-    return lodash.keys(this.listByTime);
+  private refreshList() {
+    // 由于 vue 的更新机制原因，这里主动使用 set 告诉 vue 需要更新 list
+    this.$set(this, 'list', Array.from(this.list));
   }
 }

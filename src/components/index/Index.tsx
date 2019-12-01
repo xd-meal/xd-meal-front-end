@@ -1,14 +1,15 @@
 import './index.scss';
 
-import { VNode } from 'vue';
+import Vue, { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
-import { Component } from 'vue-property-decorator';
+import { Component, Ref } from 'vue-property-decorator';
 import moment from 'moment';
+import _ from 'lodash';
 
 import { ISingleMenuItem, MENU_TIME_TYPE } from '@/store/menu';
 import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
 
-import { getDay } from '@/components/utils/time.ts';
+import { timeParser } from '@/components/utils/time';
 import MenuItem from '@/components/index/MenuItem.tsx';
 
 const DATE_MAP = [
@@ -25,127 +26,127 @@ const DATE_MAP = [
 })
 export default class Index extends tsx.Component<any> {
   // data
-  protected activeTab: string = MENU_TIME_TYPE.BREAKFAST;
-  private tabList = [
+  protected labelMap: {
+    [key: string]: string;
+  } = {
+    ['早餐']: MENU_TIME_TYPE.BREAKFAST,
+    ['午餐']: MENU_TIME_TYPE.LUNCH,
+    ['水果']: MENU_TIME_TYPE.FRUIT,
+    ['晚餐']: MENU_TIME_TYPE.DINNER,
+  };
+  protected selectedLabel = '早餐';
+  protected tabLabels = [
     {
-      name: '早餐',
-      type: MENU_TIME_TYPE.BREAKFAST,
+      label: '早餐',
     },
     {
-      name: '午餐',
-      type: MENU_TIME_TYPE.LUNCH,
+      label: '午餐',
     },
     {
-      name: '水果',
-      type: MENU_TIME_TYPE.FRUIT,
+      label: '水果',
     },
     {
-      name: '晚餐',
-      type: MENU_TIME_TYPE.DINNER,
+      label: '晚餐',
     },
   ];
 
-  private selectTime = '';
-
   protected render(): VNode {
-    const { Time, Notification, tabList, menus } = this;
-    const tabs = tabList.map((tab) => (
-      <cube-tab-panel label={tab.name} key={tab.type} value={tab.type}>
-        {menus
-          .filter((menu: ISingleMenuItem) => menu.type === tab.type)
-          .map((menu: ISingleMenuItem) => (
-            <div class='single-menu'>
-              <div class='time'>{getDay(menu.time)}</div>
-              <div class='menu-content'>
-                <div class='menu-content-wrap'>
-                  <div class='menu-content-title'> {menu.title}</div>
-                  <div class='menu-content-desc'> {menu.desc}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-      </cube-tab-panel>
-    ));
     return (
-      <div class='app-index'>
-        <div class='header'>
-          <div class='time-wrap'>
-            <div class='time'>{Time}</div>
-            <div class='weekday'>
-              {DATE_MAP[moment(this.selectTime).weekday()]}
-            </div>
-            <div class='last-notification'>{Notification}</div>
+      <div class='app-index index'>
+        <div class='index-header'>
+          <div class='index-header-tab'>
+            <cube-tab-bar
+              vModel={this.selectedLabel}
+              show-slider={false}
+              use-transition={false}
+              ref='tabNav'
+              data={this.tabLabels}
+            />
           </div>
-          <a class='notification' />
         </div>
         <div class='index-body'>
-          <cube-tab-bar vModel={this.activeTab} show-slider>
-            {this.tabList.map((tab) => (
-              <cube-tab label={tab.name} key={tab.type} value={tab.type} />
-            ))}
-          </cube-tab-bar>
-          <cube-tab-panels vModel={this.activeTab}>{tabs}</cube-tab-panels>
+          <cube-slide
+            ref='slide'
+            loop={false}
+            initial-index={this.initialIndex}
+            auto-play={false}
+            show-dots={false}
+            options={{
+              listenScroll: true,
+              probeType: 3,
+              /* lock y-direction when scrolling horizontally and  vertically at the same time */
+              directionLockThreshold: 0,
+            }}
+            onScroll={this.scroll}
+            onChange={this.changePage}
+          >
+            {this.tabLabels.map((tabLabel) => {
+              const menus = this.menuMap[this.labelMap[tabLabel.label]];
+              return (
+                <cube-slide-item>
+                  <cube-scroll
+                    data={menus}
+                    options={{
+                      /* lock x-direction when scrolling horizontally and  vertically at the same time */
+                      directionLockThreshold: 0,
+                    }}
+                  >
+                    {_(menus)
+                      .sortBy('time')
+                      .map((item: ISingleMenuItem) => (
+                        <div class='app-day-menu'>
+                          <div class='app-day-menu-time'>
+                            <span class='icon' />
+                            <span class='time'>{timeParser(item.time)}</span>
+                          </div>
+                          <div class='app-day-menu-body'>
+                            <div class='app-day-menu-body-wrap'>
+                              <div class='title'>{item.title}</div>
+                              <div class='down-vote'></div>
+                            </div>
+                            <div class='app-day-menu-body-wrap'>
+                              {item.desc.split(/[,，]/).map((desc) => (
+                                <div class='desc'>{desc}</div>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      ))
+                      .value()}
+                  </cube-scroll>
+                </cube-slide-item>
+              );
+            })}
+          </cube-slide>
         </div>
       </div>
     );
   }
   // getter
-
-  public get menus(): ISingleMenuItem[] {
+  protected get menus(): ISingleMenuItem[] {
     return this.$store.state.menu.list;
   }
-  public get Notification(): string {
-    return this.$store.getters[NOTIFICATION_NAMESPACE + NOTIFICATION.LAST];
+  protected get initialIndex() {
+    return _.findIndex(this.tabLabels, ['label', this.selectedLabel]);
   }
-
-  private get SelectTimeTransfer() {
-    return moment(this.selectTime);
+  protected get menuMap(): {
+    [key: string]: ISingleMenuItem[];
+  } {
+    return _(this.menus)
+      .groupBy('type')
+      .value();
   }
-
-  private get Time(): string {
-    return moment().format('YYYY MM DD');
-  }
-
-  private get Day(): string {
-    return moment().format('YYYY-MM-DD');
-  }
-
-  private get timeOpt() {
-    return Object.keys(
-      this.menus.reduce(
-        (pre: { [key: string]: boolean }, menu) => {
-          pre[menu.time] = true;
-          return pre;
-        },
-        { [this.Day]: true },
-      ),
-    )
-      .sort()
-      .map((key) => ({
-        text: DATE_MAP[moment(key).weekday()],
-        value: key,
-      }));
-  }
-
-  private get CurrentMenu(): ISingleMenuItem[] {
-    return this.menus.filter(
-      (menu: ISingleMenuItem) =>
-        menu.type === this.ActiveMenuTime && this.selectTime === menu.time,
-    );
-  }
-
-  private get Weekday() {
-    return DATE_MAP[this.SelectTimeTransfer.weekday()];
-  }
-
-  protected get ActiveMenuTime() {
-    return this.activeTab;
-  }
-
   // event
-  private mounted() {
-    if (this.timeOpt[0]) {
-      this.selectTime = this.Day;
-    }
+  private mounted() {}
+
+  private scroll(pos: any) {
+    const x = Math.abs(pos.x);
+    const tabItemWidth = (this.$refs.tabNav as Vue).$el.clientWidth;
+    const slideScrollerWidth = (this.$refs.slide as any).slide.scrollerWidth;
+    const deltaX = (x / slideScrollerWidth) * tabItemWidth;
+    (this.$refs.tabNav as any).setSliderTransform(deltaX);
+  }
+  private changePage(current: number) {
+    this.selectedLabel = this.tabLabels[current].label;
   }
 }

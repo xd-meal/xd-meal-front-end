@@ -53,7 +53,7 @@ export default class AppMain extends tsx.Component<any> {
 
   public changeTabName(tab: SingleComponent) {
     this.current = tab;
-    this.$router.push(tab.key as string);
+    this.$router.push({ name: tab.key as string });
   }
 
   @Watch('$route')
@@ -76,16 +76,17 @@ export default class AppMain extends tsx.Component<any> {
           </router-link>
         )}
         <div class='footer-bar'>
-          <div class='footer-active' style={this.footerActiveProp} />
+          {/*<div class='footer-active' style={this.footerActiveProp} />*/}
           <div class='footer-bar-wrap'>
             {this.tabList.map((tab) => {
               return (
                 <div
-                  class={`tab ${this.current === tab ? 'active' : ''}`}
+                  class={`tab ${this.current === tab ? 'tab_active' : ''}`}
                   key={tab.key}
                   onClick={() => this.changeTabName(tab)}
                 >
-                  {tab.name}
+                  <div class='icon'></div>
+                  <div class='text'>{tab.name}</div>
                 </div>
               );
             })}

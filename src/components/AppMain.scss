@@ -20,7 +20,7 @@
     top: 0;
     width: 100%;
     height: auto;
-    bottom: 74px;
+    bottom: 56px;
   }
   .footer-bar {
     position: absolute;
@@ -32,8 +32,8 @@
     .footer-bar-wrap {
       display: flex;
       width: 100%;
-      height: 74px;
-      line-height: 74px;
+      height: 56px;
+      line-height: 56px;
     }
     .footer-active {
       position: absolute;
@@ -51,7 +51,25 @@
     }
     .tab {
       flex: 1;
-      font-size: 24px;
+      color: #999999;
+      text-align: center;
+      padding: 4px 0;
+      box-sizing: border-box;
+      &_active {
+        color: #333;
+      }
+      .icon {
+        width: 29px;
+        height: 29px;
+        margin: 0 auto 2px;
+        background-color: currentColor;
+      }
+      .text {
+        width: 25px;
+        font-size: 12px;
+        line-height: 17px;
+        margin: 0 auto;
+      }
     }
   }
 }
