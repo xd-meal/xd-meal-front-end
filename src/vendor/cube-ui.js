@@ -14,7 +14,7 @@ import {
   TabBar,
   TabPanels,
   // form
-  // Checkbox,
+  Checkbox,
   // CheckboxGroup,
   // Checker,
   // Radio,
@@ -55,7 +55,7 @@ import {
 // Vue.use(Toolbar);
 Vue.use(TabBar);
 Vue.use(TabPanels);
-// Vue.use(Checkbox);
+Vue.use(Checkbox);
 // Vue.use(CheckboxGroup);
 // Vue.use(Checker);
 // Vue.use(Radio);

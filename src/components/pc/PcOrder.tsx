@@ -5,11 +5,17 @@ import Mock from 'mockjs';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
+import Checkbox from '@/components/utils/Checkbox.vue';
+
 declare interface IOrder {
   title: string;
   chooseList: Array<{ type: string; desc: string; checked: boolean }>;
 }
-@Component
+@Component({
+  components: {
+    Checkbox,
+  },
+})
 export default class PcOrder extends tsx.Component<any> {
   protected list: IOrder[] = [];
 
@@ -42,9 +48,7 @@ export default class PcOrder extends tsx.Component<any> {
                   {item.chooseList.map((_) => {
                     return (
                       <div class='pc-single-check'>
-                        <div class='pc-single-check-input'>
-                          <input type='checkbox' />
-                        </div>
+                        <Checkbox vModel={_.checked} />
                         <div class='pc-single-check-wrap'>
                           <div class='pc-single-check-text'>
                             <div class='pc-single-check-text-title'>
