@@ -37,7 +37,7 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
         commit(USER.SET_TOKEN, { token: data.data.token });
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
       } else {
-        commit('setLoginStatus', { loginStatus: LOGIN_STATUS.FAIL });
+        commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.FAIL });
       }
     });
   },
