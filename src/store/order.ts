@@ -1,5 +1,4 @@
 import { fetchWeekdayDishes, IDishes } from '@/api/menu';
-import lodash from 'lodash';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { MENU_TIME_TYPE } from './menu';
 
@@ -42,30 +41,26 @@ const actions: ActionTree<IOrderGlobal, any> = {
   async [ORDER.FETCH_ORDER_DISHES_ACTION]({ commit }) {
     const weekdayDishesRes = await fetchWeekdayDishes();
     if (weekdayDishesRes.code === 200) {
-      const weekDayMenus = lodash(weekdayDishesRes.data)
-        .map(
-          (data: IDishes): IOrderSingleItem => {
-            return {
-              title: data.name,
-              time: data.mealDay,
-              id: data._id,
-              menuType: data.typeB === 1 ? MENU_TYPE.BUFFE : MENU_TYPE.NORMAL,
-              desc: '',
-              type:
-                data.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-            };
-          },
-        )
-        .value();
-      commit(ORDER.SET_MENUS, { weekDayMenus });
+      commit(ORDER.SET_MENUS, { weekdayDishes: weekdayDishesRes.data });
     } else {
       // TODO: 网络或者其他错误请稍后再试
     }
   },
 };
 const mutations: MutationTree<IOrderGlobal> = {
-  [ORDER.SET_MENUS](_, { weekDayMenus }) {
-    _.list = weekDayMenus;
+  [ORDER.SET_MENUS](_, { weekdayDishes }) {
+    _.list = weekdayDishes.map(
+      (data: IDishes): IOrderSingleItem => {
+        return {
+          title: data.name,
+          time: data.mealDay,
+          id: data._id,
+          menuType: data.typeB === 1 ? MENU_TYPE.BUFFE : MENU_TYPE.NORMAL,
+          desc: '',
+          type: data.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
+        };
+      },
+    );
   },
 };
 export default {
