@@ -7,6 +7,15 @@ import { defaultResponse, defaultOkMock } from '@/api/common';
 const WEEKDAY_DISHES_API = '/api/v1/GetDishes';
 const ORDER_DISHES_API = '/api/v1/OrderDishes';
 const MY_DISHES_API = '/api/v1/GetOrderDishes';
+export interface IMyDish {
+  _id: string;
+  dishId: string;
+  mealDay: string;
+  status: number;
+  uid: string;
+  updateTime: string;
+}
+
 export interface IDishes {
   _id: string;
   createTime: string;
@@ -20,6 +29,10 @@ export interface IDishes {
 }
 export interface IWeekdayDishesResponse extends IHttpResponse {
   data: IDishes[];
+}
+
+export interface IMyDishesResponse extends IHttpResponse {
+  data: IMyDish[];
 }
 
 if (isDev) {
@@ -625,7 +638,7 @@ export async function orderDishes() {
   return response ? response.data : defaultResponse;
 }
 
-export async function fetchMyDishes() {
+export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const response = await axios.post(MY_DISHES_API);
   return response ? response.data : defaultResponse;
 }
