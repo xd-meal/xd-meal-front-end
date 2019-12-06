@@ -1,4 +1,6 @@
 module.exports = {
+  outputDir: './cordova-app/www/',
+  baseUrl: './',
   css: {
     loaderOptions: {
       stylus: {

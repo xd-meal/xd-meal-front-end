@@ -19,3 +19,18 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+
+### ApacheCordova ###
+# Apache Cordova generated files and directories
+cordova-app/bin/*
+!/plugins
+!/plugins/android.json
+!/plugins/fetch.json
+cordova-app/plugins/*
+cordova-app/platforms/*
+
+node_modules
+cordova-app/www/
+cordova-app/www/index.js
+cordova-app/js/**/*.js
+cordova-app/js/**/*.js.map
