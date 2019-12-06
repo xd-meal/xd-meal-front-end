@@ -72,7 +72,7 @@ export default class AppMain extends tsx.Component<any> {
         </div>
         {this.current.key === 'index' && (
           <router-link class='order-btn' to={{ name: 'order' }}>
-            订餐
+            <span class='order-icon' />
           </router-link>
         )}
         <div class='footer-bar'>
@@ -85,7 +85,7 @@ export default class AppMain extends tsx.Component<any> {
                   key={tab.key}
                   onClick={() => this.changeTabName(tab)}
                 >
-                  <div class='icon'></div>
+                  <div class={{ icon: true, [tab.key as string]: true }} />
                   <div class='text'>{tab.name}</div>
                 </div>
               );

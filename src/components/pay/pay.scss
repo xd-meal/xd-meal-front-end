@@ -7,7 +7,7 @@
     background-color: #f4f4f4;
     position: absolute;
     left: 50%;
-    top: 42px;
+    top: -29%;
     transform: translateX(-50%);
   }
   &-logo {
@@ -15,8 +15,11 @@
     padding-top: 15.458%;
     margin: 10px auto 44px;
     background-color: #ff6600;
-    position: relative;
+    position: absolute;
     z-index: 1;
+    left: 35.3865%;
+    top: -40%;
+    //background-image: url("../../assets/");
   }
   &-container {
     position: relative;
@@ -49,7 +52,7 @@
       top: -20px;
       width: 100%;
       text-align: center;
-      color: #CBCBCB;
+      color: #cbcbcb;
     }
     &-code {
       position: absolute;

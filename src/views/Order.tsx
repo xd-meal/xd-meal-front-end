@@ -232,6 +232,7 @@ export default class Order extends tsx.Component<any> {
   private refreshList() {
     // 由于 vue 的更新机制原因，这里主动使用 set 告诉 vue 需要更新 list
     this.$set(this, 'list', Array.from(this.list));
+    (this.$refs.cubeScrollNav as any).refresh();
   }
   // watch
   @Watch('list')
@@ -241,11 +242,11 @@ export default class Order extends tsx.Component<any> {
       value: IOrderSingleItemWithChecked[];
     }>,
   ) {
-    if (newVal.length > 0) {
-      this.current = '';
-    } else {
-      this.current = '';
-    }
+    // if (newVal.length > 0) {
+    //   this.current = '';
+    // } else {
+    //   this.current = '';
+    // }
   }
   @Watch('$store.state.order.list')
   private onStoreOrderChanged(newVal: IOrderSingleItem[]) {

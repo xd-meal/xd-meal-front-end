@@ -27,7 +27,9 @@
         height: 20px;
         line-height: 20px;
         width: 20px;
-        background-color: #444;
+        //background-color: #444;
+        background-image: url("../../assets/icon/calendar.svg");
+        background-size: contain;
         margin-right: 10px;
         display: inline-block;
         vertical-align: middle;
@@ -56,9 +58,12 @@
         top: 0;
         width: 20px;
         height: 20px;
-        background-color: #949494;
+        //background-color: #949494;
+        background-image: url("../../assets/icon/vote-down.svg");
+        background-size: contain;
         &_active {
-          background-color: #515151;
+          //background-color: #515151;
+          background-image: url("../../assets/icon/vote-down2.svg");
         }
       }
       .desc {
@@ -97,4 +102,13 @@
   line-height: 60px;
   display: block;
   z-index: 1;
+  .order-icon {
+    background-image: url("../../assets/icon/order.svg");
+    width: 25px;
+    height: 35px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+  }
 }
