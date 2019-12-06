@@ -40,7 +40,7 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
         commit(USER.SET_TOKEN, { token: '1' });
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
         Router.push({
-          name: 'app',
+          name: 'index',
         });
       } else {
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.FAIL });

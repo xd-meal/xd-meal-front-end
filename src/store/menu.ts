@@ -56,9 +56,9 @@ const mutations: MutationTree<IMenuGlobal> = {
     _.list = myDishes.map((dish: IMyDish) => {
       return {
         time: dish.mealDay,
-        title: 'sdasd',
-        desc: 'kkkkkkk',
-        type: MENU_TIME_TYPE.DINNER,
+        title: dish.name,
+        desc: '',
+        type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
       };
     });
   },
