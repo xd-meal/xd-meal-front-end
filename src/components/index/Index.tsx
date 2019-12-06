@@ -163,6 +163,11 @@ export default class Index extends tsx.Component<any> {
       );
       if (flag) {
         this.selectedLabel = label.label;
+        // XXX: 无法正确的设置 current page index 这里强行设定了
+        (this.$refs.slide as any).currentPageIndex = _.findIndex(
+          this.tabLabels,
+          ['label', this.selectedLabel],
+        );
       }
     }
   }
