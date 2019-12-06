@@ -17,8 +17,8 @@ import PcOrder from '@/components/pc/PcOrder.tsx';
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
+  mode: 'hash',
+  base: '/login',
   routes: [
     {
       path: '/login',
