@@ -6,7 +6,12 @@ import { Component, Ref } from 'vue-property-decorator';
 import moment from 'moment';
 import _ from 'lodash';
 
-import { ISingleMenuItem, MENU_TIME_TYPE } from '@/store/menu';
+import {
+  ISingleMenuItem,
+  MENU_NAMESPACE,
+  MENU_TIME_TYPE,
+  MENU,
+} from '@/store/menu';
 import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
 
 import { timeParser } from '@/components/utils/time';
@@ -38,15 +43,23 @@ export default class Index extends tsx.Component<any> {
   protected tabLabels = [
     {
       label: '早餐',
+      startTime: 0,
+      endTime: 10,
     },
     {
       label: '午餐',
+      startTime: 10,
+      endTime: 13,
     },
     {
       label: '水果',
+      startTime: 13,
+      endTime: 17,
     },
     {
       label: '晚餐',
+      startTime: 17,
+      endTime: 23,
     },
   ];
 
@@ -71,6 +84,7 @@ export default class Index extends tsx.Component<any> {
             initial-index={this.initialIndex}
             auto-play={false}
             show-dots={false}
+            threshold={0.2}
             options={{
               listenScroll: true,
               probeType: 3,
@@ -137,7 +151,26 @@ export default class Index extends tsx.Component<any> {
       .value();
   }
   // event
-  private mounted() {}
+  private mounted() {
+    this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
+    const now = moment();
+    // tslint:disable-next-line:forin
+    for (const label of this.tabLabels) {
+      const flag = now.isBetween(
+        moment().hour(label.startTime),
+        moment().hour(label.endTime),
+        'hour',
+      );
+      if (flag) {
+        this.selectedLabel = label.label;
+        // XXX: 无法正确的设置 current page index 这里强行设定了
+        (this.$refs.slide as any).currentPageIndex = _.findIndex(
+          this.tabLabels,
+          ['label', this.selectedLabel],
+        );
+      }
+    }
+  }
 
   private scroll(pos: any) {
     const x = Math.abs(pos.x);

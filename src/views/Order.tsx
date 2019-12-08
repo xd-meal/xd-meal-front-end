@@ -2,13 +2,18 @@ import './Order.scss';
 
 import _ from 'lodash';
 import { VNode } from 'vue';
-import { Component } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import { getDay, timeParser } from '@/components/utils/time.ts';
 
 import { MENU_TIME_TYPE } from '@/store/menu';
-import { IOrderSingleItem, MENU_TYPE } from '@/store/order';
+import {
+  IOrderSingleItem,
+  MENU_TYPE,
+  ORDER,
+  ORDER_NAMESPACE,
+} from '@/store/order';
 
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
@@ -17,7 +22,6 @@ export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
 @Component
 export default class Order extends tsx.Component<any> {
   // protected orderList: IOrderSingleItemWithChecked[] = [];
-  // 首先
   protected list: Array<{
     key: string;
     value: IOrderSingleItemWithChecked[];
@@ -40,8 +44,9 @@ export default class Order extends tsx.Component<any> {
           <cube-scroll-nav
             side={true}
             data={this.list}
-            current={this.current}
+            // current={this.current}
             onChange={this.changeHandler}
+            ref='cubeScrollNav'
             // onSticky-change={this.stickyChangeHandler}
           >
             <cube-scroll-nav-bar
@@ -144,6 +149,7 @@ export default class Order extends tsx.Component<any> {
     );
   }
   // getter
+
   protected get scrollNavBarLabels() {
     return _(this.list)
       .map((item) => item.key)
@@ -159,19 +165,7 @@ export default class Order extends tsx.Component<any> {
   }
   // events
   protected mounted() {
-    const transferList = _(this.$store.state.order.list)
-      // 先添加需要用来选内容的
-      .map(
-        (item) => ({ ...item, selected: false } as IOrderSingleItemWithChecked),
-      )
-      // 然后分组
-      .groupBy('time')
-      .value();
-    this.list = _(transferList)
-      .map((value, key) => ({ value, key }))
-      .value();
-    this.current = this.list[0].key;
-    // window.console.log(value);
+    this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
   }
   // method
   private selectAllBuffet() {
@@ -238,5 +232,35 @@ export default class Order extends tsx.Component<any> {
   private refreshList() {
     // 由于 vue 的更新机制原因，这里主动使用 set 告诉 vue 需要更新 list
     this.$set(this, 'list', Array.from(this.list));
+    (this.$refs.cubeScrollNav as any).refresh();
+  }
+  // watch
+  @Watch('list')
+  private onListChanged(
+    newVal: Array<{
+      key: string;
+      value: IOrderSingleItemWithChecked[];
+    }>,
+  ) {
+    // if (newVal.length > 0) {
+    //   this.current = '';
+    // } else {
+    //   this.current = '';
+    // }
+  }
+  @Watch('$store.state.order.list')
+  private onStoreOrderChanged(newVal: IOrderSingleItem[]) {
+    const transferList = _(newVal)
+      // 先添加需要用来选内容的
+      .map(
+        (item) => ({ ...item, selected: false } as IOrderSingleItemWithChecked),
+      )
+      // 然后分组
+      .groupBy('time')
+      .value();
+    this.list = _(transferList)
+      .map((value, key) => ({ value, key }))
+      .value();
+    (this.$refs.cubeScrollNav as any).refresh();
   }
 }

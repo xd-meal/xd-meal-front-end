@@ -55,14 +55,35 @@
       text-align: center;
       padding: 4px 0;
       box-sizing: border-box;
-      &_active {
-        color: #333;
-      }
       .icon {
         width: 29px;
         height: 29px;
         margin: 0 auto 2px;
-        background-color: currentColor;
+        background-size: contain;
+        &.index {
+          background-image: url("../assets/icon/main-menu.svg");
+        }
+        &.pay {
+          background-image: url("../assets/icon/qrcode.svg");
+        }
+        &.profile {
+          background-image: url("../assets/icon/single.svg");
+        }
+      }
+
+      &_active {
+        color: #333;
+        .icon {
+          &.index {
+            background-image: url("../assets/icon/main-menu-active.svg");
+          }
+          &.pay {
+            background-image: url("../assets/icon/qrcode-active.svg");
+          }
+          &.profile {
+            background-image: url("../assets/icon/single-active.svg");
+          }
+        }
       }
       .text {
         width: 25px;

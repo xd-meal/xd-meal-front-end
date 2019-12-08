@@ -1,5 +1,7 @@
+import { fetchWeekdayDishes, IDishes } from '@/api/menu';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import { MENU_TIME_TYPE } from './menu';
+
 export interface IIterableDesc {
   title: string;
   desc: string;
@@ -12,10 +14,11 @@ export enum MENU_TYPE {
 export interface IOrderSingleItem {
   type: MENU_TIME_TYPE;
   iterableDesc?: IIterableDesc[];
+  // 2019-10-20
   time: string;
   title: string;
   desc: string;
-  id: number;
+  id: string;
   menuType: MENU_TYPE;
 }
 export interface IOrderGlobal {
@@ -23,160 +26,43 @@ export interface IOrderGlobal {
 }
 
 const state: IOrderGlobal = {
-  list: [
-    {
-      id: 1,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁1(微辣)',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 2,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁2',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 3,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁3',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 3,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁4',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 4,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁5',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 7,
-      time: '2019-11-17',
-      title: '鱼香肉丝炒宫爆鸡丁6',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 1,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁7',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 2,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁8',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 3,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁0=9',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 3,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁10',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 4,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁11',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 7,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁12',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 1,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁13',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 2,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁14',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 3,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁15',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 3,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁16',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-    {
-      id: 4,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁17',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.DINNER,
-      menuType: MENU_TYPE.NORMAL,
-    },
-    {
-      id: 7,
-      time: '2019-11-18',
-      title: '鱼香肉丝炒宫爆鸡丁18',
-      desc: '含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜，含香菜大葱洋葱海鲜',
-      type: MENU_TIME_TYPE.LUNCH,
-      menuType: MENU_TYPE.BUFFE,
-    },
-  ],
+  list: [],
 };
 
 export const ORDER_NAMESPACE: string = 'order/';
-export enum ORDER {}
+export enum ORDER {
+  FETCH_ORDER_DISHES_ACTION = 'fetchOrderDishesAction',
+
+  SET_MENUS = 'setMenus',
+}
 
 const getters: GetterTree<IOrderGlobal, any> = {};
-const actions: ActionTree<IOrderGlobal, any> = {};
-const mutations: MutationTree<IOrderGlobal> = {};
+const actions: ActionTree<IOrderGlobal, any> = {
+  async [ORDER.FETCH_ORDER_DISHES_ACTION]({ commit }) {
+    const weekdayDishesRes = await fetchWeekdayDishes();
+    if (weekdayDishesRes.code === 200) {
+      commit(ORDER.SET_MENUS, { weekdayDishes: weekdayDishesRes.data });
+    } else {
+      // TODO: 网络或者其他错误请稍后再试
+    }
+  },
+};
+const mutations: MutationTree<IOrderGlobal> = {
+  [ORDER.SET_MENUS](_, { weekdayDishes }) {
+    _.list = weekdayDishes.map(
+      (data: IDishes): IOrderSingleItem => {
+        return {
+          title: data.name,
+          time: data.mealDay,
+          id: data._id,
+          menuType: data.typeB === 1 ? MENU_TYPE.BUFFE : MENU_TYPE.NORMAL,
+          desc: '',
+          type: data.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
+        };
+      },
+    );
+  },
+};
 export default {
   namespaced: true,
   state,

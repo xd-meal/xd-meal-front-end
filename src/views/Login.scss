@@ -1,0 +1,51 @@
+.app-login {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  .xd-logo {
+    height: 120px;
+    width: 138px;
+    top: -38px - 120px;
+    background-color: #ff6600;
+    position: absolute;
+    left: 50%;
+    margin-left: -138px * 0.5;
+  }
+  &-wrap {
+    width: 288px;
+    margin: 0 auto;
+    position: relative;
+  }
+  &__input-wrap {
+    width: 100%;
+    margin-bottom: 22px;
+    &.password {
+      margin-bottom: 8px;
+    }
+  }
+  &-input {
+    width: 100%;
+    outline: none;
+    height: 49px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+  &-forget {
+    margin-bottom: 9px;
+    font-size: 12px;
+    color: #999999;
+    line-height: 25px;
+    text-align: right;
+  }
+
+  &-submit {
+    background-color: #ea5c03;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+  }
+}

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 57.1 (83088) - https://sketch.com -->
+    <title>icon</title>
+    <desc>Created with Sketch.</desc>
+    <g id="icon" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组" transform="translate(22.000000, 20.000000)" fill="#333333" fill-rule="nonzero">
+            <path d="M2.25,17.25 L2.25,9.75 C2.25,6.1215 4.827,3.09525 8.25,2.4 L8.25,1.5 C8.25,0.67125 8.92125,0 9.75,0 C10.57875,0 11.25,0.67125 11.25,1.5 L11.25,2.4 C14.673,3.09525 17.25,6.1215 17.25,9.75 L17.25,17.25 L18.00225,17.25 C18.8295,17.25 19.5,17.916 19.5,18.75 C19.5,19.57875 18.82875,20.25 18.00225,20.25 L1.49775,20.25 C0.6705,20.25 0,19.584 0,18.75 C0,17.92125 0.67125,17.25 1.49775,17.25 L2.25,17.25 Z M12,21.75 C12,22.99275 10.99275,24 9.75,24 C8.50725,24 7.5,22.99275 7.5,21.75 L12,21.75 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>

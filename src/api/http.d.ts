@@ -4,6 +4,7 @@ export interface IHttpResponse {
    * @desc use 1 for ok, others for error
    */
   code: number;
+  msg?: string;
   data: any;
 }
 export interface ILoginResponse extends IHttpResponse {

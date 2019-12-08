@@ -1,3 +1,5 @@
+import './Login.scss';
+
 import { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
 import { Component } from 'vue-property-decorator';
@@ -11,34 +13,37 @@ export default class Login extends tsx.Component<any> {
   protected password: string = '';
   public render(): VNode {
     return (
-      <div class='login-wrap'>
-        <div class='sign-in'>
-          <div class='title'>Sign in</div>
-          <div class='input-wrap'>
-            <div class='username'>
-              <label for='username' />
+      <div class='app-login'>
+        <div class='app-login-wrap'>
+          <div class='xd-logo' />
+          <div class='app-login-form'>
+            <div class='app-login__input-wrap'>
               <input
+                class='app-login-input'
                 type='text'
                 name='username'
                 id='username'
+                placeholder='心动邮箱'
                 vModel={this.username}
               />
             </div>
-            <div class='password'>
-              <label for='password' />
+            <div class='app-login__input-wrap password'>
               <input
+                class='app-login-input'
                 type='text'
                 name='password'
                 id='password'
+                placeholder='密码'
                 vModel={this.password}
               />
             </div>
           </div>
-          <button class='btn btn-primary login' onClick={() => this.login()}>
+          <div class='app-login-forget'>找回密码</div>
+          <button class='app-login-submit' onClick={() => this.login()}>
             登陆
           </button>
         </div>
-        <div class='error'>{this.status}</div>
+        {/*<div class='error'>{this.status}</div>*/}
       </div>
     );
   }
