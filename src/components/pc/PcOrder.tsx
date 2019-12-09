@@ -5,7 +5,7 @@ import Mock from 'mockjs';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
-import Checkbox from '@/components/utils/Checkbox.vue';
+import Checkbox from '@/components/utils/Checkbox.tsx';
 
 declare interface IOrder {
   title: string;
