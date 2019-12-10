@@ -876,7 +876,7 @@ if (isDev) {
 }
 
 export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
-  const response = await axios.post(WEEKDAY_DISHES_API);
+  const response = await axios.get(WEEKDAY_DISHES_API);
   return response ? response.data : defaultResponse;
 }
 
