@@ -886,6 +886,6 @@ export async function orderDishes() {
 }
 
 export async function fetchMyDishes(): Promise<IMyDishesResponse> {
-  const response = await axios.post(MY_DISHES_API);
+  const response = await axios.get(MY_DISHES_API);
   return response ? response.data : defaultResponse;
 }
