@@ -1,5 +1,5 @@
 #app.pc {
-  background-color: #F4F4F4;
+  background-color: #f4f4f4;
   overflow: initial;
   height: auto;
 }
@@ -64,7 +64,6 @@
   max-width: 1200px;
   &-title {
     margin-bottom: 17px;
-
   }
 }
 .pc-day-menu {
@@ -103,7 +102,7 @@
 
 .progress {
   background-color: #fff;
-  border-top: #DDDDDD 1px solid;
+  border-top: #dddddd 1px solid;
   height: 48px;
   position: fixed;
   bottom: 0;
@@ -119,7 +118,7 @@
     flex: 1;
     padding-left: 35px;
     &-wrap {
-      background: #DDDDDD;
+      background: #dddddd;
       height: 4px;
       position: relative;
       top: 50%;
@@ -129,6 +128,7 @@
       height: 100%;
       left: 0;
       position: absolute;
+      transition: width 0.3s ease-in-out;
       background-color: #ff6600;
     }
   }
@@ -155,5 +155,3 @@
     }
   }
 }
-
-

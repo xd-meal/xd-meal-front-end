@@ -9,7 +9,7 @@ export default class Checkbox extends Vue {
     return (
       <div
         class={{ checkbox_active: this.value, checkbox: true }}
-        click={this.toggle}
+        onClick={this.toggle}
       >
         <div class='checkbox-inner' />
       </div>
