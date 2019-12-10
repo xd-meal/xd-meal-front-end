@@ -48,7 +48,10 @@ export default class Login extends tsx.Component<any> {
     );
   }
   private login() {
-    this.$store.dispatch(USER_NAMESPACE + USER.LOGIN_ACTION);
+    this.$store.dispatch(USER_NAMESPACE + USER.LOGIN_ACTION, {
+      email: this.username,
+      password: this.password,
+    });
   }
   get status() {
     return this.$store.state.user.loginStatus;
