@@ -1,15 +1,29 @@
-import './PcOrder.scss';
-import { VNode } from 'vue';
-import Mock from 'mockjs';
-
-import { Component } from 'vue-property-decorator';
-import * as tsx from 'vue-tsx-support';
-
 import Checkbox from '@/components/utils/Checkbox.tsx';
+import { MENU_TIME_TYPE } from '@/store/menu';
+import {
+  IOrderSingleItem,
+  MENU_TYPE,
+  ORDER,
+  ORDER_NAMESPACE,
+} from '@/store/order';
+import lodash from 'lodash';
+import moment from 'moment';
+import { VNode } from 'vue';
 
+import { Component, Watch } from 'vue-property-decorator';
+import * as tsx from 'vue-tsx-support';
+import './PcOrder.scss';
+const TIME_STRING_TEMPLATE = 'MM月DD日';
+declare interface IChooseItem {
+  type: string;
+  desc: string;
+  checked: boolean;
+  isBuffet: boolean;
+  id: string;
+}
 declare interface IOrder {
   title: string;
-  chooseList: Array<{ type: string; desc: string; checked: boolean }>;
+  chooseList: IChooseItem[];
 }
 @Component({
   components: {
@@ -18,7 +32,7 @@ declare interface IOrder {
 })
 export default class PcOrder extends tsx.Component<any> {
   protected list: IOrder[] = [];
-
+  protected title: string = '';
   protected render(): VNode {
     return (
       <div class='pcorder'>
@@ -34,22 +48,36 @@ export default class PcOrder extends tsx.Component<any> {
         <div class='pc-order-wrap'>
           <h3 class='pc-order-wrap-title'>
             <span class='strong' style={{ marginRight: '25px' }}>
-              xxx月xxx日--xx月xx日一周选饭
+              {this.title}
             </span>
             <span class='light'>
               友情提示选饭包括 #午饭 和 晚饭#！感谢配合～
             </span>
           </h3>
           <div class='pc-order-content'>
-            {this.list.map((item) => {
+            {this.list.map((item, index) => {
               return (
                 <section class='pc-day-menu'>
                   <h3>{item.title}</h3>
                   {item.chooseList.map((_) => {
                     return (
                       <div class='pc-single-check'>
-                        <Checkbox vModel={_.checked} />
-                        <div class='pc-single-check-wrap'>
+                        <div
+                          style={{
+                            marginRight: '30px',
+                            display: 'inline-block',
+                            paddingTop: '3px',
+                          }}
+                        >
+                          <Checkbox
+                            vModel={_.checked}
+                            onChange={this.select.bind(this, item, _, index)}
+                          />
+                        </div>
+                        <div
+                          class='pc-single-check-wrap'
+                          style={{ lineHeight: '24px' }}
+                        >
                           <div class='pc-single-check-text'>
                             <div class='pc-single-check-text-title'>
                               {_.type}
@@ -71,17 +99,31 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='progress-wrap'>
             <div class='progress-left'>
               <div class='progress-left-wrap'>
-                <div class='progress-left-inner' style={{ width: '50%' }}></div>
+                <div
+                  class='progress-left-inner'
+                  style={{ width: this.progressLength }}
+                />
               </div>
             </div>
             <div class='progress-right'>
-              <button class='progress-right-btn btn-default random'>
+              <button
+                class='progress-right-btn btn-default random'
+                onClick={this.random.bind(this)}
+              >
                 随机选饭
               </button>
-              <button class='progress-right-btn btn-default all'>
+              <button
+                class='progress-right-btn btn-default all'
+                onClick={this.allBuffet.bind(this)}
+              >
                 全部自助
               </button>
-              <button class='progress-right-btn btn-primary'>提交</button>
+              <button
+                class='progress-right-btn btn-primary'
+                onClick={this.submit.bind(this)}
+              >
+                提交
+              </button>
               <button class='progress-right-btn btn-primary calendar'>
                 下载日历
               </button>
@@ -91,59 +133,88 @@ export default class PcOrder extends tsx.Component<any> {
       </div>
     );
   }
+  private select(item: IOrder, choose: IChooseItem, index: number) {
+    item.chooseList.forEach((chooseItem: IChooseItem) => {
+      if (choose !== chooseItem) {
+        chooseItem.checked = false;
+      }
+    });
+    this.list.splice(index, 1, item);
+  }
+  private submit() {
+    const idList = [];
+    for (const item of this.list) {
+      const choosed = item.chooseList.filter((_) => _.checked);
+      if (choosed.length >= 1) {
+        idList.push(choosed[0].id);
+      } else {
+        window.console.log('error');
+      }
+    }
+    window.console.log(idList);
+  }
+  private allBuffet() {
+    this.list.forEach((item) =>
+      item.chooseList
+        .filter((_) => _.isBuffet)
+        .forEach((buffetItem) => (buffetItem.checked = true)),
+    );
+    this.$set(this, 'list', this.list);
+  }
+  private random() {
+    this.list.forEach((item) => {
+      const index = Math.floor(Math.random() * item.chooseList.length);
+      item.chooseList.forEach((_, i) => {
+        if (i === index) {
+          _.checked = true;
+        } else {
+          _.checked = false;
+        }
+      });
+    });
+  }
   private mounted() {
-    this.list = Mock.mock({
-      'data|10': [
-        {
-          'title|1': 'title @cword(5)',
-          'chooseList|5': [
-            {
-              type: '@cword(3)',
-              desc: '@cword(3): @cword(15,50)',
-              selected: false,
-            },
-          ],
-        },
-      ],
-    }).data;
-    //   [
-    //   {
-    //     title: '1. 午饭 ～ 午饭 - 9月2日 周一',
-    //     chooseList: [
-    //       {
-    //         type: '自助餐',
-    //         desc:
-    //           '大荤：红酒焖牛腩，啤酒鸭，上海熏鱼；小荤：四川肉末麻婆豆腐（微辣），莴笋鸡片；素菜：清炒蒜苗，荷塘小炒，清炒杭白菜汤',
-    //         selected: false,
-    //       },
-    //       {
-    //         type: '简餐',
-    //         desc:
-    //           ' 鸡胸肉红肠沙拉香煎鸡胸肉、红肠、圣女果、水果玉米、黄瓜、混合生菜基底 配千岛酱（供应商多点沙拉）',
-    //         selected: false,
-    //       },
-    //       {
-    //         type: '简餐',
-    //         desc: ' 糖醋里脊配西葫芦肉片（供应商大宁中心美食）',
-    //         selected: false,
-    //       },
-    //       {
-    //         type: '简餐',
-    //         desc: ' 辣味小炒肉（微辣）（供应商红采餐饮）',
-    //         selected: false,
-    //       },
-    //       {
-    //         type: '简餐',
-    //         desc: ' 泡菜培根炒饭配意式红肠烩时蔬（供应商大宁中心美食）',
-    //         selected: false,
-    //       },
-    //       {
-    //         type: '今天不吃午饭',
-    //         desc: '',
-    //         selected: false,
-    //       },
-    //     ],
-    //   },
-    // ];
+    this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
+  }
+  @Watch('$store.state.order.list')
+  private onStoreOrderChanged(newVal: IOrderSingleItem[]) {
+    const listGroupByDateTime = lodash.groupBy(newVal, 'time');
+    this.list = [];
+    const TimeKeys = [];
+    // tslint:disable-next-line:forin
+    for (const key in listGroupByDateTime) {
+      TimeKeys.push(moment(key).valueOf());
+      const singleList = listGroupByDateTime[key];
+      // 按照 上下午 分类
+      lodash(singleList)
+        .groupBy('type')
+        .forEach((item, type) => {
+          const time = type === MENU_TIME_TYPE.LUNCH ? '午饭' : '晚饭';
+          this.list.push({
+            title: moment(key).format(TIME_STRING_TEMPLATE) + time,
+            chooseList: item.map((_: IOrderSingleItem) => ({
+              type: _.menuType === MENU_TYPE.BUFFE ? '自助' : '简餐',
+              desc: `${_.title}: ${_.desc}`,
+              id: _.id,
+              isBuffet: _.menuType === MENU_TYPE.BUFFE,
+              checked: false,
+            })),
+          });
+        });
+    }
+    const timeMax = lodash.max(TimeKeys);
+    const timeMin = lodash.min(TimeKeys);
+    this.title =
+      moment(timeMin).format(TIME_STRING_TEMPLATE) +
+      '-' +
+      moment(timeMax).format(TIME_STRING_TEMPLATE) +
+      '一周选饭';
+  }
+  // getter
+  get progressLength() {
+    const selectMenuLength = this.list.filter((item) =>
+      item.chooseList.some((_) => _.checked),
+    ).length;
+    return (selectMenuLength / this.list.length) * 100 + '%';
   }
 }

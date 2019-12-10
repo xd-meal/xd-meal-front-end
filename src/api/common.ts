@@ -6,7 +6,7 @@ if (isDev) {
     timeout: '400-700',
   });
 } else {
-  axios.defaults.baseURL = 'http://49.234.45.148:8000/';
+  axios.defaults.baseURL = '/';
 
   // 创建一个拦截器，当 axios 同时请求重复 api 的时，终止请求
   const pending: {

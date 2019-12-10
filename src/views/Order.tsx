@@ -33,7 +33,7 @@ export default class Order extends tsx.Component<any> {
     return (
       <div class='order'>
         <div class='order-header'>
-          <div className='order-header-wrap'>
+          <div class='order-header-wrap'>
             <div class='go-back' onClick={this.goBack.bind(this)}>
               <i class='cubeic-back'></i>
             </div>
@@ -197,6 +197,12 @@ export default class Order extends tsx.Component<any> {
     this.refreshList();
   }
   private submit() {
+    const ids = _(this.list)
+      .map(({ value }) => value)
+      .flatten()
+      .filter((item: IOrderSingleItemWithChecked) => item.checked || false)
+      .map((item: IOrderSingleItemWithChecked) => item.id)
+      .value();
     (this as any)
       .$createDialog({
         type: 'confirm',

@@ -5,9 +5,11 @@
   .order-header {
     background-color: #fafafa;
     box-sizing: border-box;
-    height: 75px;
-    padding-top: 30px;
-    .order-header-wrap {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    &-wrap {
+      width: 100%;
       height: 28px;
     }
     .go-back {
@@ -57,10 +59,12 @@
       }
     }
     .cube-scroll-nav-panel {
-      margin: 0 22px 28px;
+      margin: 0 0 28px;
+      padding-left: 22px;
       padding-bottom: 10px;
       word-break: break-all;
-      border-bottom: 1px solid #dddddd;
+      border-bottom: 1px solid #ddd;
+      padding-right: 22px;
     }
     .cube-sticky-fixed .cube-scroll-nav-panel-title {
       padding-left: 22px + 20px + 11px;
@@ -128,8 +132,8 @@
     border-top: #dddddd 1px solid;
     position: relative;
     &-text-btn {
-      flex: 1;
       line-height: 58px;
+      width: 82px;
       height: 58px;
       font-size: 18px;
       font-weight: 400;
@@ -138,8 +142,11 @@
     &-wrap {
       display: flex;
       align-items: center;
+      padding-left: 20px;
+      justify-content: space-between;
     }
     .submit {
+      margin: 0 30px;
       font-weight: 600;
       font-size: 22px;
       color: #fff;
@@ -153,15 +160,16 @@
       border-radius: 37px;
     }
     &-error {
-      height: 14px;
-      background-color: #e9e9e9;
+      height: 18px;
+      background-color: #eee;
       color: #999999;
-      font-size: 10px;
-      line-height: 14px;
+      font-size: 12px;
+      line-height: 18px;
       width: 100%;
       position: absolute;
-      top: -14px;
+      top: -18px;
       z-index: 10;
+      border-top: 1px #ddd solid;
     }
   }
 }
