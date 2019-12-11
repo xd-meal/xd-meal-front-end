@@ -28,8 +28,8 @@ import {
   // Upload,
   // Form,
   // popup
-  // Popup,
-  // Toast,
+  Popup,
+  Toast,
   // Picker,
   // CascadePicker,
   // DatePicker,
@@ -68,8 +68,8 @@ Vue.use(Checkbox);
 // Vue.use(Validator);
 // Vue.use(Upload);
 // Vue.use(Form);
-// Vue.use(Popup);
-// Vue.use(Toast);
+Vue.use(Popup);
+Vue.use(Toast);
 // Vue.use(Picker);
 // Vue.use(CascadePicker);
 // Vue.use(DatePicker);
