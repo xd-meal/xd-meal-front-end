@@ -39,9 +39,16 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
       if (data.code === 200) {
         commit(USER.SET_TOKEN, { token: '1' });
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
-        Router.push({
-          name: 'index',
-        });
+        const query = Router.currentRoute.query;
+        if (query && query.backPath) {
+          Router.push({
+            path: query.backPath.toString(),
+          });
+        } else {
+          Router.push({
+            name: 'index',
+          });
+        }
         return {
           status: true,
           msg: '',

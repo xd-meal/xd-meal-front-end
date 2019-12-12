@@ -44,7 +44,7 @@ const actions: ActionTree<IMenuGlobal, any> = {
   async [MENU.FETCH_MY_MENUS_ACTION]({ commit }) {
     const myDishesRes = await fetchMyDishes();
     if (myDishesRes.code === 200) {
-      const myDishes = myDishesRes.data;
+      const myDishes = myDishesRes.data || [];
       commit(MENU.SET_MENUS, { myDishes });
     } else {
       // TODO: 异常处理情况
@@ -52,7 +52,7 @@ const actions: ActionTree<IMenuGlobal, any> = {
   },
 };
 const mutations: MutationTree<IMenuGlobal> = {
-  [MENU.SET_MENUS](_, { myDishes }) {
+  [MENU.SET_MENUS](_, { myDishes = [] }) {
     _.list = myDishes.map((dish: IMyDish) => {
       return {
         time: dish.mealDay,

@@ -5,7 +5,6 @@ import * as tsx from 'vue-tsx-support';
 import { Component } from 'vue-property-decorator';
 
 import { USER, USER_NAMESPACE } from '@/store/user';
-import { IUserLoginData } from '@/api/login';
 
 @Component
 export default class Login extends tsx.Component<any> {
@@ -50,7 +49,6 @@ export default class Login extends tsx.Component<any> {
   private async login() {
     const toast = this.$createToast({
       txt: 'loading',
-
       time: 20000,
     });
     const timer = setTimeout(() => {

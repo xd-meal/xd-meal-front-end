@@ -2,6 +2,7 @@ import { isDev } from '@/utils/common';
 import Mock from 'mockjs';
 import axios, { AxiosRequestConfig } from 'axios';
 import router from '../router';
+import { gotoLogin } from '@/utils/common';
 
 if (isDev) {
   Mock.setup({
@@ -53,9 +54,7 @@ if (isDev) {
 
   axios.interceptors.response.use((data) => {
     if (data.data && /请先登录/.test(data.data.msg)) {
-      router.push({
-        name: 'login',
-      });
+      gotoLogin();
     }
     return data;
   });
