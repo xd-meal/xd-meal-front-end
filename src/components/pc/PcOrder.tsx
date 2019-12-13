@@ -148,10 +148,10 @@ export default class PcOrder extends tsx.Component<any> {
       if (choosed.length >= 1) {
         idList.push(choosed[0].id);
       } else {
-        window.console.log('error');
+        // window.console.log('error');
       }
     }
-    window.console.log(idList);
+    // window.console.log(idList);
   }
   private allBuffet() {
     this.list.forEach((item) =>
