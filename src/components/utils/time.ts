@@ -16,3 +16,6 @@ export function timeParser(time: string) {
         ],
     );
 }
+export function timeMMDD(time: string) {
+  return moment(time).format('MM月DD日');
+}

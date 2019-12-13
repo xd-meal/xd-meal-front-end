@@ -5,12 +5,21 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator';
+import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Route } from 'vue-router';
 
 @Component
 export default class Home extends Vue {
-  private get nowClass() {
-    return this.$router.currentRoute.fullPath.match(/pc/g) ? 'pc' : '';
+  protected nowClass = '';
+  @Watch('$route')
+  private onRouterChanged(to: Route) {
+    console.log(1);
+    this.nowClass = to.fullPath.match(/pc/g) ? 'pc' : '';
+  }
+  private mounted() {
+    this.nowClass = this.$router.currentRoute.fullPath.match(/^\/pc/g)
+      ? 'pc'
+      : '';
   }
 }
 </script>

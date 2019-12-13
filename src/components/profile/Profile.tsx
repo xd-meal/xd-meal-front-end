@@ -1,5 +1,7 @@
 import './Profile.scss';
+import { logoutApi } from '@/api/login';
 import { VNode } from 'vue';
+import axios from 'axios';
 
 import { Component, Vue } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -34,13 +36,43 @@ export default class Index extends tsx.Component<any> {
               name: '设置',
               target: 'profile',
             },
+            {
+              name: '退出登录',
+              onClick: this.loginout.bind(this),
+              class: {
+                error: true,
+              },
+            },
           ].map((item) => (
             <div class='profile-context-item'>
-              <div class='profile-context-item-menu'>{item.name}</div>
+              <div
+                class={{
+                  'profile-context-item-menu': true,
+                  ...(item.class || {}),
+                }}
+                onClick={item.onClick}
+              >
+                {item.name}
+              </div>
             </div>
           ))}
         </div>
       </div>
     );
+  }
+  private async loginout() {
+    const res = await logoutApi();
+    if (res.code === 200) {
+      this.$router.push({
+        name: 'login',
+      });
+    } else {
+      this.$createDialog({
+        type: 'alert',
+        title: '系统提示',
+        content: res.msg,
+        icon: 'cubeic-alert',
+      }).show();
+    }
   }
 }

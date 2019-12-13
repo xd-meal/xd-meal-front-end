@@ -31,6 +31,7 @@
     flex: 1;
     overflow: hidden;
     text-align: left;
+    color: #333;
     .cube-scroll-nav-bar {
       background-color: #f8f8f8;
       &-item {
@@ -63,7 +64,7 @@
       padding-left: 22px;
       padding-bottom: 10px;
       word-break: break-all;
-      border-bottom: 1px solid #ddd;
+      //border-bottom: 1px solid #ddd;
       padding-right: 22px;
     }
     .cube-sticky-fixed .cube-scroll-nav-panel-title {
@@ -80,6 +81,7 @@
       background-color: #fff;
       padding-top: 2px;
       box-sizing: border-box;
+      font-weight: 500;
       &:before {
         content: '';
         width: 20px;
@@ -88,7 +90,7 @@
         top: 50%;
         margin-top: -10px;
         position: absolute;
-        background-image: url("../assets/icon/calendar.svg");
+        background-image: url('../assets/icon/calendar.svg');
         background-size: contain;
         //background-color: #343434;
       }
@@ -97,6 +99,7 @@
       line-height: 28px;
       font-size: 20px;
       margin: 14px 0;
+      font-weight: 500;
     }
     .menu-checkbox {
       &-wrap {
@@ -115,20 +118,19 @@
         top: 0;
         right: 0;
         //background-color: #515151;
-        background-image: url("../assets/icon/unselected.svg");
+        background-image: url('../assets/icon/unselected.svg');
         background-size: contain;
         width: 20px;
         height: 20px;
         &_active {
           //background-color: #ff6600;
-          background-image: url("../assets/icon/selected.svg");
+          background-image: url('../assets/icon/selected.svg');
         }
       }
     }
   }
   .order-footer {
     height: 58px;
-    background-color: #333333;
     border-top: #dddddd 1px solid;
     position: relative;
     &-text-btn {
@@ -144,8 +146,11 @@
       align-items: center;
       padding-left: 20px;
       justify-content: space-between;
+      position: relative;
+      z-index: 14;
     }
     .submit {
+      z-index: 13;
       margin: 0 30px;
       font-weight: 600;
       font-size: 22px;
@@ -158,6 +163,19 @@
       box-shadow: none;
       border: none;
       border-radius: 37px;
+      &_disable {
+        background-color: #bfbfbf;
+        color: white;
+      }
+    }
+    .bg {
+      position: absolute;
+      background-color: #333333;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: 13;
     }
     &-error {
       height: 18px;
@@ -169,6 +187,8 @@
       position: absolute;
       top: -18px;
       z-index: 10;
+      transition: all ease-in-out 0.3s;
+      opacity: 1;
       border-top: 1px #ddd solid;
     }
   }

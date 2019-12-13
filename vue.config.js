@@ -15,4 +15,13 @@ module.exports = {
       theme: false,
     },
   },
+  devServer: {
+    proxy: {
+      '/api': {
+        target: 'http://meal.wcmoon.com/',
+        ws: true,
+        changeOrigin: true,
+      },
+    },
+  },
 };

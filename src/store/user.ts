@@ -35,15 +35,30 @@ const getters: GetterTree<INotificationGlobal, any> = {
 };
 const actions: ActionTree<IUserLoginGlobal, any> = {
   [USER.LOGIN_ACTION]({ commit }, loginData: IUserLoginData) {
-    loginApi(loginData).then((data) => {
+    return loginApi(loginData).then((data) => {
       if (data.code === 200) {
         commit(USER.SET_TOKEN, { token: '1' });
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
-        Router.push({
-          name: 'index',
-        });
+        const query = Router.currentRoute.query;
+        if (query && query.backPath) {
+          Router.push({
+            path: query.backPath.toString(),
+          });
+        } else {
+          Router.push({
+            name: 'index',
+          });
+        }
+        return {
+          status: true,
+          msg: '',
+        };
       } else {
         commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.FAIL });
+        return {
+          status: false,
+          msg: data.msg,
+        };
       }
     });
   },

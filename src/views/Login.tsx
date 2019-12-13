@@ -5,7 +5,6 @@ import * as tsx from 'vue-tsx-support';
 import { Component } from 'vue-property-decorator';
 
 import { USER, USER_NAMESPACE } from '@/store/user';
-import { IUserLoginData } from '@/api/login';
 
 @Component
 export default class Login extends tsx.Component<any> {
@@ -30,7 +29,7 @@ export default class Login extends tsx.Component<any> {
             <div class='app-login__input-wrap password'>
               <input
                 class='app-login-input'
-                type='text'
+                type='password'
                 name='password'
                 id='password'
                 placeholder='密码'
@@ -47,11 +46,32 @@ export default class Login extends tsx.Component<any> {
       </div>
     );
   }
-  private login() {
-    this.$store.dispatch(USER_NAMESPACE + USER.LOGIN_ACTION, {
-      email: this.username,
-      password: this.password,
+  private async login() {
+    const toast = this.$createToast({
+      txt: 'loading',
+      time: 20000,
     });
+    const timer = setTimeout(() => {
+      toast.show();
+    }, 800);
+    const data = await this.$store.dispatch(
+      USER_NAMESPACE + USER.LOGIN_ACTION,
+      {
+        email: this.username,
+        password: this.password,
+      },
+    );
+    clearTimeout(timer);
+    if (data.status) {
+      toast.hide();
+    } else {
+      toast.hide();
+      this.$createToast({
+        txt: data.msg,
+        time: 2000,
+        type: 'txt',
+      }).show();
+    }
   }
   get status() {
     return this.$store.state.user.loginStatus;

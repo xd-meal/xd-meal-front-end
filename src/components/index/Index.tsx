@@ -156,11 +156,15 @@ export default class Index extends tsx.Component<any> {
     const now = moment();
     // tslint:disable-next-line:forin
     for (const label of this.tabLabels) {
-      const flag = now.isBetween(
-        moment().hour(label.startTime),
-        moment().hour(label.endTime),
-        'hour',
-      );
+      const start = moment()
+        .hour(label.startTime)
+        .minute(0)
+        .second(0);
+      const end = moment()
+        .hour(label.endTime)
+        .minute(59)
+        .second(59);
+      const flag = now.isBetween(start, end);
       if (flag) {
         this.selectedLabel = label.label;
         // XXX: 无法正确的设置 current page index 这里强行设定了

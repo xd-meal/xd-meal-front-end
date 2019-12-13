@@ -1,3 +1,16 @@
+import {
+  ActionSheet,
+  CascadePicker,
+  DatePicker,
+  Dialog,
+  ImagePreview,
+  Picker,
+  Popup,
+  SegmentPicker,
+  TimePicker,
+  Toast,
+} from 'cube-ui';
+import { CubeUIComponent } from 'cube-ui/types/component';
 import Vue, { VNode } from 'vue';
 
 declare global {

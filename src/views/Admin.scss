@@ -1,0 +1,21 @@
+.admin {
+  height: 100%;
+  &-sidebar {
+    width: 80px;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1;
+  }
+  &-child {
+    overflow-x: hidden;
+    overflow-y: scroll;
+    padding-left: 20px + 80px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}

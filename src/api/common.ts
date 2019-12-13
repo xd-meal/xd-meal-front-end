@@ -1,6 +1,9 @@
 import { isDev } from '@/utils/common';
 import Mock from 'mockjs';
 import axios, { AxiosRequestConfig } from 'axios';
+import router from '../router';
+import { gotoLogin } from '@/utils/common';
+
 if (isDev) {
   Mock.setup({
     timeout: '400-700',
@@ -48,6 +51,13 @@ if (isDev) {
       return Promise.reject(error);
     },
   );
+
+  axios.interceptors.response.use((data) => {
+    if (data.data && /请先登录/.test(data.data.msg)) {
+      gotoLogin();
+    }
+    return data;
+  });
 }
 export const defaultResponse = {
   code: 0,
