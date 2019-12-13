@@ -9,6 +9,10 @@ export default class AdminSideBar extends tsx.Component<any> {
       text: '导入菜品',
     },
     {
+      name: 'adminUser',
+      text: '外派导入',
+    },
+    {
       name: 'adminOutput',
       text: '导出列表',
     },

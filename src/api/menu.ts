@@ -44,6 +44,7 @@ export interface IDishes {
    */
   typeB: number;
   updateTime: string;
+  mealNum?: number;
 }
 export interface IWeekdayDishesResponse extends IHttpResponse {
   data: IDishes[];
@@ -880,8 +881,10 @@ export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
   return response ? response.data : defaultResponse;
 }
 
-export async function orderDishes() {
-  const response = await axios.post(ORDER_DISHES_API);
+export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
+  const response = await axios.post(ORDER_DISHES_API, {
+    dishIds,
+  });
   return response ? response.data : defaultResponse;
 }
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ILoginResponse } from '@/api/http';
+import { IHttpResponse, ILoginResponse } from '@/api/http';
 import Mock from 'mockjs';
 
 import { isDev } from '@/utils/common';
@@ -25,7 +25,7 @@ export async function loginApi(
   return response ? response.data : defaultResponse;
 }
 
-export async function logoutApi() {
+export async function logoutApi(): Promise<IHttpResponse> {
   const response = await axios.post(LOGIN_OUT_API);
   return response ? response.data : defaultResponse;
 }

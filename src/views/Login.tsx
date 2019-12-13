@@ -29,7 +29,7 @@ export default class Login extends tsx.Component<any> {
             <div class='app-login__input-wrap password'>
               <input
                 class='app-login-input'
-                type='text'
+                type='password'
                 name='password'
                 id='password'
                 placeholder='密码'

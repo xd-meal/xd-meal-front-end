@@ -5,7 +5,7 @@ import { VNode } from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
-import { getDay, timeParser } from '@/components/utils/time.ts';
+import { getDay, timeParser, timeMMDD } from '@/components/utils/time.ts';
 
 import { MENU_TIME_TYPE } from '@/store/menu';
 import {
@@ -14,6 +14,8 @@ import {
   ORDER,
   ORDER_NAMESPACE,
 } from '@/store/order';
+
+import { orderDishes } from '@/api/menu.ts';
 
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
@@ -27,7 +29,7 @@ export default class Order extends tsx.Component<any> {
     value: IOrderSingleItemWithChecked[];
   }> = [];
   protected current: any = null;
-  protected errorText: string = 'sss';
+  protected errorText: string = '';
 
   protected render(): VNode {
     return (
@@ -126,7 +128,16 @@ export default class Order extends tsx.Component<any> {
           </cube-scroll-nav>
         </div>
         <div class='order-footer'>
-          <div class='order-footer-error'>{this.errorText}</div>
+          <div
+            class='order-footer-error'
+            style={{
+              transform: this.errorText ? 'translateY(0%)' : 'translateY(100%)',
+              opacity: this.errorText ? 1 : 0,
+            }}
+          >
+            {this.errorText}
+          </div>
+          <div class='bg' />
           <div class='order-footer-wrap'>
             <div
               class='order-footer-text-btn'
@@ -140,7 +151,10 @@ export default class Order extends tsx.Component<any> {
             >
               随机选
             </div>
-            <button class='submit' onClick={this.submit.bind(this)}>
+            <button
+              class={{ submit: true, submit_disable: this.submitDisable }}
+              onClick={this.submit.bind(this)}
+            >
               下单
             </button>
           </div>
@@ -162,6 +176,25 @@ export default class Order extends tsx.Component<any> {
   }
   protected get scrollNavBarCurrent() {
     return getDay(this.current);
+  }
+  protected get submitDisable() {
+    // tslint:disable-next-line:forin
+    for (const key in this.list) {
+      const item = this.list[key];
+      const group = _.groupBy(item.value, 'type');
+      // tslint:disable-next-line:forin
+      for (const type in group) {
+        const flag = group[type].some(
+          (value: IOrderSingleItemWithChecked) => value.checked,
+        );
+        if (!flag) {
+          this.errorText = `${timeMMDD(item.key)}尚未选餐`;
+          return true;
+        }
+      }
+    }
+    this.errorText = '';
+    return false;
   }
   // events
   protected mounted() {
@@ -203,23 +236,34 @@ export default class Order extends tsx.Component<any> {
       .filter((item: IOrderSingleItemWithChecked) => item.checked || false)
       .map((item: IOrderSingleItemWithChecked) => item.id)
       .value();
-    (this as any)
-      .$createDialog({
-        type: 'confirm',
-        title: '下单',
-        content: '请确认下单内容正确，下单后不可更改',
-        icon: 'cubeic-alert',
-        onConfirm: () => {
+
+    this.$createDialog({
+      type: 'confirm',
+      title: '下单',
+      content: '请确认下单内容正确，下单后不可更改',
+      icon: 'cubeic-alert',
+      onConfirm: async () => {
+        const res = await orderDishes(ids);
+        if (res.code === 200) {
           this.$router.replace({
             name: 'index',
           });
-        },
-      })
-      .show();
+        } else {
+          const toast = this.$createToast({
+            txt: res.msg,
+            mask: true,
+            timeout: 3000,
+          });
+          toast.show();
+        }
+      },
+    }).show();
   }
   // 返回上一级页面
   private goBack() {
-    this.$router.back();
+    this.$router.push({
+      name: 'index',
+    });
   }
 
   private changeHandler(label: any) {

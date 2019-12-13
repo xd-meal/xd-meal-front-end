@@ -11,7 +11,7 @@ export default class AdminEdit extends tsx.Component<any> {
         <div>
           <label htmlFor=''>邮箱</label>
           <input type='text' id='username' vModel={this.email} />
-          <button onClick={this.search.bind(this)} />
+          <button onClick={this.search.bind(this)}>搜索</button>
         </div>
         {this.list.length === 0 && <div>查无此人</div>}
         {this.list.length > 0 && <div>{JSON.stringify(this.list)}</div>}

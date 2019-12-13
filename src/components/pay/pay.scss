@@ -4,34 +4,38 @@
     width: 975px;
     height: 975px;
     border-radius: 975px;
-    background-color: #f4f4f4;
+    background-color: #F8F8F8;
     position: absolute;
     left: 50%;
     top: -29%;
     transform: translateX(-50%);
   }
   &-logo {
-    width: 29.227%;
-    padding-top: 15.458%;
+    width: 121px;
+    height: 64px;
     margin: 10px auto 44px;
-    background-color: #ff6600;
+    //background-color: #ff6600;
     position: absolute;
     z-index: 1;
-    left: 35.3865%;
+    left: 50%;
+    transform: translateX(-50%);
     top: -40%;
-    //background-image: url("../../assets/");
+    background-image: url("../../assets/icon/xd-org.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
   }
   &-container {
     position: relative;
     margin: 0 auto;
     z-index: 1;
-    width: 87.92%;
-    padding-top: 87.92%;
+    width: 316px;
+    height: 322px;
     background-color: #fff;
     border-radius: 24px;
   }
   &-wrap {
-    top: 50%;
+    top: 56%;
     position: absolute;
     width: 100%;
     transform: translateY(-50%);
@@ -39,17 +43,16 @@
   }
   &-qr {
     position: absolute;
-    top: 50%;
+    top: 55px;
     left: 50%;
-    transform: translate(-50%, -50%);
-    width: 74.1758242%;
-    padding-top: 74.1758242%;
-    margin-top: 12px;
+    transform: translateX(-50%);
+    width: 234px;
+    height: 234px;
     &-tips {
       font-size: 14px;
       position: absolute;
       line-height: 20px;
-      top: -20px;
+      top: -24px;
       width: 100%;
       text-align: center;
       color: #cbcbcb;

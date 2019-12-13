@@ -80,6 +80,9 @@
       color: #c6c6c6;
       &_active {
         color: #000;
+        > div {
+          font-weight: 500;
+        }
       }
     }
   }
