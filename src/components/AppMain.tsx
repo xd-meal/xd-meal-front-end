@@ -14,15 +14,15 @@ interface ComponentMap {
 const components: ComponentMap = {
   index: {
     name: '菜单',
-    index: 1,
+    index: 0,
   },
   pay: {
     name: '支付',
-    index: 2,
+    index: 1,
   },
   profile: {
     name: '个人',
-    index: 3,
+    index: 2,
   },
 };
 const ComponentList: SingleComponent[] = Object.keys(components).map(
@@ -58,7 +58,9 @@ export default class AppMain extends tsx.Component<any> {
 
   @Watch('$route')
   public onChangeValue(newVal: Route, oldVal: Route) {
-    const toIndex = components[newVal.name as string].index || 0;
+    const index = components[newVal.name as string].index || 0;
+    this.current = ComponentList[index];
+    const toIndex = index;
     const fromIndex = components[oldVal.name as string].index || 0;
     this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left';
   }
@@ -94,5 +96,10 @@ export default class AppMain extends tsx.Component<any> {
         </div>
       </div>
     );
+  }
+  private mounted() {
+    const index =
+      components[this.$router.currentRoute.name as string].index || 0;
+    this.current = ComponentList[index];
   }
 }

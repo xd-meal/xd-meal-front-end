@@ -15,7 +15,6 @@ import {
 import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
 
 import { timeParser } from '@/components/utils/time';
-import MenuItem from '@/components/index/MenuItem.tsx';
 
 const DATE_MAP = [
   '星期日',
@@ -26,9 +25,7 @@ const DATE_MAP = [
   '星期五',
   '星期六',
 ];
-@Component({
-  components: { MenuItem },
-})
+@Component
 export default class Index extends tsx.Component<any> {
   // data
   protected labelMap: {
@@ -76,6 +73,10 @@ export default class Index extends tsx.Component<any> {
               data={this.tabLabels}
             />
           </div>
+          <router-link
+            class='nav-link notification'
+            to={{ name: 'notification' }}
+          />
         </div>
         <div class='index-body'>
           <cube-slide
