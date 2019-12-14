@@ -1,0 +1,15 @@
+.childpage {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  &-header {
+    height: 60px;
+  }
+  &-container {
+    flex: 1;
+    overflow: hidden;
+  }
+  &-footer {
+    height: 58px;
+  }
+}

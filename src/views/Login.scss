@@ -10,13 +10,17 @@
     border-width: 0;
   }
   .xd-logo {
-    height: 120px;
-    width: 138px;
+    height: 69px;
+    width: 247px;
     top: -38px - 120px;
-    background-color: #ff6600;
+    //background-color: #ff6600;
+    background-image: url("../assets/icon/logo.svg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     position: absolute;
     left: 50%;
-    margin-left: -138px * 0.5;
+    margin-left: -247px * 0.5;
   }
   &-wrap {
     width: 288px;

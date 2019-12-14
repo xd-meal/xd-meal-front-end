@@ -101,7 +101,6 @@ export default class Index extends tsx.Component<any> {
                   <cube-scroll
                     data={menus}
                     options={{
-                      /* lock x-direction when scrolling horizontally and  vertically at the same time */
                       directionLockThreshold: 0,
                     }}
                   >

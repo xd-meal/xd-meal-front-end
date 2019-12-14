@@ -20,21 +20,21 @@ export default class Index extends tsx.Component<any> {
         </div>
         <div class='profile-context'>
           {[
-            {
-              name: '商家收藏',
-              target: 'profile',
-            },
-            {
-              name: '商家收藏',
-              target: 'profile',
-            },
+            // {
+            //   name: '商家收藏',
+            //   target: 'profile',
+            // },
+            // {
+            //   name: '商家收藏',
+            //   target: 'profile',
+            // },
             {
               name: '通知提醒',
               target: 'profile',
             },
             {
               name: '设置',
-              target: 'profile',
+              target: 'setting',
             },
             {
               name: '退出登录',
@@ -50,7 +50,16 @@ export default class Index extends tsx.Component<any> {
                   'profile-context-item-menu': true,
                   ...(item.class || {}),
                 }}
-                onClick={item.onClick}
+                onClick={() => {
+                  if (item.onClick) {
+                    item.onClick();
+                  }
+                  if (item.target) {
+                    this.$router.push({
+                      name: item.target,
+                    });
+                  }
+                }}
               >
                 {item.name}
               </div>

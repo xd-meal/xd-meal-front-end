@@ -4,6 +4,7 @@
   height: auto;
 }
 .pcorder {
+  background-color: #f4f4f4;
   h3 {
     text-align: left;
     line-height: 25px;
@@ -42,7 +43,11 @@
   &-logo {
     width: 142px;
     height: 34px;
-    background-color: #ff6600;
+    //background-color: #ff6600;
+    background-image: url("../../assets/icon/logo.svg");
+    background-size: auto 100%;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
 
   &-right {

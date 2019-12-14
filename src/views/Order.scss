@@ -2,34 +2,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  .order-header {
-    background-color: #fafafa;
-    box-sizing: border-box;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    &-wrap {
-      width: 100%;
-      height: 28px;
-    }
-    .go-back {
-      position: absolute;
-      line-height: 28px;
-      height: 28px;
-      left: 25px;
-      font-size: 24px;
-    }
-    .order-header-title {
-      width: 100%;
-      height: 28px;
-      line-height: 28px;
-      font-size: 21px;
-    }
-  }
   .order-body {
     background-color: #f8f8f8;
-    flex: 1;
-    overflow: hidden;
+    height: 100%;
     text-align: left;
     color: #333;
     .cube-scroll-nav-bar {

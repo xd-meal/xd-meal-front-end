@@ -1,0 +1,24 @@
+.common-header {
+  background-color: #fafafa;
+  box-sizing: border-box;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  &__go-back {
+    position: absolute;
+    line-height: 28px;
+    height: 28px;
+    left: 25px;
+    font-size: 24px;
+  }
+  &-wrap {
+    width: 100%;
+    height: 28px;
+  }
+  .common-header-title {
+    width: 100%;
+    height: 28px;
+    line-height: 28px;
+    font-size: 21px;
+  }
+}

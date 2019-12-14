@@ -17,11 +17,19 @@ import {
 
 import { orderDishes } from '@/api/menu.ts';
 
+import ChildPageConstruction from '@/components/utils/ChildPageConstruction';
+import CommonHeader from '@/components/utils/CommonHeader';
+
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
 }
 
-@Component
+@Component({
+  components: {
+    ChildPageConstruction,
+    CommonHeader,
+  },
+})
 export default class Order extends tsx.Component<any> {
   // protected orderList: IOrderSingleItemWithChecked[] = [];
   protected list: Array<{
@@ -33,16 +41,17 @@ export default class Order extends tsx.Component<any> {
 
   protected render(): VNode {
     return (
-      <div class='order'>
-        <div class='order-header'>
-          <div class='order-header-wrap'>
-            <div class='go-back' onClick={this.goBack.bind(this)}>
-              <i class='cubeic-back'></i>
-            </div>
-            <div class='order-header-title'>下周选饭</div>
-          </div>
+      <ChildPageConstruction class='order'>
+        <div class='order-header' Slot='header'>
+          <CommonHeader
+            Slot='header'
+            title='下周选饭'
+            goBackPath={{
+              name: 'index',
+            }}
+          />
         </div>
-        <div class='order-body'>
+        <div class='order-body' Slot='context'>
           <cube-scroll-nav
             side={true}
             data={this.list}
@@ -86,7 +95,7 @@ export default class Order extends tsx.Component<any> {
                               return (
                                 <div
                                   class='menu-checkbox'
-                                  onClick={this.toggleDayMenu.bind(
+                                  onclick={this.toggleDayMenu.bind(
                                     this,
                                     dayMenu,
                                     dayMenus,
@@ -127,7 +136,7 @@ export default class Order extends tsx.Component<any> {
             ))}
           </cube-scroll-nav>
         </div>
-        <div class='order-footer'>
+        <div class='order-footer' Slot='footer'>
           <div
             class='order-footer-error'
             style={{
@@ -141,25 +150,25 @@ export default class Order extends tsx.Component<any> {
           <div class='order-footer-wrap'>
             <div
               class='order-footer-text-btn'
-              onClick={() => this.selectAllBuffet()}
+              onclick={() => this.selectAllBuffet()}
             >
               全自助
             </div>
             <div
               class='order-footer-text-btn'
-              onClick={() => this.selectAllRandom()}
+              onclick={() => this.selectAllRandom()}
             >
               随机选
             </div>
             <button
               class={{ submit: true, submit_disable: this.submitDisable }}
-              onClick={this.submit.bind(this)}
+              onclick={this.submit.bind(this)}
             >
               下单
             </button>
           </div>
         </div>
-      </div>
+      </ChildPageConstruction>
     );
   }
   // getter
@@ -178,6 +187,9 @@ export default class Order extends tsx.Component<any> {
     return getDay(this.current);
   }
   protected get submitDisable() {
+    if (this.list.length <= 0) {
+      return true;
+    }
     // tslint:disable-next-line:forin
     for (const key in this.list) {
       const item = this.list[key];
@@ -259,12 +271,6 @@ export default class Order extends tsx.Component<any> {
       },
     }).show();
   }
-  // 返回上一级页面
-  private goBack() {
-    this.$router.push({
-      name: 'index',
-    });
-  }
 
   private changeHandler(label: any) {
     this.current = label;
@@ -285,19 +291,6 @@ export default class Order extends tsx.Component<any> {
     (this.$refs.cubeScrollNav as any).refresh();
   }
   // watch
-  @Watch('list')
-  private onListChanged(
-    newVal: Array<{
-      key: string;
-      value: IOrderSingleItemWithChecked[];
-    }>,
-  ) {
-    // if (newVal.length > 0) {
-    //   this.current = '';
-    // } else {
-    //   this.current = '';
-    // }
-  }
   @Watch('$store.state.order.list')
   private onStoreOrderChanged(newVal: IOrderSingleItem[]) {
     const transferList = _(newVal)
