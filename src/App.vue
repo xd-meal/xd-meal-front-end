@@ -5,20 +5,27 @@
 </template>
 
 <script lang="ts">
+import os from '@/utils/os';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Route } from 'vue-router';
 
 @Component
 export default class Home extends Vue {
-  protected nowClass = '';
+  protected nowClass = {
+    pc: false,
+    standalone: false,
+  };
   @Watch('$route')
   private onRouterChanged(to: Route) {
-    this.nowClass = to.fullPath.match(/pc/g) ? 'pc' : '';
+    this.nowClass.pc = Boolean(to.fullPath.match(/pc/g));
   }
   private mounted() {
-    this.nowClass = this.$router.currentRoute.fullPath.match(/^\/pc/g)
-      ? 'pc'
-      : '';
+    this.nowClass.pc = Boolean(
+      this.$router.currentRoute.fullPath.match(/^\/pc/g),
+    );
+    // this.nowClass.standalone =
+    // (window.navigator as any).standalone && os.iphoneX;
+    // this.nowClass.iosX = os.iphoneX;
   }
 }
 </script>
@@ -32,9 +39,18 @@ export default class Home extends Vue {
   color: #2c3e50;
   position: absolute;
   width: 100%;
-  height: 100%;
+  height: auto;
+  top: 0;
+  bottom: 0;
   overflow: hidden;
 }
+#app.standalone {
+  bottom: 34px;
+}
+#app {
+  bottom: env(safe-area-inset-bottom);
+}
+
 #nav {
   padding: 30px;
   a {
