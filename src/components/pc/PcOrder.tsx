@@ -1,3 +1,4 @@
+import { orderDishes } from '@/api/menu';
 import Checkbox from '@/components/utils/Checkbox.tsx';
 import { MENU_TIME_TYPE } from '@/store/menu';
 import {
@@ -142,16 +143,43 @@ export default class PcOrder extends tsx.Component<any> {
     this.list.splice(index, 1, item);
   }
   private submit() {
-    const idList = [];
+    const idList: string[] = [];
     for (const item of this.list) {
       const choosed = item.chooseList.filter((_) => _.checked);
       if (choosed.length >= 1) {
         idList.push(choosed[0].id);
       } else {
         // window.console.log('error');
+        this.$createToast({
+          txt: '尚未完成选餐',
+          time: 2000,
+          type: 'txt',
+        }).show();
+        return;
       }
     }
-    // window.console.log(idList);
+
+    this.$createDialog({
+      type: 'confirm',
+      title: '下单',
+      content: '请确认下单内容正确，下单后不可更改',
+      icon: 'cubeic-alert',
+      onConfirm: async () => {
+        const res = await orderDishes(idList);
+        if (res.code === 200) {
+          this.$router.replace({
+            name: 'index',
+          });
+        } else {
+          const toast = this.$createToast({
+            txt: res.msg,
+            mask: true,
+            timeout: 3000,
+          });
+          toast.show();
+        }
+      },
+    }).show();
   }
   private allBuffet() {
     this.list.forEach((item) =>
