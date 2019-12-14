@@ -23,6 +23,10 @@ export default class Home extends Vue {
     this.nowClass.pc = Boolean(
       this.$router.currentRoute.fullPath.match(/^\/pc/g),
     );
+    const loader = document.querySelector('#loader');
+    if (loader) {
+      loader.setAttribute('style', 'display: none;');
+    }
     // this.nowClass.standalone =
     // (window.navigator as any).standalone && os.iphoneX;
     // this.nowClass.iosX = os.iphoneX;
