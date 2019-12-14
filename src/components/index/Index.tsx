@@ -73,7 +73,10 @@ export default class Index extends tsx.Component<any> {
               data={this.tabLabels}
             />
           </div>
-          <router-link class='nav-link notification' to={{ name: 'notification' }} />
+          <router-link
+            class='nav-link notification'
+            to={{ name: 'notification' }}
+          />
         </div>
         <div class='index-body'>
           <cube-slide
