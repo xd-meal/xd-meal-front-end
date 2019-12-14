@@ -30,7 +30,7 @@ export default class Index extends tsx.Component<any> {
             // },
             {
               name: '通知提醒',
-              target: 'profile',
+              target: 'notification',
             },
             {
               name: '设置',

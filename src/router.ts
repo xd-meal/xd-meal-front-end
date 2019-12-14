@@ -8,7 +8,7 @@ import Pc from '@/views/Pc';
 import Admin from '@/views/Admin';
 
 import Index from '@/components/index/Index.tsx';
-import Notification from '@/components/notification/Notification.vue';
+import Notification from '@/components/notification/Notification.tsx';
 import Pay from '@/components/pay/Pay.tsx';
 import Profile from '@/components/profile/Profile.tsx';
 import Setting from '@/components/profile/Setting.tsx';
@@ -48,10 +48,18 @@ export default new Router({
       component: App,
       children: [
         { path: '', component: Index, name: 'index' },
-        { path: 'notification', component: Notification, name: 'notification' },
         { path: 'pay', component: Pay, name: 'pay' },
         { path: 'profile', component: Profile, name: 'profile' },
       ],
+    },
+    {
+      path: '/notification',
+      component: Notification,
+      name: 'notification',
+      meta: {
+        rightIn: true,
+        rightOut: true,
+      },
     },
     {
       path: '/setting',

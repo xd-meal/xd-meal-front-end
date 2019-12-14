@@ -8,6 +8,17 @@
       width: 280px;
       position: relative;
     }
+    .nav-link.notification {
+      background-image: url("./../../assets/icon/notification.svg");
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      background-position: center center;
+      width: 24px;
+      height: 24px;
+      display: block;
+      position: absolute;
+      right: 10px;
+    }
   }
   &-body {
     flex: 1;
