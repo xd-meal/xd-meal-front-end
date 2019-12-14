@@ -13,7 +13,7 @@
     flex: 1;
     text-align: left;
     overflow: hidden;
-    background-color: #F4F4F4;
+    background-color: #f4f4f4;
     color: #333;
   }
   .app-day-menu {
@@ -28,7 +28,7 @@
         line-height: 20px;
         width: 20px;
         //background-color: #444;
-        background-image: url("../../assets/icon/calendar.svg");
+        background-image: url('../../assets/icon/calendar.svg');
         background-size: contain;
         margin-right: 10px;
         display: inline-block;
@@ -59,11 +59,11 @@
         width: 20px;
         height: 20px;
         //background-color: #949494;
-        background-image: url("../../assets/icon/vote-down.svg");
+        background-image: url('../../assets/icon/vote-down.svg');
         background-size: contain;
         &_active {
           //background-color: #515151;
-          background-image: url("../../assets/icon/vote-down2.svg");
+          background-image: url('../../assets/icon/vote-down2.svg');
         }
       }
       .desc {
@@ -98,7 +98,7 @@
   width: 60px;
   height: 60px;
   border-right: 60px;
-  background-color: #ff6600;
+  background: linear-gradient(145deg, #ff9f00, #ff6600);
   border-radius: 60px;
   color: #fff;
   font-size: 15px;
@@ -106,7 +106,7 @@
   display: block;
   z-index: 1;
   .order-icon {
-    background-image: url("../../assets/icon/order.svg");
+    background-image: url('../../assets/icon/order.svg');
     width: 25px;
     height: 35px;
     background-size: contain;

@@ -13,7 +13,6 @@ export default class Home extends Vue {
   protected nowClass = '';
   @Watch('$route')
   private onRouterChanged(to: Route) {
-    console.log(1);
     this.nowClass = to.fullPath.match(/pc/g) ? 'pc' : '';
   }
   private mounted() {

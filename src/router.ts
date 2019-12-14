@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-import Home from '@/views/Home.vue';
 import Login from '@/views/Login';
 import App from '@/views/App';
 import Order from '@/views/Order';
@@ -19,23 +18,19 @@ import PcOrder from '@/components/pc/PcOrder.tsx';
 import AdminLogin from '@/components/admin/AdminLogin.tsx';
 import AdminEdit from '@/components/admin/AdminEdit.tsx';
 import AdminImport from '@/components/admin/AdminImport.tsx';
-import AdminSwitch from '@/components/admin/AdminSwitch.tsx';
+import AdminSwitch from '@/components/admin/AdminSwitch';
 import AdminOutput from '@/components/admin/AdminOutput.tsx';
 
 Vue.use(Router);
 
 export default new Router({
   mode: 'hash',
+  base: '/login',
   routes: [
     {
       path: '/login',
       name: 'login',
       component: Login,
-    },
-    {
-      path: '/',
-      name: 'home',
-      component: Home,
     },
     {
       path: '/order',
