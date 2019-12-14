@@ -1,0 +1,17 @@
+.setting {
+  .cube-switch {
+    padding: 10px;
+    background-color: #fff;
+  }
+  &-content {
+    margin: 10px;
+  }
+  .childpage-container {
+    background-color: #f8f8f8;
+  }
+  p {
+    margin: 8px 10px;
+    text-align: left;
+    font-size: 16px;
+  }
+}

@@ -11,6 +11,7 @@ import Index from '@/components/index/Index.tsx';
 import Notification from '@/components/notification/Notification.vue';
 import Pay from '@/components/pay/Pay.tsx';
 import Profile from '@/components/profile/Profile.tsx';
+import Setting from '@/components/profile/Setting.tsx';
 
 import PcLogin from '@/components/pc/PcLogin.tsx';
 import PcOrder from '@/components/pc/PcOrder.tsx';
@@ -36,6 +37,10 @@ export default new Router({
       path: '/order',
       name: 'order',
       component: Order,
+      meta: {
+        rightIn: true,
+        rightOut: true,
+      },
     },
     {
       path: '/app',
@@ -47,6 +52,15 @@ export default new Router({
         { path: 'pay', component: Pay, name: 'pay' },
         { path: 'profile', component: Profile, name: 'profile' },
       ],
+    },
+    {
+      path: '/setting',
+      component: Setting,
+      name: 'setting',
+      meta: {
+        rightIn: true,
+        rightOut: true,
+      },
     },
     {
       path: '/pc',

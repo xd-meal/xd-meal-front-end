@@ -22,7 +22,7 @@ import {
   // Input,
   // Textarea,
   // Select,
-  // Switch,
+  Switch,
   // Rate,
   // Validator,
   // Upload,
@@ -63,7 +63,7 @@ Vue.use(Checkbox);
 // Vue.use(Input);
 // Vue.use(Textarea);
 // Vue.use(Select);
-// Vue.use(Switch);
+Vue.use(Switch);
 // Vue.use(Rate);
 // Vue.use(Validator);
 // Vue.use(Upload);
