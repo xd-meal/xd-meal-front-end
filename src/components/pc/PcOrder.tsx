@@ -41,8 +41,8 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='pc-header-wrap'>
             <div class='pc-header-logo'></div>
             <div class='pc-header-right'>
-              <button>登陆选饭</button>
-              <button>下载app</button>
+              {/*<button>登陆选饭</button>*/}
+              {/*<button>下载app</button>*/}
             </div>
           </div>
         </header>
