@@ -46,6 +46,7 @@ export function icalTimeStart(meal: ISingleMenuItem) {
       minute = 0;
   }
   return moment(meal.time, ['YYYY-MM-DD'])
+    .utcOffset(480)
     .set('hour', hour)
     .set('minute', minute);
 }
@@ -74,6 +75,7 @@ export function icalTimeEnd(meal: ISingleMenuItem) {
       minute = 0;
   }
   return moment(meal.time, ['YYYY-MM-DD'])
+    .utcOffset(480)
     .set('hour', hour)
     .set('minute', minute);
 }
