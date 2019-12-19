@@ -8,6 +8,7 @@ import {
   ORDER,
   ORDER_NAMESPACE,
 } from '@/store/order';
+import { loginOut } from '@/utils/common';
 import lodash from 'lodash';
 import moment from 'moment';
 import { VNode } from 'vue';
@@ -44,7 +45,7 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='pc-header-wrap'>
             <div class='pc-header-logo'></div>
             <div class='pc-header-right'>
-              {/*<button>登陆选饭</button>*/}
+              <button onClick={this.loginOut.bind(this)}>退出登陆</button>
               {/*<button>下载app</button>*/}
             </div>
           </div>
@@ -153,9 +154,9 @@ export default class PcOrder extends tsx.Component<any> {
                 >
                   提交
                 </button>
-                <button class='progress-right-btn btn-primary calendar'>
-                  下载日历
-                </button>
+                {/*<button class='progress-right-btn btn-primary calendar'>*/}
+                {/*  下载日历*/}
+                {/*</button>*/}
               </div>
             </div>
           </div>
@@ -247,6 +248,9 @@ export default class PcOrder extends tsx.Component<any> {
     clearTimeout(timer);
     toast.hide();
     this.show = true;
+  }
+  private loginOut() {
+    loginOut(this);
   }
   private async download() {
     const myDishesRes = await fetchMyDishes();

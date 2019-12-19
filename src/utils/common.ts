@@ -1,3 +1,4 @@
+import { logoutApi } from '@/api/login';
 import router from '@/router';
 import os from '@/utils/os';
 
@@ -67,5 +68,21 @@ export function gotoIndex() {
     router.push({
       name: 'index',
     });
+  }
+}
+
+export async function loginOut(targetDom: Vue) {
+  const res = await logoutApi();
+  if (res.code === 200) {
+    gotoLogin();
+  } else {
+    targetDom
+      .$createDialog({
+        type: 'alert',
+        title: '系统提示',
+        content: res.msg,
+        icon: 'cubeic-alert',
+      })
+      .show();
   }
 }

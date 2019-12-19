@@ -1,7 +1,7 @@
 import './Profile.scss';
 import { logoutApi } from '@/api/login';
 import { ROUTER_NAME } from '@/router';
-import { gotoLogin } from '@/utils/common';
+import { gotoLogin, loginOut } from '@/utils/common';
 import { VNode } from 'vue';
 
 import { Component, Vue } from 'vue-property-decorator';
@@ -70,17 +70,7 @@ export default class Index extends tsx.Component<any> {
       </div>
     );
   }
-  private async loginout() {
-    const res = await logoutApi();
-    if (res.code === 200) {
-      gotoLogin();
-    } else {
-      this.$createDialog({
-        type: 'alert',
-        title: '系统提示',
-        content: res.msg,
-        icon: 'cubeic-alert',
-      }).show();
-    }
+  private loginout() {
+    loginOut(this);
   }
 }
