@@ -38,9 +38,19 @@ export default class Login extends tsx.Component<any> {
             </div>
           </div>
           <div class='app-login-forget'>找回密码</div>
-          <button class='app-login-submit' onClick={() => this.login()}>
-            登陆
-          </button>
+          <div class='app-login-buttons'>
+            <button class='app-login-submit' onClick={() => this.login()}>
+              登陆
+            </button>
+            <button
+              class='app-login-qrcode'
+              onClick={() =>
+                this.$router.push({
+                  name: 'qrlogin',
+                })
+              }
+            ></button>
+          </div>
         </div>
         {/*<div class='error'>{this.status}</div>*/}
       </div>

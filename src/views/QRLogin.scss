@@ -1,0 +1,45 @@
+.app-qrlogin {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  input {
+    appearance: none;
+    box-shadow: none;
+  }
+  button {
+    border-width: 0;
+  }
+  .xd-logo {
+    height: 69px;
+    width: 247px;
+    top: -38px - 120px;
+    //background-color: #ff6600;
+    background-image: url('../assets/icon/logo.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    left: 50%;
+    margin-left: -247px * 0.5;
+  }
+  .wework-login-item {
+    margin-bottom: 0.5rem;
+    a {
+      display: inline-block;
+      width: 60%;
+      height: 30px;
+      line-height: 28px;
+      padding: 0 5px 0 35px;
+      box-sizing: border-box;
+      border-radius: 3px;
+      background-size: contain !important;
+      overflow: hidden;
+      text-decoration: none;
+      span {
+        display: block;
+        text-align: center;
+        transition: transform 0.2s ease-out;
+      }
+    }
+  }
+}

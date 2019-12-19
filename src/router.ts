@@ -6,6 +6,7 @@ import App from '@/views/App';
 import Order from '@/views/Order';
 import Pc from '@/views/Pc';
 import Admin from '@/views/Admin';
+import QRLogin from '@/views/QRLogin';
 
 import Index from '@/components/index/Index.tsx';
 import Notification from '@/components/notification/Notification';
@@ -34,6 +35,11 @@ export default new Router({
       path: '/login',
       name: 'login',
       component: Login,
+    },
+    {
+      path: '/qrlogin',
+      name: 'qrlogin',
+      component: QRLogin,
     },
     {
       path: '/order',
