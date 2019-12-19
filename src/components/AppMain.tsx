@@ -1,4 +1,5 @@
 import './AppMain.scss';
+import { CanUserOrder } from '@/api/menu';
 import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -38,7 +39,7 @@ export default class AppMain extends tsx.Component<any> {
   private current: SingleComponent = ComponentList[0];
   private tabList: SingleComponent[] = ComponentList;
   private transitionName: string = '';
-
+  private orderBtnShow: boolean = false;
   private get footerActiveProp() {
     const length = this.tabList.length;
     const index = this.tabList.indexOf(this.current);
@@ -56,14 +57,6 @@ export default class AppMain extends tsx.Component<any> {
     this.$router.push({ name: tab.key as string });
   }
 
-  @Watch('$route')
-  public onChangeValue(newVal: Route, oldVal: Route) {
-    const index = components[newVal.name as string].index || 0;
-    this.current = ComponentList[index];
-    const toIndex = index;
-    const fromIndex = components[oldVal.name as string].index || 0;
-    this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left';
-  }
   protected render(): VNode {
     return (
       <div class='app-main'>
@@ -72,7 +65,7 @@ export default class AppMain extends tsx.Component<any> {
             <router-view class='child-view' />
           </transition>
         </div>
-        {this.current.key === 'index' && (
+        {this.current.key === 'index' && this.orderBtnShow && (
           <router-link class='order-btn' to={{ name: 'order' }}>
             <span class='order-icon' />
           </router-link>
@@ -101,5 +94,29 @@ export default class AppMain extends tsx.Component<any> {
     const index =
       components[this.$router.currentRoute.name as string].index || 0;
     this.current = ComponentList[index];
+    if (index === 0) {
+      this.refreshOrderBtn().catch(() => (this.orderBtnShow = false));
+    }
+  }
+
+  private async refreshOrderBtn() {
+    const data = await CanUserOrder();
+    if (data.code === 200) {
+      this.orderBtnShow = Boolean(data.data);
+    } else {
+      this.orderBtnShow = false;
+    }
+  }
+
+  @Watch('$route')
+  private onChangeValue(newVal: Route, oldVal: Route) {
+    const index = components[newVal.name as string].index || 0;
+    this.current = ComponentList[index];
+    const toIndex = index;
+    const fromIndex = components[oldVal.name as string].index || 0;
+    this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left';
+    if (index === 0) {
+      this.refreshOrderBtn().catch(() => (this.orderBtnShow = false));
+    }
   }
 }

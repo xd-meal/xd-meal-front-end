@@ -17,6 +17,8 @@ new Vue({
   render: (h) => h(App),
 }).$mount('#app');
 
+// 先判断有没有 cookie 在判断网络连通性
+
 // 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
 checkUserLogin().then((data) => {
   if (data.code !== 200) {

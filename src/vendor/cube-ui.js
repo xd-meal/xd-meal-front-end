@@ -7,7 +7,7 @@ import {
   /* eslint-disable no-unused-vars */
   Style,
   // basic
-  // Button,
+  Button,
   // Loading,
   // Tip,
   // Toolbar,
@@ -19,7 +19,7 @@ import {
   // Checker,
   // Radio,
   // RadioGroup,
-  // Input,
+  Input,
   // Textarea,
   // Select,
   Switch,
@@ -49,7 +49,7 @@ import {
   ScrollNavBar,
 } from 'cube-ui';
 
-// Vue.use(Button);
+Vue.use(Button);
 // Vue.use(Loading);
 // Vue.use(Tip);
 // Vue.use(Toolbar);
@@ -60,7 +60,7 @@ Vue.use(Checkbox);
 // Vue.use(Checker);
 // Vue.use(Radio);
 // Vue.use(RadioGroup);
-// Vue.use(Input);
+Vue.use(Input);
 // Vue.use(Textarea);
 // Vue.use(Select);
 Vue.use(Switch);

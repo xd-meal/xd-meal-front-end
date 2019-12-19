@@ -1,4 +1,4 @@
-import { orderDishes } from '@/api/menu';
+import { CanUserOrder, orderDishes } from '@/api/menu';
 import Checkbox from '@/components/utils/Checkbox.tsx';
 import { MENU_TIME_TYPE } from '@/store/menu';
 import {
@@ -34,6 +34,7 @@ declare interface IOrder {
 export default class PcOrder extends tsx.Component<any> {
   protected list: IOrder[] = [];
   protected title: string = '';
+  protected showFinish: boolean = false;
   protected render(): VNode {
     return (
       <div class='pcorder'>
@@ -46,91 +47,105 @@ export default class PcOrder extends tsx.Component<any> {
             </div>
           </div>
         </header>
-        <div class='pc-order-wrap'>
-          <h3 class='pc-order-wrap-title'>
-            <span class='strong' style={{ marginRight: '25px' }}>
-              {this.title}
-            </span>
-            <span class='light'>
-              友情提示选饭包括 #午饭 和 晚饭#！感谢配合～
-            </span>
-          </h3>
-          <div class='pc-order-content'>
-            {this.list.map((item, index) => {
-              return (
-                <section class='pc-day-menu'>
-                  <h3>{item.title}</h3>
-                  {item.chooseList.map((_) => {
-                    return (
-                      <div class='pc-single-check'>
-                        <div
-                          style={{
-                            marginRight: '30px',
-                            display: 'inline-block',
-                            paddingTop: '3px',
-                          }}
-                        >
-                          <Checkbox
-                            vModel={_.checked}
-                            onChange={this.select.bind(this, item, _, index)}
-                          />
-                        </div>
-                        <div
-                          class='pc-single-check-wrap'
-                          style={{ lineHeight: '24px' }}
-                        >
-                          <div class='pc-single-check-text'>
-                            <div class='pc-single-check-text-title'>
-                              {_.type}
-                            </div>
-                            <div class='pc-single-check-text-desc'>
-                              {_.desc}
+        {!this.showFinish && (
+          <div class='pc-order-wrap'>
+            <h3 class='pc-order-wrap-title'>
+              <span class='strong' style={{ marginRight: '25px' }}>
+                {this.title}
+              </span>
+              <span class='light'>
+                友情提示选饭包括 #午饭 和 晚饭#！感谢配合～
+              </span>
+            </h3>
+            <div class='pc-order-content'>
+              {this.list.map((item, index) => {
+                return (
+                  <section class='pc-day-menu'>
+                    <h3>{item.title}</h3>
+                    {item.chooseList.map((_) => {
+                      return (
+                        <div class='pc-single-check'>
+                          <div
+                            style={{
+                              marginRight: '30px',
+                              display: 'inline-block',
+                              paddingTop: '3px',
+                            }}
+                          >
+                            <Checkbox
+                              vModel={_.checked}
+                              onChange={this.select.bind(this, item, _, index)}
+                            />
+                          </div>
+                          <div
+                            class='pc-single-check-wrap'
+                            style={{ lineHeight: '24px' }}
+                          >
+                            <div class='pc-single-check-text'>
+                              <div class='pc-single-check-text-title'>
+                                {_.type}
+                              </div>
+                              <div class='pc-single-check-text-desc'>
+                                {_.desc}
+                              </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    );
-                  })}
-                </section>
-              );
-            })}
+                      );
+                    })}
+                  </section>
+                );
+              })}
+            </div>
           </div>
-        </div>
-        <div class='pc-order-progress-bar progress'>
-          <div class='progress-wrap'>
-            <div class='progress-left'>
-              <div class='progress-left-wrap'>
-                <div
-                  class='progress-left-inner'
-                  style={{ width: this.progressLength }}
-                />
+        )}
+        {this.showFinish && (
+          <div class='pc-order-wrap'>
+            <h3>您已完成订餐！</h3>
+            <qriously
+              className='pay-qr-code'
+              value={'http://meal.xd.com/#/'}
+              size={270}
+            />
+          </div>
+        )}
+        {!this.showFinish && (
+          <div class='pc-order-progress-bar progress'>
+            <div class='progress-wrap'>
+              <div class='progress-left'>
+                <div class='progress-left-wrap'>
+                  <div
+                    class='progress-left-inner'
+                    style={{ width: this.progressLength }}
+                  />
+                </div>
+              </div>
+              <div class='progress-right'>
+                <button
+                  class='progress-right-btn btn-default random'
+                  onclick={this.random.bind(this)}
+                >
+                  随机选饭
+                </button>
+                <button
+                  class='progress-right-btn btn-default all'
+                  onclick={this.allBuffet.bind(this)}
+                >
+                  全部自助
+                </button>
+                <button
+                  class='progress-right-btn btn-primary'
+                  onclick={this.submit.bind(this)}
+                >
+                  提交
+                </button>
+                <button class='progress-right-btn btn-primary calendar'>
+                  下载日历
+                </button>
               </div>
             </div>
-            <div class='progress-right'>
-              <button
-                class='progress-right-btn btn-default random'
-                onClick={this.random.bind(this)}
-              >
-                随机选饭
-              </button>
-              <button
-                class='progress-right-btn btn-default all'
-                onClick={this.allBuffet.bind(this)}
-              >
-                全部自助
-              </button>
-              <button
-                class='progress-right-btn btn-primary'
-                onClick={this.submit.bind(this)}
-              >
-                提交
-              </button>
-              <button class='progress-right-btn btn-primary calendar'>
-                下载日历
-              </button>
-            </div>
           </div>
-        </div>
+        )}
       </div>
     );
   }
@@ -167,9 +182,7 @@ export default class PcOrder extends tsx.Component<any> {
       onConfirm: async () => {
         const res = await orderDishes(idList);
         if (res.code === 200) {
-          this.$router.replace({
-            name: 'index',
-          });
+          this.showFinish = true;
         } else {
           const toast = this.$createToast({
             txt: res.msg,
@@ -201,8 +214,24 @@ export default class PcOrder extends tsx.Component<any> {
       });
     });
   }
-  private mounted() {
-    this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
+  private async mounted() {
+    const toast = this.$createToast({
+      txt: 'loading...',
+      mask: true,
+    });
+    const timer = setTimeout(() => {
+      toast.show();
+    }, 300);
+    const data = await CanUserOrder();
+    if (data.code === 200) {
+      await this.$store.dispatch(
+        ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
+      );
+    } else {
+      this.showFinish = true;
+    }
+    clearTimeout(timer);
+    toast.hide();
   }
   @Watch('$store.state.order.list')
   private onStoreOrderChanged(newVal: IOrderSingleItem[]) {

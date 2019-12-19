@@ -19,10 +19,17 @@ export default class Home extends Vue {
   protected transitionName = '';
   @Watch('$route')
   public onChangeValue(newVal: Route, oldVal: Route) {
+    if (newVal.meta.stop || oldVal.meta.stop) {
+      this.transitionName = '';
+      return;
+    }
+    if (oldVal.meta.rightOut) {
+      this.transitionName = 'slide-right';
+      return;
+    }
     if (newVal.meta.rightIn) {
       this.transitionName = 'slide-left';
-    } else if (oldVal.meta.rightOut) {
-      this.transitionName = 'slide-right';
+      return;
     }
   }
 
