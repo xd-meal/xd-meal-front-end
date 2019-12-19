@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: column;
   &-header {
-    height: 28px + 30px + 15px;
+    height: 28px + 15px + 15px;
     &-tab {
-      padding-top: 30px;
+      padding-top: 15px;
       width: 280px;
       position: relative;
     }
@@ -24,7 +24,7 @@
     flex: 1;
     text-align: left;
     overflow: hidden;
-    background-color: #f4f4f4;
+    background-color: #f8f8f8;
     color: #333;
   }
   .app-day-menu {
