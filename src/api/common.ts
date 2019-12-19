@@ -24,11 +24,12 @@ export class CommonErrorRespond {
     }
     const code = error.response.status;
     const message = error.message;
+    const data = error.response.data || {};
     if (code >= 500) {
       this.data = {
         code,
         data: {},
-        msg: '服务器内部错误',
+        msg: data.msg || '服务器内部错误',
       };
       return;
     }
@@ -36,7 +37,7 @@ export class CommonErrorRespond {
       this.data = {
         code,
         data: {},
-        msg: '请求地址无效或无权限',
+        msg: data.msg || '请求地址无效或无权限',
       };
       return;
     }

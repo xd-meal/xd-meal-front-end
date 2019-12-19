@@ -1,6 +1,7 @@
-import { CanUserOrder, orderDishes } from '@/api/menu';
+import { CanUserOrder, fetchMyDishes, IMyDish, orderDishes } from '@/api/menu';
 import Checkbox from '@/components/utils/Checkbox.tsx';
-import { MENU_TIME_TYPE } from '@/store/menu';
+import { createIcal } from '@/components/utils/ical';
+import { MENU, MENU_TIME_TYPE } from '@/store/menu';
 import {
   IOrderSingleItem,
   MENU_TYPE,
@@ -35,9 +36,10 @@ export default class PcOrder extends tsx.Component<any> {
   protected list: IOrder[] = [];
   protected title: string = '';
   protected showFinish: boolean = false;
+  protected show: boolean = false;
   protected render(): VNode {
     return (
-      <div class='pcorder'>
+      <div class='pcorder' style={{ opacity: this.show ? 1 : 0 }}>
         <header class='pc-header'>
           <div class='pc-header-wrap'>
             <div class='pc-header-logo'></div>
@@ -100,13 +102,25 @@ export default class PcOrder extends tsx.Component<any> {
           </div>
         )}
         {this.showFinish && (
-          <div class='pc-order-wrap'>
-            <h3>您已完成订餐！</h3>
-            <qriously
-              className='pay-qr-code'
-              value={'http://meal.xd.com/#/'}
-              size={270}
-            />
+          <div class='pc-order-wrap pc-order-wrap_finish'>
+            <div class='pc-order-wrap_finish-wrap'>
+              <div class='pc-order-wrap_finish-wrap-center'>
+                <h3>您已完成订餐！</h3>
+                <h4>扫描下方二维码前往手机查看订餐详情</h4>
+                <h4>
+                  或点击
+                  <a onClick={this.download}>这里</a>
+                  下载日历
+                </h4>
+                <div style={{ marginTop: '24px' }}>
+                  <qriously
+                    className='pay-qr-code'
+                    value={'http://meal.xd.com/#/'}
+                    size={140}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         )}
         {!this.showFinish && (
@@ -222,8 +236,8 @@ export default class PcOrder extends tsx.Component<any> {
     const timer = setTimeout(() => {
       toast.show();
     }, 300);
-    const data = await CanUserOrder();
-    if (data.code === 200) {
+    const canUserOrder = (await CanUserOrder()).data;
+    if (canUserOrder) {
       await this.$store.dispatch(
         ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
       );
@@ -232,6 +246,36 @@ export default class PcOrder extends tsx.Component<any> {
     }
     clearTimeout(timer);
     toast.hide();
+    this.show = true;
+  }
+  private async download() {
+    const myDishesRes = await fetchMyDishes();
+    if (myDishesRes.code === 200) {
+      const myDishes = myDishesRes.data || [];
+      const mealList = myDishes.map((dish: IMyDish) => {
+        return {
+          time: dish.mealDay,
+          title: dish.name,
+          desc: dish.desc ? dish.desc.toString() : '',
+          isVoteDown: dish.badEval,
+          type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
+          id: dish._id,
+        };
+      });
+      const str = createIcal(mealList);
+      const blob = new Blob([str], {
+        type: 'text/calendar',
+      });
+      const a = document.createElement('a');
+      const url = window.URL.createObjectURL(blob);
+      const filename = 'date.ics';
+      a.href = url;
+      a.download = filename;
+      a.click();
+      window.URL.revokeObjectURL(url);
+    } else {
+      // TODO: 异常处理情况
+    }
   }
   @Watch('$store.state.order.list')
   private onStoreOrderChanged(newVal: IOrderSingleItem[]) {

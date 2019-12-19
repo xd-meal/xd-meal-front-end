@@ -44,7 +44,7 @@
     width: 142px;
     height: 34px;
     //background-color: #ff6600;
-    background-image: url("../../assets/icon/logo.svg");
+    background-image: url('../../assets/icon/logo.svg');
     background-size: auto 100%;
     background-position: center center;
     background-repeat: no-repeat;
@@ -67,6 +67,34 @@
   padding: 60px + 38px 15px;
   margin: 0 auto;
   max-width: 1200px;
+  &_finish {
+    &-wrap {
+      height: 60vh;
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 25px;
+      white-space: nowrap;
+      h3 {
+        text-align: center;
+        margin-bottom: 12px;
+      }
+      h4 {
+        margin-bottom: 8px;
+      }
+      &:after {
+        display: inline-block;
+        width: 0;
+        height: 100%;
+        visibility: hidden;
+        vertical-align: middle;
+        content: '';
+      }
+      &-center {
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
   &-title {
     margin-bottom: 17px;
   }
