@@ -262,7 +262,6 @@ export default class PcOrder extends tsx.Component<any> {
           id: dish._id,
         };
       });
-      console.log(JSON.stringify(mealList));
       const str = createIcal(mealList);
       const blob = new Blob([str], {
         type: 'text/calendar',

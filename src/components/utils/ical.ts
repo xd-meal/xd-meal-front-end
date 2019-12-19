@@ -29,7 +29,7 @@ export function icalTimeStart(meal: ISingleMenuItem) {
       hour = 6;
       minute = 30;
       break;
-    case MENU_TIME_TYPE.DINNER:
+    case MENU_TIME_TYPE.LUNCH:
       hour = 11;
       minute = 30;
       break;
@@ -37,7 +37,7 @@ export function icalTimeStart(meal: ISingleMenuItem) {
       hour = 14;
       minute = 0;
       break;
-    case MENU_TIME_TYPE.LUNCH:
+    case MENU_TIME_TYPE.DINNER:
       hour = 16;
       minute = 30;
       break;
@@ -57,7 +57,7 @@ export function icalTimeEnd(meal: ISingleMenuItem) {
       hour = 11;
       minute = 30;
       break;
-    case MENU_TIME_TYPE.DINNER:
+    case MENU_TIME_TYPE.LUNCH:
       hour = 13;
       minute = 30;
       break;
@@ -65,7 +65,7 @@ export function icalTimeEnd(meal: ISingleMenuItem) {
       hour = 16;
       minute = 0;
       break;
-    case MENU_TIME_TYPE.LUNCH:
+    case MENU_TIME_TYPE.DINNER:
       hour = 20;
       minute = 0;
       break;
