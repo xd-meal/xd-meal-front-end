@@ -58,7 +58,7 @@ describe('@/components/utils/ical.ts', () => {
     expect(icalTimeStart(getMenu(MENU_TIME_TYPE.LUNCH)).valueOf()).toBe(
       moment('2019-12-23T11:30:00+08:00').valueOf(),
     );
-    expect(icalTimeStart(getMenu(MENU_TIME_TYPE.FRUIT)).format()).toBe(
+    expect(icalTimeStart(getMenu(MENU_TIME_TYPE.FRUIT)).valueOf()).toBe(
       moment('2019-12-23T14:00:00+08:00').valueOf(),
     );
     expect(icalTimeStart(getMenu(MENU_TIME_TYPE.DINNER)).valueOf()).toBe(
