@@ -36,7 +36,9 @@ checkUserLogin().then((data) => {
       ].indexOf(router.currentRoute.fullPath) >= 0
     ) {
       // TODO: 识别一下
-    } else if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
+    } else if (
+      ['/', '/login', '/qrlogin'].indexOf(router.currentRoute.fullPath) >= 0
+    ) {
       // 在首页 和 login 页的需要跳转到指定的index路由页面
       if (os.isPc) {
         router.push({
