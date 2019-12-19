@@ -51,8 +51,9 @@ export default class AdminImport extends tsx.Component<any> {
                 })}
               </tbody>
             </table>
-            <div>
-              <button onClick={this.submit.bind(this)}>确认无误并上传</button>
+            <div style={{ textAlign: 'right' }}>
+              <button onclick={this.submit.bind(this)}>确认无误并上传</button>
+              <button onclick={this.delete.bind(this)}>删除</button>
             </div>
           </div>
         )}
@@ -80,6 +81,10 @@ export default class AdminImport extends tsx.Component<any> {
       .then((res) => {
         this.list = res.data.data;
       });
+  }
+  private delete() {
+    this.file = null;
+    this.list = [];
   }
   private submit() {
     axios

@@ -1,7 +1,8 @@
 .admin {
   height: 100%;
+  background: #f8f8f8;
   &-sidebar {
-    width: 256px;
+    width: 203px;
     height: 100%;
     position: fixed;
     left: 0;
@@ -11,18 +12,23 @@
   &-child {
     overflow-x: hidden;
     overflow-y: scroll;
-    left: 20px + 256px;
+    left: 20px + 203px;
     right: 0;
     height: 100%;
     position: absolute;
     top: 0;
     width: auto;
     text-align: left;
+    &-view {
+      padding: 35px 45px;
+    }
   }
+
   h3.title {
     font-weight: 600;
     font-size: 20px;
     line-height: 32px;
+    margin-bottom: 25px;
   }
   button {
     line-height: 1.499;
@@ -44,16 +50,21 @@
     font-size: 14px;
     border-radius: 4px;
     color: rgba(0, 0, 0, 0.65);
-    background-color: #fff;
+    background-color: #515151;
+    color: #fff;
     border-color: #d9d9d9;
   }
   table {
     width: 100%;
     text-align: left;
+    margin-top: 20px;
+    margin-bottom: 20px;
     border-radius: 4px 4px 0 0;
     border-collapse: separate;
     border-spacing: 0;
     table-layout: fixed;
+    border: 1px solid #ddd;
+    background-color: #fff;
     tr > th {
       color: rgba(0, 0, 0, 0.85);
       font-weight: 500;

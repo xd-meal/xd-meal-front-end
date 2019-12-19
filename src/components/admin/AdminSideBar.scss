@@ -1,19 +1,83 @@
 .sidebar {
   width: 100%;
   height: 100%;
-  background-color: #f8f8f8;
+  background-color: #515151;
   border-right: 1px solid #ddd;
-
+  padding: 35px 0;
+  &-logo {
+    margin: 0 auto 66px;
+    width: 152px;
+    height: 32px;
+    &-img {
+      height: 100%;
+      width: 100%;
+      background-image: url('../../assets/icon/admin/xf.svg');
+      background-size: auto 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+    }
+  }
   ul {
+    width: 108px;
+    margin: 0 auto;
     li {
-      height: 40px;
-      line-height: 40px;
-      text-align: left;
-      padding-left: 20px;
+      height: 22px;
+      line-height: 22px;
+      font-size: 16px;
       box-sizing: border-box;
+      margin-bottom: 38px;
+      color: #999999;
+      text-align: center;
+      span.text {
+        vertical-align: middle;
+        line-height: 22px;
+      }
+      span.icon {
+        vertical-align: middle;
+        width: 28px;
+        height: 22px;
+        line-height: 22px;
+        margin-right: 14px;
+        display: inline-block;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: auto 100%;
+        &.import-menu {
+          background-image: url('../../assets/icon/admin/import.svg');
+        }
+        &.import-user {
+          background-image: url('../../assets/icon/admin/import-user.svg');
+        }
+        &.output {
+          background-image: url('../../assets/icon/admin/output.svg');
+        }
+        &.admin-edit {
+          background-image: url('../../assets/icon/admin/edit.svg');
+        }
+        &.admin-switch {
+          background-image: url('../../assets/icon/admin/switch.svg');
+        }
+      }
       &.active {
         a {
-          color: #ff6600;
+          color: #fff;
+          span.icon {
+            &.import-menu {
+              background-image: url('../../assets/icon/admin/import-active.svg');
+            }
+            &.import-user {
+              background-image: url('../../assets/icon/admin/import-user-active.svg');
+            }
+            &.output {
+              background-image: url('../../assets/icon/admin/output-active.svg');
+            }
+            &.admin-edit {
+              background-image: url('../../assets/icon/admin/edit-active.svg');
+            }
+            &.admin-switch {
+              background-image: url('../../assets/icon/admin/switch-active.svg');
+            }
+          }
         }
       }
     }
