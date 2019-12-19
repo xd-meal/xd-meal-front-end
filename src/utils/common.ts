@@ -9,7 +9,7 @@ function callWeWorkLogin(corpid: string) {
   params.set('scope', 'snsapi_base');
   params.set(
     'redirect_uri',
-    encodeURI(window.location.origin + window.location.pathname),
+    encodeURIComponent(window.location.origin + window.location.pathname),
   );
   params.set('state', 'wework_redirect');
   const url =
