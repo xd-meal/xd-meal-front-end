@@ -1,4 +1,5 @@
 import './index.scss';
+import { VoteDown } from '@/api/menu';
 
 import Vue, { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
@@ -28,6 +29,7 @@ const DATE_MAP = [
 @Component
 export default class Index extends tsx.Component<any> {
   // data
+  protected innerPromise = false;
   protected labelMap: {
     [key: string]: string;
   } = {
@@ -73,10 +75,12 @@ export default class Index extends tsx.Component<any> {
               data={this.tabLabels}
             />
           </div>
-          <router-link
-            class='nav-link notification'
-            to={{ name: 'notification' }}
-          />
+          {this.$store.state.notification.isShow && (
+            <router-link
+              class='nav-link notification'
+              to={{ name: 'notification' }}
+            />
+          )}
         </div>
         <div class='index-body'>
           <cube-slide
@@ -91,6 +95,7 @@ export default class Index extends tsx.Component<any> {
               probeType: 3,
               /* lock y-direction when scrolling horizontally and  vertically at the same time */
               directionLockThreshold: 0,
+              click: false,
             }}
             onScroll={this.scroll}
             onChange={this.changePage}
@@ -116,7 +121,13 @@ export default class Index extends tsx.Component<any> {
                           <div class='app-day-menu-body'>
                             <div class='app-day-menu-body-wrap'>
                               <div class='title'>{item.title}</div>
-                              <div class='down-vote'></div>
+                              <div
+                                class={{
+                                  'down-vote': true,
+                                  'down-vote_active': item.isVoteDown,
+                                }}
+                                onClick={this.voteDownDishes.bind(this, item)}
+                              />
                             </div>
                             <div class='app-day-menu-body-wrap'>
                               {item.desc.split(/[,，]/).map((desc) => (
@@ -185,5 +196,24 @@ export default class Index extends tsx.Component<any> {
   }
   private changePage(current: number) {
     this.selectedLabel = this.tabLabels[current].label;
+  }
+  private async voteDownDishes(dish: ISingleMenuItem) {
+    if (this.innerPromise) {
+      return;
+    }
+    this.innerPromise = true;
+    const res = await VoteDown(dish.id, !dish.isVoteDown);
+    if (res.code !== 200) {
+      this.$createToast({
+        txt: res.msg,
+        type: 'text',
+      }).show();
+    } else {
+      this.$store.commit(MENU_NAMESPACE + MENU.SET_MENU, {
+        isVoteDown: !dish.isVoteDown,
+        dish,
+      });
+    }
+    this.innerPromise = false;
   }
 }

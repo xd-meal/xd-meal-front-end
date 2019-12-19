@@ -30,37 +30,36 @@ export enum USER {
 
 const getters: GetterTree<INotificationGlobal, any> = {
   code() {
-    return 'KSQOOSPALEMXLASL';
+    return '5948d29214d1';
   },
 };
 const actions: ActionTree<IUserLoginGlobal, any> = {
-  [USER.LOGIN_ACTION]({ commit }, loginData: IUserLoginData) {
-    return loginApi(loginData).then((data) => {
-      if (data.code === 200) {
-        commit(USER.SET_TOKEN, { token: '1' });
-        commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
-        const query = Router.currentRoute.query;
-        if (query && query.backPath) {
-          Router.push({
-            path: query.backPath.toString(),
-          });
-        } else {
-          Router.push({
-            name: 'index',
-          });
-        }
-        return {
-          status: true,
-          msg: '',
-        };
+  async [USER.LOGIN_ACTION]({ commit }, loginData: IUserLoginData) {
+    const data = await loginApi(loginData);
+    if (data.code === 200) {
+      commit(USER.SET_TOKEN, { token: '1' });
+      commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
+      const query = Router.currentRoute.query;
+      if (query && query.backPath) {
+        Router.push({
+          path: query.backPath.toString(),
+        });
       } else {
-        commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.FAIL });
-        return {
-          status: false,
-          msg: data.msg,
-        };
+        Router.push({
+          name: 'index',
+        });
       }
-    });
+      return {
+        status: true,
+        msg: '',
+      };
+    } else {
+      commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.FAIL });
+      return {
+        status: false,
+        msg: data.msg,
+      };
+    }
   },
 };
 const mutations: MutationTree<IUserLoginGlobal> = {

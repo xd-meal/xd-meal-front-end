@@ -8,10 +8,11 @@ import Pc from '@/views/Pc';
 import Admin from '@/views/Admin';
 
 import Index from '@/components/index/Index.tsx';
-import Notification from '@/components/notification/Notification.tsx';
+import Notification from '@/components/notification/Notification';
 import Pay from '@/components/pay/Pay.tsx';
 import Profile from '@/components/profile/Profile.tsx';
-import Setting from '@/components/profile/Setting.tsx';
+import Setting from '@/components/profile/Setting';
+import ResetPassword from '@/components/profile/ResetPassword';
 
 import PcLogin from '@/components/pc/PcLogin.tsx';
 import PcOrder from '@/components/pc/PcOrder.tsx';
@@ -21,6 +22,7 @@ import AdminEdit from '@/components/admin/AdminEdit.tsx';
 import AdminImport from '@/components/admin/AdminImport.tsx';
 import AdminSwitch from '@/components/admin/AdminSwitch';
 import AdminOutput from '@/components/admin/AdminOutput.tsx';
+import AdminUser from '@/components/admin/AdminUser.tsx';
 
 Vue.use(Router);
 
@@ -71,6 +73,14 @@ export default new Router({
       },
     },
     {
+      path: '/resetpsw',
+      component: ResetPassword,
+      name: 'resetpsw',
+      meta: {
+        stop: true,
+      },
+    },
+    {
       path: '/pc',
       name: 'pc',
       component: Pc,
@@ -90,6 +100,7 @@ export default new Router({
         { path: 'output', name: 'adminOutput', component: AdminOutput },
         { path: 'edit', name: 'adminEdit', component: AdminEdit },
         { path: 'switch', name: 'adminSwitch', component: AdminSwitch },
+        { path: 'user', name: 'adminUser', component: AdminUser },
       ],
     },
     // import(/* webpackChunkName: "about" */ './views/About.vue')

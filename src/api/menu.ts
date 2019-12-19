@@ -1,5 +1,4 @@
-import { IHttpResponse, ILoginResponse } from '@/api/http';
-import { LOGIN_API } from '@/api/login';
+import { IHttpResponse } from '@/api/http';
 import { isDev } from '@/utils/common';
 import axios from 'axios';
 import Mock from 'mockjs';
@@ -7,6 +6,9 @@ import { defaultResponse, defaultOkMock } from '@/api/common';
 const WEEKDAY_DISHES_API = '/api/v1/GetDishes';
 const ORDER_DISHES_API = '/api/v1/OrderDishes';
 const MY_DISHES_API = '/api/v1/GetOrderDishes';
+const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
+const EVAL_DISH_API = '/api/v1/EvalDish';
+
 export interface IMyDish {
   _id: string;
   dishId: string;
@@ -17,6 +19,7 @@ export interface IMyDish {
   mealNum: number;
   name: string;
   supplier: string;
+  desc?: string;
   /**
    * @desc 1 午餐 2 晚餐
    */
@@ -26,6 +29,7 @@ export interface IMyDish {
    */
   typeB: number;
   updateTime: string;
+  badEval: boolean;
 }
 
 export interface IDishes {
@@ -890,5 +894,18 @@ export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
 
 export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const response = await axios.get(MY_DISHES_API);
+  return response ? response.data : defaultResponse;
+}
+
+export async function CanUserOrder(): Promise<IHttpResponse> {
+  const response = await axios.get(CAN_ORDER_SWITCH_API);
+  return response ? response.data : defaultResponse;
+}
+
+export async function VoteDown(
+  id: string,
+  value: boolean,
+): Promise<IHttpResponse> {
+  const response = await axios.post(EVAL_DISH_API, { id, Eval: value });
   return response ? response.data : defaultResponse;
 }

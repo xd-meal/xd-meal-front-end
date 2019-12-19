@@ -22,6 +22,8 @@ export interface ISingleMenuItem {
   title: string;
   desc: string;
   type: MENU_TIME_TYPE;
+  id: string;
+  isVoteDown: boolean;
 }
 
 export interface IMenuGlobal {
@@ -37,6 +39,7 @@ export enum MENU {
   FETCH_MY_MENUS_ACTION = 'fetchMyMenusAction',
 
   SET_MENUS = 'setMenus',
+  SET_MENU = 'setMenu',
 }
 
 const getters = {};
@@ -57,10 +60,23 @@ const mutations: MutationTree<IMenuGlobal> = {
       return {
         time: dish.mealDay,
         title: dish.name,
-        desc: '',
+        desc: dish.desc ? dish.desc.toString() : '',
+        isVoteDown: dish.badEval,
         type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
+        id: dish._id,
       };
     });
+  },
+  [MENU.SET_MENU](
+    _,
+    { dish, isVoteDown }: { dish: ISingleMenuItem; isVoteDown: boolean },
+  ) {
+    for (const item of _.list) {
+      if (item.id === dish.id) {
+        item.isVoteDown = isVoteDown;
+        return;
+      }
+    }
   },
 };
 export default {

@@ -1,5 +1,5 @@
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-
+import store from 'store';
 export interface INotification {
   desc: string;
   title: string;
@@ -7,8 +7,10 @@ export interface INotification {
 }
 export interface INotificationGlobal {
   list: INotification[];
+  isShow: boolean;
 }
 const state: INotificationGlobal = {
+  isShow: store.get('showNotification') === '1',
   list: [
     {
       time: '2019-12-12',
@@ -22,6 +24,8 @@ const state: INotificationGlobal = {
 export const NOTIFICATION_NAMESPACE: string = 'notification/';
 export enum NOTIFICATION {
   LAST = 'Last',
+
+  SET_BUTTON = 'SetButtonShow',
 }
 const getters: GetterTree<INotificationGlobal, any> = {
   Last(payload): INotification {
@@ -29,7 +33,12 @@ const getters: GetterTree<INotificationGlobal, any> = {
   },
 };
 const actions: ActionTree<INotificationGlobal, any> = {};
-const mutations: MutationTree<INotificationGlobal> = {};
+const mutations: MutationTree<INotificationGlobal> = {
+  [NOTIFICATION.SET_BUTTON](_, { status }) {
+    _.isShow = Boolean(status);
+    store.set('showNotification', (status ? 1 : 0).toString());
+  },
+};
 export default {
   namespaced: true,
   state,
