@@ -1,5 +1,6 @@
 import './pay.scss';
 import { payCode } from '@/api/pay';
+import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 
 import { Component } from 'vue-property-decorator';
@@ -19,7 +20,17 @@ export default class Pay extends tsx.Component<any> {
           <div class='pay-container'>
             <div class='pay-qr'>
               <div class='pay-qr-tips'>二维码30秒自动刷新</div>
-              <qriously class='pay-qr-code' value={this.code} size={270} />
+              {this.code && (
+                <qriously class='pay-qr-code' value={this.code} size={270} />
+              )}
+              {!this.code && (
+                <div class='pay-qr-code pay-qr-code_disable'>
+                  <button
+                    class='pay-qr-code_disable-refresh'
+                    onClick={this.userRefresh.bind(this)}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -40,21 +51,34 @@ export default class Pay extends tsx.Component<any> {
       clearTimeout(this.timer);
     }
   }
-  private async refreshToken() {
+  private async refreshToken(withMask = false) {
+    const toast = this.$createToast({
+      txt: 'loading',
+    });
+    if (withMask) {
+      setTimeout(() => {
+        toast.show();
+      }, 300);
+    }
     const res = await payCode();
     this.stopTimer();
     if (res.code === 200) {
       this.code = res.data;
-      this.startTimer(10);
+      this.$store.commit(USER_NAMESPACE + USER.SET_TOKEN, {
+        payCode: this.code,
+      });
+      this.startTimer(30);
     } else {
       this.startTimer(1);
     }
+    toast.hide();
+  }
+  private userRefresh() {
+    this.stopTimer();
+    this.refreshToken(true);
   }
   private mounted() {
+    this.code = this.$store.state.user.payCode;
     this.refreshToken();
   }
-  // getter
-  // protected get code() {
-  //   return this.$store.getters[USER_NAMESPACE + USER.PAYCODE_GETTER];
-  // }
 }

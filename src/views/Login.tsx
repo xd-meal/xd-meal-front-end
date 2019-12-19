@@ -1,4 +1,5 @@
 import './Login.scss';
+import { ROUTER_NAME } from '@/router';
 
 import { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
@@ -46,10 +47,10 @@ export default class Login extends tsx.Component<any> {
               class='app-login-qrcode'
               onClick={() =>
                 this.$router.push({
-                  name: 'qrlogin',
+                  name: ROUTER_NAME.QR_LOGIN,
                 })
               }
-            ></button>
+            />
           </div>
         </div>
         {/*<div class='error'>{this.status}</div>*/}

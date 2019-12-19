@@ -9,7 +9,7 @@
       position: relative;
     }
     .nav-link.notification {
-      background-image: url("./../../assets/icon/notification.svg");
+      background-image: url("../../../assets/icon/notification.svg");
       background-repeat: no-repeat;
       background-size: auto 100%;
       background-position: center center;
@@ -39,7 +39,7 @@
         line-height: 20px;
         width: 20px;
         //background-color: #444;
-        background-image: url('../../assets/icon/calendar.svg');
+        background-image: url('../../../assets/icon/calendar.svg');
         background-size: contain;
         margin-right: 10px;
         display: inline-block;
@@ -70,11 +70,11 @@
         width: 20px;
         height: 20px;
         //background-color: #949494;
-        background-image: url('../../assets/icon/vote-down.svg');
+        background-image: url('../../../assets/icon/vote-down.svg');
         background-size: contain;
         &_active {
           //background-color: #515151;
-          background-image: url('../../assets/icon/vote-down2.svg');
+          background-image: url('../../../assets/icon/vote-down2.svg');
         }
       }
       .desc {
@@ -126,7 +126,7 @@
   }
   animation: fade-in ease-in-out .5s;
   .order-icon {
-    background-image: url('../../assets/icon/order.svg');
+    background-image: url('../../../assets/icon/order.svg');
     width: 25px;
     height: 35px;
     background-size: contain;

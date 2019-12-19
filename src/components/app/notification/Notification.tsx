@@ -5,7 +5,7 @@ import { Component, Vue } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import SubChildView from '@/components/utils/SubChildView';
-import NotificationGroup from '@/components/notification/NotificationGroup.tsx';
+import NotificationGroup from '@/components/app/notification/NotificationGroup.tsx';
 @Component({ components: { SubChildView, NotificationGroup } })
 export default class Notification extends tsx.Component<any> {
   protected notification = false;
