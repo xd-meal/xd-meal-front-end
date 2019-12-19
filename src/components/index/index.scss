@@ -116,6 +116,15 @@
   line-height: 60px;
   display: block;
   z-index: 1;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  animation: fade-in ease-in-out .5s;
   .order-icon {
     background-image: url('../../assets/icon/order.svg');
     width: 25px;

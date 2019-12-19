@@ -17,22 +17,24 @@ export default class AdminImport extends tsx.Component<any> {
   private render(): VNode {
     return (
       <div>
-        <h3>导入菜品</h3>
-        <div>
+        <h3 class='title'>导入菜品</h3>
+        <div style={{ marginBottom: '20px' }}>
           <label>选择文件</label>
+          <button onclick={this.importCsv.bind(this)}>校验</button>
+        </div>
+        <div>
           <CsvInput vModel={this.file} />
-          <button onClick={this.importCsv.bind(this)}>校验</button>
         </div>
         {this.list.length > 0 && (
           <div>
             <table>
               <tr>
                 <th>日期</th>
-                <th>用餐时间（上午 1 下午 2）</th>
-                <th>是否是自助 1 自助 2 简餐</th>
-                <th>菜品名称</th>
+                <th title='（上午 1 下午 2）'>用餐时间</th>
+                <th title=' 1 自助 2 简餐'>自助</th>
+                <th>名称</th>
                 <th>供应商</th>
-                <th>菜品编号</th>
+                <th>编号</th>
               </tr>
               <tbody>
                 {this.list.map((item) => {
@@ -50,7 +52,7 @@ export default class AdminImport extends tsx.Component<any> {
               </tbody>
             </table>
             <div>
-              <button onClick={this.submit.bind(this)}>上传</button>
+              <button onClick={this.submit.bind(this)}>确认无误并上传</button>
             </div>
           </div>
         )}

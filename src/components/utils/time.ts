@@ -1,12 +1,12 @@
 import moment from 'moment';
 
 export function getDay(time: string) {
-  const timeTransfer = '00' + moment(time).date();
+  const timeTransfer = '00' + moment(time, ['YYYY-MM-DD']).date();
   return timeTransfer.toString().substr(timeTransfer.length - 2, 2);
 }
 
 export function timeParser(time: string) {
-  return moment(time)
+  return moment(time, ['YYYY-MM-DD'])
     .format('MM月DD日 星期(e)')
     .replace(
       /\(\d\)/,
@@ -17,5 +17,5 @@ export function timeParser(time: string) {
     );
 }
 export function timeMMDD(time: string) {
-  return moment(time).format('MM月DD日');
+  return moment(time, ['YYYY-MM-DD']).format('MM月DD日');
 }
