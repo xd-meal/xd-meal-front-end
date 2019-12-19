@@ -1,5 +1,9 @@
 // import { shallowMount } from '@vue/test-utils';
+import { createIcal } from '@/components/utils/ical';
 import { getDay, timeParser, timeMMDD } from '@/components/utils/time.ts';
+import { json, text } from './ical';
+import moment from 'moment';
+
 describe('@/components/utils/time.ts', () => {
   it('getDay', () => {
     expect(getDay('2019.06.24')).toBe('24');
@@ -16,5 +20,16 @@ describe('@/components/utils/time.ts', () => {
   });
   it('timeMMDD', () => {
     expect(timeMMDD('2019.12.25')).toBe('12月25日');
+  });
+});
+
+describe('@/components/utils/ical.ts', () => {
+  it('createIcal', () => {
+    const REGEX = /UID:.*?@meal.xindong.com/g;
+    const receivedTxt = createIcal(json, moment('20191219T045617Z'))
+      .replace(REGEX, '')
+      .replace(/(\r\n|\n|\r)/g, '\n');
+    const expectTxt = text.replace(REGEX, '').replace(/(\r\n|\n|\r)/g, '\n');
+    expect(receivedTxt).toBe(expectTxt);
   });
 });
