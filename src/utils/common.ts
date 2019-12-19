@@ -7,11 +7,11 @@ function callWeWorkLogin(corpid: string) {
   params.set('appid', corpid);
   params.set('response_type', 'code');
   params.set('scope', 'snsapi_base');
+  params.set('state', 'wework_redirect');
   params.set(
     'redirect_uri',
     encodeURIComponent(window.location.origin + window.location.pathname),
   );
-  params.set('state', 'wework_redirect');
   const url =
     'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     params.toString() +
@@ -25,7 +25,7 @@ export function gotoLogin() {
     //  TODO: Check if Desktop WeWork
     //  TODO: If ture, open in default browser instead.
     const params = new URLSearchParams(window.location.search);
-    if (params.get('scope') === 'wework_redirect') {
+    if (params.get('state') === 'wework_redirect') {
       // TODO: call backend for adding user / auto login, push route to home
     } else {
       // TODO: get company by url search param, or give a selection in 4 company
