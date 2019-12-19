@@ -7,11 +7,11 @@ function callWeWorkLogin(corpid: string) {
   params.set('appid', corpid);
   params.set('response_type', 'code');
   params.set('scope', 'snsapi_base');
+  params.set('state', 'wework_redirect');
   params.set(
     'redirect_uri',
-    encodeURI(window.location.origin + window.location.pathname),
+    encodeURIComponent(window.location.origin + window.location.pathname),
   );
-  params.set('state', 'wework_redirect');
   const url =
     'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     params.toString() +
@@ -20,18 +20,23 @@ function callWeWorkLogin(corpid: string) {
 }
 
 export function gotoLogin() {
-  if (window.hasOwnProperty('WeixinJSBridge')) {
+  const weworkLogin = () => {
     // Now we are in WeWork / WeChat
     //  TODO: Check if Desktop WeWork
     //  TODO: If ture, open in default browser instead.
     const params = new URLSearchParams(window.location.search);
-    if (params.get('scope') === 'wework_redirect') {
+    if (params.get('state') === 'wework_redirect') {
       // TODO: call backend for adding user / auto login, push route to home
     } else {
       // TODO: get company by url search param, or give a selection in 4 company
       callWeWorkLogin('wxe2be6e5c62e7b072');
     }
     return;
+  };
+  if (window.hasOwnProperty('WeixinJSBridge')) {
+    weworkLogin();
+  } else {
+    document.addEventListener('WeixinJSBridgeReady', weworkLogin, false);
   }
   let query = {};
   if (!/\/login/.test(router.currentRoute.fullPath)) {
