@@ -38,6 +38,7 @@ describe('@/components/utils/ical.ts', () => {
     type: time,
     id: '5dfab97830831e5ba0f0e986',
   });
+  const timeTemplate = 'YYYY-MM-DD HH:mm Z';
   it('createIcal', () => {
     // XXX: 幂等性不满足无法测试
     // const REGEX = /UID:.*?@meal.xindong.com/g;
@@ -52,31 +53,31 @@ describe('@/components/utils/ical.ts', () => {
     expect(title).toBe('12月23日-12月29日一周选饭');
   });
   it('icalTimeStart', () => {
-    expect(icalTimeStart(getMenu(MENU_TIME_TYPE.BREAKFAST)).format()).toBe(
-      moment('2019-12-23T06:30:00+08:00').format(),
-    );
-    expect(icalTimeStart(getMenu(MENU_TIME_TYPE.LUNCH)).format()).toBe(
-      moment('2019-12-23T11:30:00+08:00').format(),
-    );
+    expect(
+      icalTimeStart(getMenu(MENU_TIME_TYPE.BREAKFAST)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T06:30:00+08:00').format(timeTemplate));
+    expect(
+      icalTimeStart(getMenu(MENU_TIME_TYPE.LUNCH)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T11:30:00+08:00').format(timeTemplate));
     expect(icalTimeStart(getMenu(MENU_TIME_TYPE.FRUIT)).format()).toBe(
-      moment('2019-12-23T14:00:00+08:00').format(),
+      moment('2019-12-23T14:00:00+08:00').format(timeTemplate),
     );
-    expect(icalTimeStart(getMenu(MENU_TIME_TYPE.DINNER)).format()).toBe(
-      moment('2019-12-23T16:30:00+08:00').format(),
-    );
+    expect(
+      icalTimeStart(getMenu(MENU_TIME_TYPE.DINNER)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T16:30:00+08:00').format(timeTemplate));
   });
   it('icalTimeEnd', () => {
-    expect(icalTimeEnd(getMenu(MENU_TIME_TYPE.BREAKFAST)).format()).toBe(
-      moment('2019-12-23T11:30:00+08:00').format(),
-    );
-    expect(icalTimeEnd(getMenu(MENU_TIME_TYPE.LUNCH)).format()).toBe(
-      moment('2019-12-23T13:30:00+08:00').format(),
-    );
-    expect(icalTimeEnd(getMenu(MENU_TIME_TYPE.FRUIT)).format()).toBe(
-      moment('2019-12-23T16:00:00+08:00').format(),
-    );
-    expect(icalTimeEnd(getMenu(MENU_TIME_TYPE.DINNER)).format()).toBe(
-      moment('2019-12-23T20:00:00+08:00').format(),
-    );
+    expect(
+      icalTimeEnd(getMenu(MENU_TIME_TYPE.BREAKFAST)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T11:30:00+08:00').format(timeTemplate));
+    expect(
+      icalTimeEnd(getMenu(MENU_TIME_TYPE.LUNCH)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T13:30:00+08:00').format(timeTemplate));
+    expect(
+      icalTimeEnd(getMenu(MENU_TIME_TYPE.FRUIT)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T16:00:00+08:00').format(timeTemplate));
+    expect(
+      icalTimeEnd(getMenu(MENU_TIME_TYPE.DINNER)).format(timeTemplate),
+    ).toBe(moment('2019-12-23T20:00:00+08:00').format(timeTemplate));
   });
 });
