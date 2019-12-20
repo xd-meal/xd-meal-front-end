@@ -1,3 +1,4 @@
+import { gotoIndex } from '@/utils/common';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import Router from '@/router';
 
@@ -11,12 +12,13 @@ export enum LOGIN_STATUS {
 }
 export interface IUserLoginGlobal {
   username: string;
-  token: string;
+  payCode: string;
   loginStatus: LOGIN_STATUS;
 }
 const state: IUserLoginGlobal = {
   username: '',
-  token: '',
+  // QRCode FOR PAY
+  payCode: '',
   loginStatus: LOGIN_STATUS.IDLE,
 };
 export const USER_NAMESPACE = 'user/';
@@ -37,7 +39,6 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
   async [USER.LOGIN_ACTION]({ commit }, loginData: IUserLoginData) {
     const data = await loginApi(loginData);
     if (data.code === 200) {
-      commit(USER.SET_TOKEN, { token: '1' });
       commit(USER.SET_LOGIN_STATUS, { loginStatus: LOGIN_STATUS.SUCCESS });
       const query = Router.currentRoute.query;
       if (query && query.backPath) {
@@ -45,9 +46,7 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
           path: query.backPath.toString(),
         });
       } else {
-        Router.push({
-          name: 'index',
-        });
+        gotoIndex();
       }
       return {
         status: true,
@@ -63,8 +62,8 @@ const actions: ActionTree<IUserLoginGlobal, any> = {
   },
 };
 const mutations: MutationTree<IUserLoginGlobal> = {
-  [USER.SET_TOKEN](_: IUserLoginGlobal, { token }: { token: string }) {
-    _.token = token;
+  [USER.SET_TOKEN](_: IUserLoginGlobal, { payCode }: { payCode: string }) {
+    _.payCode = payCode;
   },
   [USER.SET_LOGIN_STATUS](
     _: IUserLoginGlobal,

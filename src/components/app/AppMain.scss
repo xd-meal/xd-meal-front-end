@@ -52,13 +52,13 @@
         background-size: contain;
         background-color: transparent;
         &.index {
-          background-image: url("../assets/icon/main-menu.svg");
+          background-image: url("../../assets/icon/main-menu.svg");
         }
         &.pay {
-          background-image: url("../assets/icon/qrcode.svg");
+          background-image: url("../../assets/icon/qrcode.svg");
         }
         &.profile {
-          background-image: url("../assets/icon/single.svg");
+          background-image: url("../../assets/icon/single.svg");
         }
       }
 
@@ -66,13 +66,13 @@
         color: #333;
         .icon {
           &.index {
-            background-image: url("../assets/icon/main-menu-active.svg");
+            background-image: url("../../assets/icon/main-menu-active.svg");
           }
           &.pay {
-            background-image: url("../assets/icon/qrcode-active.svg");
+            background-image: url("../../assets/icon/qrcode-active.svg");
           }
           &.profile {
-            background-image: url("../assets/icon/single-active.svg");
+            background-image: url("../../assets/icon/single-active.svg");
           }
         }
       }

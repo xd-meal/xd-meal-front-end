@@ -4,10 +4,11 @@ import Vue from 'vue';
 import './vendor/cube-ui';
 import './vendor/qriously';
 import App from './App.vue';
-import router from './router';
+import router, { ROUTER_NAME } from '@/router';
+
 import store from './store';
 import './registerServiceWorker';
-import { gotoLogin } from './utils/common';
+import { gotoIndex, gotoLogin } from './utils/common';
 
 Vue.config.productionTip = false;
 
@@ -39,16 +40,7 @@ checkUserLogin().then((data) => {
     } else if (
       ['/', '/login', '/qrlogin'].indexOf(router.currentRoute.fullPath) >= 0
     ) {
-      // 在首页 和 login 页的需要跳转到指定的index路由页面
-      if (os.isPc) {
-        router.push({
-          name: 'pcOrder',
-        });
-      } else {
-        router.push({
-          name: 'index',
-        });
-      }
+      gotoIndex();
     }
   }
 });

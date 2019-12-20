@@ -1,4 +1,5 @@
 import './Setting.scss';
+import { ROUTER_NAME } from '@/router';
 import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
 import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
@@ -40,7 +41,7 @@ export default class Setting extends tsx.Component<any> {
   }
   private resetPassword() {
     this.$router.push({
-      name: 'resetpsw',
+      name: ROUTER_NAME.APP_RESET_PSW,
     });
   }
 }

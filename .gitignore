@@ -34,3 +34,6 @@ cordova-app/www/
 cordova-app/www/index.js
 cordova-app/js/**/*.js
 cordova-app/js/**/*.js.map
+
+
+test/

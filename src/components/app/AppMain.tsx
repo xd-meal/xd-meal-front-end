@@ -1,5 +1,6 @@
 import './AppMain.scss';
 import { CanUserOrder } from '@/api/menu';
+import { ROUTER_NAME } from '@/router';
 import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';

@@ -1,4 +1,6 @@
+import { logoutApi } from '@/api/login';
 import router from '@/router';
+import os from '@/utils/os';
 
 export const isDev = false; // process.env.NODE_ENV === 'development';
 
@@ -54,4 +56,33 @@ export function gotoLogin() {
     name: 'login',
     query,
   });
+}
+
+export function gotoIndex() {
+  // 在首页 和 login 页的需要跳转到指定的index路由页面
+  if (os.isPc) {
+    router.push({
+      name: 'pcOrder',
+    });
+  } else {
+    router.push({
+      name: 'index',
+    });
+  }
+}
+
+export async function loginOut(targetDom: Vue) {
+  const res = await logoutApi();
+  if (res.code === 200) {
+    gotoLogin();
+  } else {
+    targetDom
+      .$createDialog({
+        type: 'alert',
+        title: '系统提示',
+        content: res.msg,
+        icon: 'cubeic-alert',
+      })
+      .show();
+  }
 }

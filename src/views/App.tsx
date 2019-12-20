@@ -2,7 +2,7 @@ import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
-import AppMain from '@/components/AppMain.tsx';
+import AppMain from '@/components/app/AppMain';
 
 @Component({
   components: {

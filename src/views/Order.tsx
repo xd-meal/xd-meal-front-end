@@ -1,4 +1,5 @@
 import './Order.scss';
+import { ROUTER_NAME } from '@/router';
 
 import _ from 'lodash';
 import { VNode } from 'vue';
@@ -258,7 +259,7 @@ export default class Order extends tsx.Component<any> {
         const res = await orderDishes(ids);
         if (res.code === 200) {
           this.$router.replace({
-            name: 'index',
+            name: ROUTER_NAME.APP_INDEX,
           });
         } else {
           const toast = this.$createToast({

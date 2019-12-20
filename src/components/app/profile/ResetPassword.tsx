@@ -1,5 +1,6 @@
 import './ResetPassword.scss';
 import { resetPwd } from '@/api/login';
+import { gotoLogin } from '@/utils/common';
 import { VNode } from 'vue';
 import { Component, Vue } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -68,11 +69,7 @@ export default class ResetPassword extends tsx.Component<any> {
         content: res.msg,
         icon: 'cubeic-alert',
         showClose: false,
-        onConfirm: () => {
-          this.$router.push({
-            name: 'login',
-          });
-        },
+        onConfirm: gotoLogin,
       }).show();
     } else {
       return this.$createToast({

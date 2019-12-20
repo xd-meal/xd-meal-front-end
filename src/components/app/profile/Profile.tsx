@@ -1,7 +1,8 @@
 import './Profile.scss';
 import { logoutApi } from '@/api/login';
+import { ROUTER_NAME } from '@/router';
+import { gotoLogin, loginOut } from '@/utils/common';
 import { VNode } from 'vue';
-import axios from 'axios';
 
 import { Component, Vue } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -30,11 +31,11 @@ export default class Index extends tsx.Component<any> {
             // },
             {
               name: '通知提醒',
-              target: 'notification',
+              target: ROUTER_NAME.APP_NOTIFICATION,
             },
             {
               name: '设置',
-              target: 'setting',
+              target: ROUTER_NAME.APP_SETTING,
             },
             {
               name: '退出登录',
@@ -69,19 +70,7 @@ export default class Index extends tsx.Component<any> {
       </div>
     );
   }
-  private async loginout() {
-    const res = await logoutApi();
-    if (res.code === 200) {
-      this.$router.push({
-        name: 'login',
-      });
-    } else {
-      this.$createDialog({
-        type: 'alert',
-        title: '系统提示',
-        content: res.msg,
-        icon: 'cubeic-alert',
-      }).show();
-    }
+  private loginout() {
+    loginOut(this);
   }
 }

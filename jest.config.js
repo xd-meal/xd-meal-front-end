@@ -24,4 +24,23 @@ module.exports = {
       babelConfig: true,
     },
   },
+  collectCoverageFrom: [
+    'src/**/*.{js,vue,ts,tsx}',
+    '!src/App.vue',
+    '!src/registerServiceWorker.ts',
+    '!src/main.ts',
+    '!src/router.ts',
+    '!**/node_modules/**',
+    '!**/vendor/**',
+  ],
+  verbose: true,
+  coverageDirectory: '<rootDir>/test/unit/coverage',
+  coverageThreshold: {
+    global: {
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
+    },
+  },
 };
