@@ -1,4 +1,6 @@
 # xd-meal
+[![Build Status](https://travis-ci.com/xd-meal/xd-meal-front-end.svg?branch=develop)](https://travis-ci.com/xd-meal/xd-meal-front-end)
+[![codecov](https://codecov.io/gh/xd-meal/xd-meal-front-end/branch/develop/graph/badge.svg)](https://codecov.io/gh/xd-meal/xd-meal-front-end)
 
 ## 安装项目
 
