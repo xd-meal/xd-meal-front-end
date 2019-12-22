@@ -37,9 +37,7 @@ checkUserLogin().then((data) => {
       ].indexOf(router.currentRoute.fullPath) >= 0
     ) {
       // TODO: 识别一下
-    } else if (
-      ['/', '/login', '/qrlogin'].indexOf(router.currentRoute.fullPath) >= 0
-    ) {
+    } else if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
       gotoIndex();
     }
   }
