@@ -63,19 +63,43 @@
     color: #ffffff;
     font-size: 20px;
     width: 100%;
-    height: 100%;
+    height: 50px;
+  }
+
+  &-buttons {
+    margin-top: 10px;
+    background-color: #ea5c03;
+    border-radius: 10px;
+    color: #ffffff;
+    width: 100%;
+    height: 50px;
   }
 
   &-qrcode {
-    background-image: url('../assets/icon/qr-code.svg');
+    background-image: url('../assets/icon/qr-code-reverse.svg');
+    display: inline-block;
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
-    margin: 0 0 0 20px;
-    width: 50px;
-    height: 50px;
-    &:hover {
-      background-image: url('../assets/icon/qr-code-active.svg');
+    margin: auto 0 auto 15px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .qrcode-icon-container {
+    display: inline-block;
+    position: relative;
+    width: 70%;
+    height: 35px;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    > .qrcode-icon-item {
+      height: 35px;
+      cursor: pointer;
+      width: 35px;
+      background: white;
+      border-radius: 50%;
     }
   }
 }
