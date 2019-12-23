@@ -138,7 +138,7 @@ export default class Login extends tsx.Component<any> {
     params.set('state', 'wework_redirect_' + corp);
     params.set(
       'redirect_uri',
-      window.location.origin + '/#/login',
+      window.location.origin + '/',
     );
     const url =
       'https://open.work.weixin.qq.com/wwopen/sso/qrConnect?' +
