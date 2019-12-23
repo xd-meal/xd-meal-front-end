@@ -29,10 +29,7 @@ function callWeWorkLogin(corp: string) {
   params.set('response_type', 'code');
   params.set('scope', 'snsapi_base');
   params.set('state', 'wework_redirect_' + corp);
-  params.set(
-    'redirect_uri',
-    encodeURIComponent(window.location.origin + '/#/login'),
-  );
+  params.set('redirect_uri', window.location.origin + '/');
   const url =
     'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     params.toString() +
