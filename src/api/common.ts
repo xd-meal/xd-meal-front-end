@@ -48,6 +48,15 @@ export class CommonErrorRespond {
     };
   }
 }
+
+export function buildParams(url: string, query: { [key: string]: string }) {
+  for (const key in query) {
+    if (query.hasOwnProperty(key)) {
+      url.replace(new RegExp(`:${key}`, 'g'), query[key]);
+    }
+  }
+  return url;
+}
 if (isDev) {
   Mock.setup({
     timeout: '400-700',

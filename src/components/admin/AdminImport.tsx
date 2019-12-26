@@ -6,6 +6,7 @@ import * as tsx from 'vue-tsx-support';
 
 import { IDishes } from '@/api/menu';
 import CsvInput from '@/components/admin/CsvInput.tsx';
+
 @Component({
   components: {
     CsvInput,
@@ -68,45 +69,12 @@ export default class AdminImport extends tsx.Component<any> {
   }
   private importCsv() {
     // TODO: 上传 csv
-    const formData = new FormData();
-    // File 是继承 blob 的，直接类型转换即可
-    formData.append('file', this.file as Blob);
-    // TODO: 抽取到 api 里面
-    axios
-      .post('/api/v1/ReadMenu', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data;charset=UTF-8',
-        },
-      })
-      .then((res) => {
-        this.list = res.data.data;
-      });
+
   }
   private delete() {
     this.file = null;
     this.list = [];
   }
   private submit() {
-    axios
-      .post('/api/v1/ImportMenu', {
-        data: this.list,
-      })
-      .then((res) => {
-        if (res.data.code === 200) {
-          this.$createDialog({
-            type: 'alert',
-            title: '系统提示',
-            content: '提交成功',
-            icon: 'cubeic-ok',
-          }).show();
-        } else {
-          this.$createDialog({
-            type: 'alert',
-            title: '系统提示',
-            content: res.data.msg,
-            icon: 'cubeic-alert',
-          }).show();
-        }
-      });
   }
 }
