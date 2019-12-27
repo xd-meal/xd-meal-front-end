@@ -35,7 +35,6 @@ export default class Admin extends tsx.Component<any> {
         view='lhh LpR lff'
         container
         style={{ height: window.innerHeight + 'px' }}
-        class='shadow-2 rounded-borders'
       >
         <q-header reveal class='bg-black'>
           <q-toolbar>

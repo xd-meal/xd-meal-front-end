@@ -44,11 +44,10 @@ export interface IUserTableItem {
   email: string;
   password?: string;
 }
-export interface IUserList {
-  list: IUserTableItem[];
-}
 
-export async function getUserList(list: IUserList[]): Promise<IHttpResponse> {
+export async function importUserList(
+  list: IUserTableItem[],
+): Promise<IHttpResponse> {
   const response = await axios.post(ADMIN_IMPORT_USER_LIST_API, {
     list,
   });
