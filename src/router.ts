@@ -23,6 +23,7 @@ import AdminImport from '@/components/admin/AdminImport.tsx';
 import AdminSwitch from '@/components/admin/AdminSwitch';
 import AdminOutput from '@/components/admin/AdminOutput.tsx';
 import AdminUser from '@/components/admin/AdminUser.tsx';
+import AdminDiningList from '@/components/admin/AdminDiningList';
 export const ROUTER_NAME = {
   LOGIN: 'login',
   QR_LOGIN: 'qrlogin',
@@ -44,6 +45,7 @@ export const ROUTER_NAME = {
   ADMIN_EDIT: 'adminEdit',
   ADMIN_SWITCH: 'adminSwitch',
   ADMIN_USER: 'adminUser',
+  ADMIN_DINING: 'adminDining',
 };
 Vue.use(Router);
 
@@ -121,6 +123,11 @@ export default new Router({
           path: 'import',
           name: ROUTER_NAME.ADMIN_IMPORT,
           component: AdminImport,
+        },
+        {
+          path: 'dining',
+          name: ROUTER_NAME.ADMIN_DINING,
+          component: AdminDiningList,
         },
         {
           path: 'output',

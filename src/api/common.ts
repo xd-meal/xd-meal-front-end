@@ -49,10 +49,13 @@ export class CommonErrorRespond {
   }
 }
 
-export function buildParams(url: string, query: { [key: string]: string }) {
+export function buildParams(
+  url: string,
+  query: { [key: string]: string | number },
+) {
   for (const key in query) {
     if (query.hasOwnProperty(key)) {
-      url.replace(new RegExp(`:${key}`, 'g'), query[key]);
+      url = url.replace(new RegExp(`:${key}`, 'g'), String(query[key]));
     }
   }
   return url;

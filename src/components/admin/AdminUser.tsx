@@ -5,14 +5,8 @@ import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import CsvInput from '@/components/admin/CsvInput.tsx';
-import {
-  QMarkupTable,
-  QBtn,
-  QDialog,
-  QCard,
-  QCardActions,
-  QCardSection,
-} from 'quasar';
+import { QMarkupTable, QBtn } from 'quasar';
+import AdminDialog from './AdminDialog';
 import XLSX from 'xlsx';
 function readFileAsString(files: File[]) {
   return new Promise((resolve) => {
@@ -31,15 +25,16 @@ function readFileAsString(files: File[]) {
     reader.readAsText(files[0]);
   });
 }
+declare interface IUserBackData {
+  email: string;
+  password: string;
+}
 @Component({
   components: {
     CsvInput,
     QMarkupTable,
     QBtn,
-    QDialog,
-    QCard,
-    QCardActions,
-    QCardSection,
+    AdminDialog,
   },
 })
 export default class AdminUser extends tsx.Component<any> {
@@ -50,7 +45,7 @@ export default class AdminUser extends tsx.Component<any> {
   protected alert: boolean = false;
   protected success: boolean = false;
   protected msg: string = '';
-  protected successList: { email: string; password: string }[] = [];
+  protected successList: IUserBackData[] = [];
   private render(): VNode {
     return (
       <div style={{ textAlign: 'left' }}>
@@ -105,38 +100,29 @@ export default class AdminUser extends tsx.Component<any> {
             </div>
           </div>
         )}
-        <q-dialog vModel={this.alert}>
-          <q-card>
-            <q-card-section>
-              <div class='text-h6'>系统提示</div>
-            </q-card-section>
-            {!this.success && <q-card-section>{this.msg}</q-card-section>}
+        <AdminDialog ref='adminDialog'>
+          <template slot='content'>
+            {!this.success && this.msg}
             {this.success && (
-              <q-card-section>
-                <q-markup-table separator='cell' flat bordered wrapCells>
-                  <thead>
+              <q-markup-table separator='cell' flat bordered wrapCells>
+                <thead>
+                  <tr style={{ height: '22px' }}>
+                    <th class='text-right'>email</th>
+                    <th class='text-right'>password</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {this.successList.map((item) => (
                     <tr style={{ height: '22px' }}>
-                      <th class='text-right'>email</th>
-                      <th class='text-right'>password</th>
+                      <td class='text-left'>{item.email}</td>
+                      <td class='text-left'>{item.password}</td>
                     </tr>
-                  </thead>
-                  <tbody>
-                    {this.successList.map((item) => (
-                      <tr style={{ height: '22px' }}>
-                        <td class='text-left'>{item.email}</td>
-                        <td class='text-left'>{item.password}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </q-markup-table>
-              </q-card-section>
+                  ))}
+                </tbody>
+              </q-markup-table>
             )}
-
-            <q-card-actions align='right'>
-              <q-btn flat label='OK' color='primary' v-close-popup />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+          </template>
+        </AdminDialog>
       </div>
     );
   }
@@ -144,13 +130,13 @@ export default class AdminUser extends tsx.Component<any> {
   private async submit() {
     this.loading = true;
     const userList: IUserTableItem[] = this.list.map((user) => ({
-      username: user[0].toString(),
-      department: user[1].toString(),
-      corp: user[2].toString(),
-      email: user[3].toString(),
-      password: user[4].toString(),
+      username: String(user[0]),
+      department: String(user[1]),
+      corp: String(user[2]),
+      email: String(user[3]),
+      password: String(user[4]),
     }));
-    let res = await importUserList(userList);
+    const res = await importUserList(userList);
     if (res.code === 200) {
       this.successList = res.data;
       this.success = true;
@@ -158,7 +144,7 @@ export default class AdminUser extends tsx.Component<any> {
       this.success = false;
       this.msg = res.msg || '';
     }
-    this.alert = true;
+    (this.$refs.adminDialog as AdminDialog).display();
     this.loading = false;
   }
 

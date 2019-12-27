@@ -17,16 +17,16 @@ function stopAdminLoading() {
   clearTimeout(timer);
   Loading.hide();
 }
-const ADMIN_IMPORT_USER_LIST_API = '/admin/user/list';
-const ADMIN_GET_DISH_LIST_API = '/admin/dish/list';
-const ADMIN_CREATE_DISH_API = '/admin/dish';
-const ADMIN_UPDATE_DISH_BY_ID_API = '/admin/dish/:id';
-const ADMIN_DINNING_BY_TIME_API = '/admin/dining/:startTime/:endTime';
-const ADMIN_CREATE_DINING_API = '/admin/dining';
-const ADMIN_UPDATE_DINING_API = '/admin/dining/:id';
-const ADMIN_DELETE_DINING_API = '/admin/dining/:id';
-const ADMIN_GET_ALL_USERS_API = '/admin/users';
-const ADMIN_GET_ORDER_BY_TIME_API = '/admin/order/:startTime/:endTime';
+const ADMIN_IMPORT_USER_LIST_API = '/api/v1/admin/user/list';
+const ADMIN_GET_DISH_LIST_API = '/api/v1/admin/dish/list';
+const ADMIN_CREATE_DISH_API = '/api/v1/admin/dish';
+const ADMIN_UPDATE_DISH_BY_ID_API = '/api/v1/admin/dish/:id';
+const ADMIN_DINNING_BY_TIME_API = '/api/v1/admin/dining/:startTime/:endTime';
+const ADMIN_CREATE_DINING_API = '/api/v1/admin/dining';
+const ADMIN_UPDATE_DINING_API = '/api/v1/admin/dining/:id';
+const ADMIN_DELETE_DINING_API = '/api/v1/admin/dining/:id';
+const ADMIN_GET_ALL_USERS_API = '/api/v1/admin/users';
+const ADMIN_GET_ORDER_BY_TIME_API = '/api/v1/admin/order/:startTime/:endTime';
 function adminResponse(response: AxiosResponse) {
   const msg = response.data
     ? response.data.msg || response.data.message || response.data.error
@@ -83,8 +83,8 @@ export async function updateOrderById(setting: {
 }
 
 export async function getDiningByTime(setting: {
-  startTime: string;
-  endTime: string;
+  startTime: number;
+  endTime: number;
 }): Promise<IHttpResponse> {
   showAdminLoading();
   const url = buildParams(ADMIN_DINNING_BY_TIME_API, {

@@ -9,7 +9,12 @@ export default class AdminSideBar extends tsx.Component<any> {
   protected linkList = [
     {
       name: 'adminImport',
-      text: '导入菜品',
+      text: '创建餐次',
+      icon: 'import-menu',
+    },
+    {
+      name: 'adminDining',
+      text: '餐次查询',
       icon: 'import-menu',
     },
     {
