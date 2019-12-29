@@ -102,6 +102,7 @@ export interface IDining {
   pick_end: number;
   stat_type: 0 | 1;
   menu: string[];
+  title: string;
 }
 export async function createDining(dining: IDining): Promise<IHttpResponse> {
   showAdminLoading();

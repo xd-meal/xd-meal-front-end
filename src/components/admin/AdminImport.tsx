@@ -10,12 +10,12 @@ import * as tsx from 'vue-tsx-support';
 import CsvInput from '@/components/admin/CsvInput.tsx';
 import AdminDishDialog from '@/components/admin/AdminDishDialog';
 import AdminTimeSelect from '@/components/admin/AdminTimeSelect';
-interface IAdminDish {
+export interface IAdminDish {
   _id: string;
   title: string;
   desc: string;
 }
-interface IAdminDishSelectOption {
+export interface IAdminDishSelectOption {
   label: string;
   value: IAdminDish;
 }
@@ -34,7 +34,7 @@ interface IAdminDishSelectOption {
   },
 })
 export default class AdminImport extends tsx.Component<any> {
-  protected file: File | null = null;
+  protected title: string = '';
   protected dishes: IAdminDishSelectOption[] = [];
   protected dishesFiltered: IAdminDishSelectOption[] = [];
 
@@ -64,6 +64,9 @@ export default class AdminImport extends tsx.Component<any> {
         <div>
           <div>创建餐次</div>
           <div>订餐开始时间</div>
+          <div>
+            <q-input filled vModel={this.title} label='标题' />
+          </div>
           <div>
             <AdminTimeSelect vModel={this.orderStartTime} />
             <span style='margin: 0 16px;display: inline-block;' />
@@ -207,6 +210,7 @@ export default class AdminImport extends tsx.Component<any> {
     }
     const pickTimeValue = this.pickTime.value;
     const res = await createDining({
+      title: this.title,
       order_start: moment(this.orderStartTime).unix() * 1000,
       order_end: moment(this.orderEndTime).unix() * 1000,
       pick_start: moment(`${this.pickDate} ${pickTimeValue[0]} `).unix() * 1000,
