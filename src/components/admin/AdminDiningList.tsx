@@ -1,4 +1,10 @@
-import { getDiningByTime, getDishList, IDining } from '@/api/admin';
+import {
+  deleteDining,
+  getDiningByTime,
+  getDishList,
+  IDining,
+  updateDining,
+} from '@/api/admin';
 import { IAdminDish } from '@/components/admin/AdminImport';
 import { lawngreen } from 'color-name';
 import {
@@ -41,7 +47,6 @@ export default class AdminDiningList extends tsx.Component<any> {
   private dishes: IAdminDish[] = [];
   private month: number = 0;
   private year: number = 0;
-  private addDialogShow: boolean = false;
   private render(): VNode {
     return (
       <div
@@ -66,18 +71,30 @@ export default class AdminDiningList extends tsx.Component<any> {
           <div style='word-break: break-all;height: 100%;position: relative;flex: 1; text-align: left;'>
             <q-scroll-area style='height: 100%; width: 100%;'>
               <div>
-                {this.todayEvent &&
-                  this.todayEvent.map((item: IAdminDing) => (
-                    <div style='padding: 35px 15px; max-width: 350px;'>
-                      <AdminDiningCard
-                        data={item}
-                        onAdd={() =>
-                          (this.$refs
-                            .adminAddDialog as AdminAddDishDialog).show(item)
-                        }
-                      />
-                    </div>
-                  ))}
+                {this.monthList[this.date] &&
+                  this.monthList[this.date].map(
+                    (item: IAdminDing, index: number) => (
+                      <div
+                        style='padding: 35px 15px; max-width: 350px;'
+                        key={index}
+                      >
+                        <AdminDiningCard
+                          data={item}
+                          onAdd={() =>
+                            (this.$refs
+                              .adminAddDialog as AdminAddDishDialog).show(
+                              item,
+                              index,
+                            )
+                          }
+                          onDeleteDish={(dish: IAdminDish) =>
+                            this.deleteDishOnDining(dish, item, index)
+                          }
+                          onDelete={this.deleteDining.bind(this, index)}
+                        />
+                      </div>
+                    ),
+                  )}
               </div>
             </q-scroll-area>
           </div>
@@ -133,8 +150,69 @@ export default class AdminDiningList extends tsx.Component<any> {
       this.events = lodash.uniq(this.events);
     }
   }
-  private diningAddDish(dish: IAdminDish, now: IDining) {
-    console.log(dish, now);
+  private async deleteDining(index: number, dining: IAdminDing) {
+    if (dining._id) {
+      const res = await deleteDining(dining._id);
+      if (res.code === 200) {
+        this.monthList[this.date].splice(index, 1);
+        if (this.monthList[this.date].length === 0) {
+          this.events = this.events.filter((_) => _ !== this.date);
+        }
+        delete this.monthList[this.date];
+        this.monthList = lodash.cloneDeep(this.monthList);
+      } else {
+        // TODO: error
+      }
+    }
+  }
+  private async deleteDishOnDining(
+    dish: IAdminDish,
+    dining: IAdminDing,
+    index: number,
+  ) {
+    if (dining._id) {
+      const menu = dining.menu.map((_) => _._id).filter((_) => _ !== dish._id);
+      const res = await updateDining({
+        id: dining._id,
+        dining: {
+          ...dining,
+          menu,
+        },
+      });
+      if (res.code === 200) {
+        this.$nextTick(() => {
+          const menu = this.monthList[this.date][index].menu;
+          menu.splice(menu.indexOf(dish), 1);
+          this.$set(this.monthList[this.date][index], 'menu', [...menu]);
+          this.monthList = lodash.cloneDeep(this.monthList);
+        });
+      } else {
+        // TODO: error
+      }
+    }
+  }
+  private async diningAddDish(
+    dish: IAdminDish,
+    now: IAdminDing,
+    index: number,
+  ) {
+    if (now._id) {
+      const menu = now.menu.map((_) => _._id);
+      menu.push(dish._id);
+      const res = await updateDining({
+        id: now._id,
+        dining: {
+          ...now,
+          menu,
+        },
+      });
+      if (res.code === 200) {
+        this.monthList[this.date][index].menu.push(dish);
+        this.monthList = lodash.cloneDeep(this.monthList);
+      } else {
+        // TODO: error
+      }
+    }
   }
   private get todayEvent() {
     return this.monthList[this.date];

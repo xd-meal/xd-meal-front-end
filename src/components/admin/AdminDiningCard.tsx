@@ -37,13 +37,17 @@ export default class AdminDiningCard extends tsx.Component<any> {
         </q-card-section>
 
         <q-card-section>
-          {this.data.menu.map((dish, index) => (
-            <div style='display: flex;align-item: center;margin: 8px 0;'>
-              <div>{index}.</div>
-              <div style='margin: 0 20px; width: 110px;'>{dish.title}</div>
-              <q-icon name='cancel' />
-            </div>
-          ))}
+          {this.data &&
+            this.data.menu.map((dish, index) => (
+              <div style='display: flex;align-item: center;margin: 8px 0;'>
+                <div>{index}.</div>
+                <div style='margin: 0 20px; width: 110px;'>{dish.title}</div>
+                <q-icon
+                  name='cancel'
+                  onClick={() => this.$emit('deleteDish', dish)}
+                />
+              </div>
+            ))}
         </q-card-section>
 
         <q-separator />

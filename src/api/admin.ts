@@ -1,6 +1,7 @@
 import { buildParams, defaultResponse } from '@/api/common';
 import { IHttpResponse } from '@/api/http';
 import axios, { AxiosResponse } from 'axios';
+import moment from 'moment';
 import { Loading, QSpinnerGears } from 'quasar';
 let timer: any = null;
 function showAdminLoading(timeout = 300) {
@@ -116,7 +117,14 @@ export async function updateDining(setting: {
 }): Promise<IHttpResponse> {
   showAdminLoading();
   const url = buildParams(ADMIN_UPDATE_DINING_API, { id: setting.id });
-  const response = await axios.put(url, setting.dining);
+  const { order_end, order_start, pick_end, pick_start } = setting.dining;
+  const response = await axios.put(url, {
+    ...setting.dining,
+    order_start: moment(order_start).unix() * 1000,
+    order_end: moment(order_end).unix() * 1000,
+    pick_end: moment(pick_end).unix() * 1000,
+    pick_start: moment(pick_start).unix() * 1000,
+  });
   stopAdminLoading();
   return response ? adminResponse(response) : defaultResponse;
 }

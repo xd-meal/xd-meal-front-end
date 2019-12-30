@@ -14,6 +14,7 @@ import {
   QItemSection,
 } from 'quasar';
 export interface IAdminDing {
+  _id?: string;
   order_start: number;
   order_end: number;
   pick_start: number;
@@ -41,9 +42,11 @@ export default class extends tsx.Component<any> {
   protected now: {
     menu: IAdminDish[];
   } | null = null;
-  public show(item: { menu: IAdminDish[] }) {
+  protected nowIndex: number = -1;
+  public show(item: { menu: IAdminDish[] }, index: number = -1) {
     this.display = true;
     this.now = item;
+    this.nowIndex = index;
   }
   public hide() {
     this.display = false;
@@ -71,7 +74,9 @@ export default class extends tsx.Component<any> {
                 {this.listFiltered.map((item: IAdminDish) => (
                   <q-item
                     clickable
-                    onClick={() => this.$emit('add', item, this.now)}
+                    onClick={() =>
+                      this.$emit('add', item, this.now, this.nowIndex)
+                    }
                   >
                     {/*v-ripple*/}
                     <q-item-section>
