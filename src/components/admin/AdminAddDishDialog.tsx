@@ -38,8 +38,10 @@ export default class extends tsx.Component<any> {
   @Prop() protected list!: IAdminDish[];
   protected display = false;
   protected keyword = '';
-  protected now: IAdminDing | null = null;
-  public show(item: IAdminDing) {
+  protected now: {
+    menu: IAdminDish[];
+  } | null = null;
+  public show(item: { menu: IAdminDish[] }) {
     this.display = true;
     this.now = item;
   }

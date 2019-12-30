@@ -1,5 +1,19 @@
-import { createDining, getDishList } from '@/api/admin';
-import { QBtn, QSelect, QIcon, QDate, QPopupProxy, QInput } from 'quasar';
+import { createDining, getDishList, IDining } from '@/api/admin';
+import AdminAddDishDialog, {
+  IAdminDing,
+} from '@/components/admin/AdminAddDishDialog';
+import {
+  QBtn,
+  QSelect,
+  QIcon,
+  QDate,
+  QPopupProxy,
+  QInput,
+  QList,
+  QItem,
+  QItemSection,
+  QItemLabel,
+} from 'quasar';
 import moment from 'moment';
 import { VNode } from 'vue';
 import lodash from 'lodash';
@@ -31,14 +45,15 @@ export interface IAdminDishSelectOption {
     QDate,
     QPopupProxy,
     QInput,
+    QList,
+    QItem,
+    QItemSection,
+    QItemLabel,
   },
 })
 export default class AdminImport extends tsx.Component<any> {
   protected title: string = '';
   protected dishes: IAdminDishSelectOption[] = [];
-  protected dishesFiltered: IAdminDishSelectOption[] = [];
-
-  protected data: IAdminDish | null = null;
 
   protected orderStartTime: string = moment().format('YYYY/MM/DD HH:mm');
   protected orderEndTime: string = moment().format('YYYY/MM/DD HH:mm');
@@ -59,21 +74,21 @@ export default class AdminImport extends tsx.Component<any> {
           class='title text-h3'
           style={{ borderBottom: '1px solid #ccc', marginBottom: '20px' }}
         >
-          编辑餐次
+          创建餐次
         </h3>
         <div>
-          <div>创建餐次</div>
-          <div>订餐开始时间</div>
-          <div>
+          <div class='q-mb-md'>
             <q-input filled vModel={this.title} label='标题' />
           </div>
+          <div class='text-h5 q-mb-xs'>订餐开始时间</div>
+
           <div>
             <AdminTimeSelect vModel={this.orderStartTime} />
             <span style='margin: 0 16px;display: inline-block;' />
             <AdminTimeSelect vModel={this.orderEndTime} />
           </div>
-          <div>取餐时间</div>
-          <div style='display: flex;'>
+          <div class='text-h5 q-mb-sm'>取餐时间</div>
+          <div class='q-mb-sm' style='display: flex;'>
             <q-input
               style='width: 300px;'
               filled
@@ -101,19 +116,30 @@ export default class AdminImport extends tsx.Component<any> {
               options={this.timeOption}
             />
           </div>
-          <div>
-            {this.menu.map((item, index) => (
-              <div>
-                <span>菜品名称：</span>
-                <span>
-                  {item.title}({item._id})
-                </span>
-                <q-icon
-                  name='cancel'
-                  onClick={this.deleteFromMenu.bind(this, index)}
-                />
-              </div>
-            ))}
+          <div class='q-mb-sm'>
+            <div class='text-h5 q-mb-sm'>菜品列表</div>
+            {this.menu.length > 0 && (
+              <q-list bordered separator>
+                {this.menu.map((item, index) => (
+                  <q-item clickable>
+                    <q-item-section>
+                      <div style='display: flex; align-item: center;'>
+                        <div> 菜品名称：</div>
+                        <div>
+                          {item.title}({item._id})
+                        </div>
+                        <div>
+                          <q-icon
+                            name='cancel'
+                            onClick={this.deleteFromMenu.bind(this, index)}
+                          />
+                        </div>
+                      </div>
+                    </q-item-section>
+                  </q-item>
+                ))}
+              </q-list>
+            )}
           </div>
           <div>
             <q-btn
@@ -122,24 +148,16 @@ export default class AdminImport extends tsx.Component<any> {
               color='primary'
               onClick={this.showCreateDish.bind(this)}
             />
-            <q-select
-              filled
-              vModel={this.data}
-              use-input
-              input-debounce='10'
+            <q-btn
+              flat
               label='选择菜品'
-              options={this.dishesFiltered}
-              onFilter={this.filterFn.bind(this)}
-              style='width: 250px'
-              behavior='dialog'
-              onInput={this.chooseDish}
-            >
-              <template slot='no-option'>
-                <q-item>
-                  <q-item-section class='text-grey'>No results</q-item-section>
-                </q-item>
-              </template>
-            </q-select>
+              color='primary'
+              onClick={() =>
+                (this.$refs.adminAddDialog as AdminAddDishDialog).show({
+                  menu: this.menu,
+                })
+              }
+            />
           </div>
           <div>
             <q-btn
@@ -155,8 +173,19 @@ export default class AdminImport extends tsx.Component<any> {
           ref='createDishDialog'
           onCreateSuccess={this.addToList.bind(this)}
         />
+        <AdminAddDishDialog
+          ref='adminAddDialog'
+          list={this.dishesValue}
+          onAdd={this.diningAddDish.bind(this)}
+        />
       </div>
     );
+  }
+  private diningAddDish(dish: IAdminDish, now: IDining) {
+    this.menu.push(dish);
+  }
+  private get dishesValue() {
+    return this.dishes.map((_) => _.value);
   }
   private async loadDishes() {
     const res = await getDishList();
@@ -172,27 +201,6 @@ export default class AdminImport extends tsx.Component<any> {
       value,
       label: value.title,
     });
-    this.dishesFiltered = this.dishes;
-  }
-  private filterFn(val: string, update: (arg0: () => void) => void) {
-    if (val === '') {
-      update(() => {
-        this.dishesFiltered = this.dishes;
-      });
-      return;
-    }
-
-    update(() => {
-      const needle = val;
-      this.dishesFiltered = this.dishes.filter(
-        (v) => v.value.title.indexOf(needle) > -1,
-      );
-    });
-  }
-  private async chooseDish(value: IAdminDishSelectOption) {
-    this.menu.push(value.value);
-    this.menu = lodash.uniq(this.menu);
-    this.data = null;
   }
   private deleteFromMenu(index: number) {
     this.menu.splice(index, 1);
@@ -204,12 +212,12 @@ export default class AdminImport extends tsx.Component<any> {
     await this.loadDishes();
     this.$q.loading.hide();
   }
-  private async createDining() {
-    if (!this.pickTime) {
-      return;
+  private get dining(): IDining {
+    let pickTimeValue = [0, 0];
+    if (this.pickTime?.value) {
+      pickTimeValue = this.pickTime.value;
     }
-    const pickTimeValue = this.pickTime.value;
-    const res = await createDining({
+    return {
       title: this.title,
       order_start: moment(this.orderStartTime).unix() * 1000,
       order_end: moment(this.orderEndTime).unix() * 1000,
@@ -217,7 +225,13 @@ export default class AdminImport extends tsx.Component<any> {
       pick_end: moment(`${this.pickDate} ${pickTimeValue[1]} `).unix() * 1000,
       stat_type: 0,
       menu: this.menu.map((item) => item._id),
-    });
+    };
+  }
+  private async createDining() {
+    if (!this.pickTime) {
+      return;
+    }
+    const res = await createDining(this.dining);
     if (res.code === 200) {
       this.$q.notify({
         color: 'white',
