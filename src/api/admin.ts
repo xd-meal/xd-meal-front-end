@@ -1,4 +1,4 @@
-import { buildParams, defaultResponse } from '@/api/common';
+import { buildParams, defaultResponse, adminResponse } from '@/api/common';
 import { IHttpResponse } from '@/api/http';
 import axios, { AxiosResponse } from 'axios';
 import moment from 'moment';
@@ -28,16 +28,7 @@ const ADMIN_UPDATE_DINING_API = '/api/v1/admin/dining/:id';
 const ADMIN_DELETE_DINING_API = '/api/v1/admin/dining/:id';
 const ADMIN_GET_ALL_USERS_API = '/api/v1/admin/users';
 const ADMIN_GET_ORDER_BY_TIME_API = '/api/v1/admin/order/:startTime/:endTime';
-function adminResponse(response: AxiosResponse) {
-  const msg = response.data
-    ? response.data.msg || response.data.message || response.data.error
-    : '';
-  return {
-    code: response.status,
-    data: response.data,
-    msg,
-  };
-}
+
 export interface IUserTableItem {
   username: string;
   department: string;

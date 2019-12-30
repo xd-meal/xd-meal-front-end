@@ -1,4 +1,4 @@
-import { MENU_TIME_TYPE } from '@/store/menu';
+import { MENU, MENU_TIME_TYPE } from '@/store/menu';
 import moment from 'moment';
 
 export const timeIteration = [
@@ -24,6 +24,28 @@ export function timeNumberBeforeTarget(source: number[], target: number[]) {
 }
 export function timeNumberAfterTarget(source: number[], target: number[]) {
   return source[0] >= target[0] && source[1] >= target[1];
+}
+export function getTimeType(dining: {
+  pick_start: string;
+  pick_end: string;
+}): {
+  label: string;
+  value: Array<string | number>;
+  key: MENU_TIME_TYPE;
+} | null {
+  const startTime = getTimeNumber(dining.pick_start);
+  const endTime = getTimeNumber(dining.pick_end);
+  for (const time of timeIteration) {
+    const startTimeNumber = getTimeNumber(time.value[0]);
+    const endTimeNumber = getTimeNumber(time.value[1]);
+    if (
+      timeNumberAfterTarget(startTime, startTimeNumber) &&
+      timeNumberBeforeTarget(endTime, endTimeNumber)
+    ) {
+      return time;
+    }
+  }
+  return null;
 }
 export function getTimeName(dining: { pick_start: string; pick_end: string }) {
   const startTime = getTimeNumber(dining.pick_start);

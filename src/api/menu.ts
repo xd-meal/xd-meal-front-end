@@ -2,11 +2,11 @@ import { IHttpResponse } from '@/api/http';
 import { isDev } from '@/utils/common';
 import axios from 'axios';
 import Mock from 'mockjs';
-import { defaultResponse, defaultOkMock } from '@/api/common';
-const WEEKDAY_DISHES_API = '/api/v1/GetDishes';
+import { defaultResponse, defaultOkMock, commonResponse } from '@/api/common';
+const WEEKDAY_DISHES_API = '/api/v1/dining/list';
 const ORDER_DISHES_API = '/api/v1/OrderDishes';
 const MY_DISHES_API = '/api/v1/GetOrderDishes';
-const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
+// const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
 const EVAL_DISH_API = '/api/v1/EvalDish';
 
 export interface IMyDish {
@@ -50,8 +50,26 @@ export interface IDishes {
   updateTime: string;
   mealNum?: number;
 }
+export interface IHttpDish {
+  _id: string;
+  title: string;
+  desc: string;
+}
+export interface IHttpDining {
+  _id: string;
+  name: string;
+  order_start: string;
+  order_end: string;
+  pick_start: string;
+  pick_end: string;
+  stat_type: 0 | 1;
+  menu: IHttpDish[];
+}
 export interface IWeekdayDishesResponse extends IHttpResponse {
-  data: IDishes[];
+  data: {
+    dinings: IHttpDining[];
+    orders: [];
+  };
 }
 
 export interface IMyDishesResponse extends IHttpResponse {
@@ -882,7 +900,7 @@ if (isDev) {
 
 export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
   const response = await axios.get(WEEKDAY_DISHES_API);
-  return response ? response.data : defaultResponse;
+  return response ? commonResponse(response) : defaultResponse;
 }
 
 export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
@@ -894,11 +912,6 @@ export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
 
 export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const response = await axios.get(MY_DISHES_API);
-  return response ? response.data : defaultResponse;
-}
-
-export async function CanUserOrder(): Promise<IHttpResponse> {
-  const response = await axios.get(CAN_ORDER_SWITCH_API);
   return response ? response.data : defaultResponse;
 }
 

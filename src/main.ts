@@ -1,4 +1,5 @@
 import { checkUserLogin } from '@/api/login';
+import { getCookie } from '@/utils/cookies';
 import os from '@/utils/os';
 import Vue from 'vue';
 import './vendor/quasar';
@@ -33,18 +34,16 @@ if (
   ].indexOf(router.currentRoute.fullPath) >= 0
 ) {
   // TODO: 识别一下
+  // 登陆了而且目标是 admin 页面，则不动
 } else {
   // 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
-  // checkUserLogin().then((data) => {
-  //   if (data.code !== 200) {
-  //     gotoLogin();
-  //   } else {
-  //     // 登陆了而且目标是 admin 页面，则不动
-  //     if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
-  //       gotoIndex();
-  //     }
-  //   }
-  // });
+  if (getCookie('XD-MEAL-SESSION')) {
+    if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
+      gotoIndex();
+    }
+  } else {
+    gotoLogin();
+  }
 }
 
 router.beforeEach((to, from, next) => {

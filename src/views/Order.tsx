@@ -24,7 +24,7 @@ import CommonHeader from '@/components/utils/CommonHeader';
 export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   checked?: boolean;
 }
-
+// TODO: 逻辑太复杂，结构和后台已不同，必须重写
 @Component({
   components: {
     ChildPageConstruction,
@@ -211,7 +211,7 @@ export default class Order extends tsx.Component<any> {
   }
   // events
   protected mounted() {
-    this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
+    this.onStoreOrderChanged(this.$store.state.order.list);
   }
   // method
   private selectAllBuffet() {

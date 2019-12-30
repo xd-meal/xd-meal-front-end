@@ -1,4 +1,4 @@
-import { CanUserOrder, fetchMyDishes, IMyDish, orderDishes } from '@/api/menu';
+import { fetchMyDishes, IMyDish, orderDishes } from '@/api/menu';
 import Checkbox from '@/components/utils/Checkbox.tsx';
 import { createIcal } from '@/components/utils/ical';
 import { MENU, MENU_TIME_TYPE } from '@/store/menu';
@@ -38,7 +38,7 @@ export default class PcOrder extends tsx.Component<any> {
   protected title: string = '';
   protected showFinish: boolean = false;
   protected show: boolean = false;
-  protected render(): VNode {
+  protected render(): VNode {CanUserOrder
     return (
       <div class='pcorder' style={{ opacity: this.show ? 1 : 0 }}>
         <header class='pc-header'>
@@ -230,24 +230,24 @@ export default class PcOrder extends tsx.Component<any> {
     });
   }
   private async mounted() {
-    const toast = this.$createToast({
-      txt: 'loading...',
-      mask: true,
-    });
-    const timer = setTimeout(() => {
-      toast.show();
-    }, 300);
-    const canUserOrder = (await CanUserOrder()).data;
-    if (canUserOrder) {
-      await this.$store.dispatch(
-        ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
-      );
-    } else {
-      this.showFinish = true;
-    }
-    clearTimeout(timer);
-    toast.hide();
-    this.show = true;
+    // const toast = this.$createToast({
+    //   txt: 'loading...',
+    //   mask: true,
+    // });
+    // const timer = setTimeout(() => {
+    //   toast.show();
+    // }, 300);
+    // const canUserOrder = (await CanUserOrder()).data;
+    // if (canUserOrder) {
+    //   await this.$store.dispatch(
+    //     ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
+    //   );
+    // } else {
+    //   this.showFinish = true;
+    // }
+    // clearTimeout(timer);
+    // toast.hide();
+    // this.show = true;
   }
   private loginOut() {
     loginOut(this);

@@ -213,7 +213,7 @@ export default class AdminImport extends tsx.Component<any> {
     this.$q.loading.hide();
   }
   private get dining(): IDining {
-    let pickTimeValue = [0, 0];
+    let pickTimeValue = [0, 0, 1];
     if (this.pickTime?.value) {
       pickTimeValue = this.pickTime.value;
     }
@@ -223,7 +223,7 @@ export default class AdminImport extends tsx.Component<any> {
       order_end: moment(this.orderEndTime).unix() * 1000,
       pick_start: moment(`${this.pickDate} ${pickTimeValue[0]} `).unix() * 1000,
       pick_end: moment(`${this.pickDate} ${pickTimeValue[1]} `).unix() * 1000,
-      stat_type: 0,
+      stat_type: pickTimeValue[2] ? 1 : 0,
       menu: this.menu.map((item) => item._id),
     };
   }

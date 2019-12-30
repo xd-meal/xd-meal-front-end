@@ -1,6 +1,6 @@
 import './AppMain.scss';
-import { CanUserOrder } from '@/api/menu';
 import { ROUTER_NAME } from '@/router';
+import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -101,11 +101,14 @@ export default class AppMain extends tsx.Component<any> {
   }
 
   private async refreshOrderBtn() {
-    const data = await CanUserOrder();
-    if (data.code === 200) {
-      this.orderBtnShow = Boolean(data.data);
-    } else {
-      this.orderBtnShow = false;
+    const shouldLoad = this.$store.getters[
+      ORDER_NAMESPACE + ORDER.SHOULD_UPDATE
+    ];
+    if (shouldLoad) {
+      await this.$store.dispatch(
+        ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
+      );
+      this.orderBtnShow = this.$store.state.order.list.length > 0;
     }
   }
 
