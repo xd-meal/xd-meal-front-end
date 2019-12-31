@@ -1,4 +1,4 @@
-import { logoutApi } from '@/api/login';
+import { fetchWeworkCode, logoutApi } from '@/api/login';
 import router from '@/router';
 import os from '@/utils/os';
 
@@ -37,15 +37,23 @@ function callWeWorkLogin(corp: string) {
   window.location.href = url;
 }
 
-export function gotoLogin() {
+export async function gotoLogin() {
   const params = new URLSearchParams(window.location.search);
+  const state = String(params.get('state'));
+  const code = String(params.get('code'));
+
   if (params.has('wework_source')) {
     callWeWorkLogin(params.get('wework_source') || '');
-  } else if (
-    params.get('state')?.startsWith('wework_redirect_') &&
-    params.has('code')
-  ) {
-    // TODO: Perform WeWork code login
+  } else if (state?.startsWith('wework_redirect_') && params.has('code')) {
+    const res = await fetchWeworkCode({
+      corp: state.replace('wework_redirect_', ''),
+      code,
+    });
+    if (res.code === 200) {
+      // 登陆成功跳转到 index 页面
+      gotoIndex();
+      return;
+    }
   }
   let query = {};
   if (!/\/login/.test(router.currentRoute.fullPath)) {

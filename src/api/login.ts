@@ -8,6 +8,7 @@ export const LOGIN_API = '/api/v1/user/login';
 export const LOGIN_OUT_API = '/api/v1/user/logout';
 export const LOGIN_STATUS_API = '/api/v1/CheckUserLogin';
 export const RESET_PASSWORD_API = '/api/v1/ResetPasswordByUser';
+export const LOGIN_WEWORK_API = '/api/v1/user/wework';
 if (isDev) {
   Mock.mock(LOGIN_API, 'post', defaultOkMock);
   Mock.mock(LOGIN_OUT_API, 'post', defaultOkMock);
@@ -43,6 +44,13 @@ export async function resetPwd(
   const response = await axios.post(RESET_PASSWORD_API, {
     oldPassword,
     password,
+  });
+  return response ? commonResponse(response) : defaultResponse;
+}
+
+export async function fetchWeworkCode(setting: { corp: string; code: string }) {
+  const response = await axios.post(LOGIN_WEWORK_API, {
+    ...setting,
   });
   return response ? commonResponse(response) : defaultResponse;
 }
