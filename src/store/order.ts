@@ -74,19 +74,7 @@ const mutations: MutationTree<IOrderGlobal> = {
     _.lastUpdate = moment();
   },
   [ORDER.SET_MENUS](_, { weekdayDining }) {
-    _.list = [];
-    weekdayDining.forEach((data: IStoreDining) => {
-      const menu = data.menu;
-      // menu.forEach((menu: IDishes))
-      // return {
-      //   title: data.name,
-      //   time: data.mealDay,
-      //   id: data._id,
-      //   menuType: data.typeB === 1 ? MENU_TYPE.BUFFE : MENU_TYPE.NORMAL,
-      //   desc: '',
-      //   type: data.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-      // };
-    });
+    _.list = weekdayDining;
   },
 };
 export default {

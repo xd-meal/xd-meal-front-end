@@ -37,7 +37,8 @@ if (
   // 登陆了而且目标是 admin 页面，则不动
 } else {
   // 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
-  if (getCookie('XD-MEAL-SESSION')) {
+  const session = getCookie('XD-MEAL-SESSION');
+  if (session) {
     if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
       gotoIndex();
     }

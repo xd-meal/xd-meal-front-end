@@ -181,9 +181,9 @@ export default class AdminDiningList extends tsx.Component<any> {
       });
       if (res.code === 200) {
         this.$nextTick(() => {
-          const menu = this.monthList[this.date][index].menu;
-          menu.splice(menu.indexOf(dish), 1);
-          this.$set(this.monthList[this.date][index], 'menu', [...menu]);
+          const menu2 = this.monthList[this.date][index].menu;
+          menu2.splice(menu2.indexOf(dish), 1);
+          this.$set(this.monthList[this.date][index], 'menu', [...menu2]);
           this.monthList = lodash.cloneDeep(this.monthList);
         });
       } else {

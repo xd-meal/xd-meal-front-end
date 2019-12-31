@@ -903,7 +903,9 @@ export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
   return response ? commonResponse(response) : defaultResponse;
 }
 
-export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
+export async function orderDishes(
+  dishIds: Array<{ diningId: string; menuId: string }>,
+): Promise<IHttpResponse> {
   const response = await axios.post(ORDER_DISHES_API, {
     dishIds,
   });
