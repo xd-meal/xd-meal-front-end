@@ -1,5 +1,6 @@
 import './index.scss';
-import { VoteDown } from '@/api/menu';
+import { IMyDining, VoteDown } from '@/api/menu';
+import { getTimeType } from '@/components/utils/diningTime';
 
 import Vue, { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
@@ -111,26 +112,28 @@ export default class Index extends tsx.Component<any> {
                     }}
                   >
                     {_(menus)
-                      .sortBy('time')
-                      .map((item: ISingleMenuItem) => (
+                      .sortBy('pick_start')
+                      .map((item: IMyDining) => (
                         <div class='app-day-menu'>
                           <div class='app-day-menu-time'>
                             <span class='icon' />
-                            <span class='time'>{timeParser(item.time)}</span>
+                            <span class='time'>
+                              {timeParser(item.pick_start)}
+                            </span>
                           </div>
                           <div class='app-day-menu-body'>
                             <div class='app-day-menu-body-wrap'>
-                              <div class='title'>{item.title}</div>
+                              <div class='title'>{item.menu.title}</div>
                               <div
                                 class={{
                                   'down-vote': true,
-                                  'down-vote_active': item.isVoteDown,
+                                  // 'down-vote_active': item.isVoteDown,
                                 }}
-                                onClick={this.voteDownDishes.bind(this, item)}
+                                // onClick={this.voteDownDishes.bind(this, item)}
                               />
                             </div>
                             <div class='app-day-menu-body-wrap'>
-                              {item.desc.split(/[,，]/).map((desc) => (
+                              {item.menu.desc.split(/[,，]/).map((desc) => (
                                 <div class='desc'>{desc}</div>
                               ))}
                             </div>
@@ -148,17 +151,17 @@ export default class Index extends tsx.Component<any> {
     );
   }
   // getter
-  protected get menus(): ISingleMenuItem[] {
+  protected get menus(): IMyDining[] {
     return this.$store.state.menu.list;
   }
   protected get initialIndex() {
     return _.findIndex(this.tabLabels, ['label', this.selectedLabel]);
   }
   protected get menuMap(): {
-    [key: string]: ISingleMenuItem[];
+    [key: string]: IMyDining[];
   } {
     return _(this.menus)
-      .groupBy('type')
+      .groupBy((item) => getTimeType(item)?.key)
       .value();
   }
   // event

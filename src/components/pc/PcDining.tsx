@@ -3,7 +3,7 @@ import { getTimeName } from '@/components/utils/diningTime';
 import { timeMMDD } from '@/components/utils/time';
 import { IStoreDining } from '@/store/order';
 import { VNode } from 'vue';
-import { Component, Prop, Model } from 'vue-property-decorator';
+import { Component, Prop, Model, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 @Component({
   components: {
@@ -14,7 +14,7 @@ export default class PcDining extends tsx.Component<any> {
   @Prop()
   protected readonly data?: IStoreDining;
   @Model('change')
-  protected value: string | null = null;
+  protected value!: string;
   private render(): VNode {
     return (
       <section class='pc-day-menu'>

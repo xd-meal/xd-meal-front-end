@@ -1,28 +1,24 @@
 import {
   fetchMyDishes,
   fetchWeekdayDishes,
-  IMyDish,
+  IMyDining,
   orderDishes,
 } from '@/api/menu';
-import Checkbox from '@/components/utils/Checkbox.tsx';
 import PcDining from '@/components/pc/PcDining';
+import Checkbox from '@/components/utils/Checkbox.tsx';
+import { getTimeType } from '@/components/utils/diningTime';
 import { createIcal } from '@/components/utils/ical';
-import { MENU, MENU_TIME_TYPE } from '@/store/menu';
-import {
-  IOrderSingleItem,
-  IStoreDining,
-  MENU_TYPE,
-  ORDER,
-  ORDER_NAMESPACE,
-} from '@/store/order';
+import { MENU_TIME_TYPE } from '@/store/menu';
+import { IStoreDining } from '@/store/order';
 import { loginOut } from '@/utils/common';
 import lodash from 'lodash';
 import moment from 'moment';
 import { VNode } from 'vue';
 
-import { Component, Watch } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import './PcOrder.scss';
+
 const TIME_STRING_TEMPLATE = 'MM月DD日';
 declare interface IChooseItem {
   type: string;
@@ -47,6 +43,8 @@ export default class PcOrder extends tsx.Component<any> {
   protected title: string = '';
   protected showFinish: boolean = false;
   protected show: boolean = false;
+
+  private timer: any = null;
   protected render(): VNode {
     return (
       <div class='pcorder' style={{ opacity: this.show ? 1 : 0 }}>
@@ -82,7 +80,16 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='pc-order-wrap pc-order-wrap_finish'>
             <div class='pc-order-wrap_finish-wrap'>
               <div class='pc-order-wrap_finish-wrap-center'>
-                <h3>您已完成订餐！</h3>
+                <h3>
+                  您已完成订餐！（
+                  <span
+                    style='cursor: pointer;'
+                    onClick={() => (this.showFinish = false)}
+                  >
+                    重选请点击这里
+                  </span>
+                  ）
+                </h3>
                 <h4>扫描下方二维码前往手机查看订餐详情</h4>
                 <h4>
                   或点击
@@ -141,9 +148,24 @@ export default class PcOrder extends tsx.Component<any> {
     );
   }
   private submit() {
+    if (this.timer) {
+      // 重复点击不提交
+      return;
+    }
+
     const idList: Array<{ diningId: string; menuId: string }> = [];
     // tslint:disable-next-line:forin
     for (const item in this.selector) {
+      if (!this.selector[item]) {
+        // TODO: 跳转到没选择的条目位置
+        this.$createToast({
+          txt: '存在尚未选择的条目',
+          mask: true,
+          type: 'text',
+          timeout: 3000,
+        }).show();
+        return;
+      }
       idList.push({
         diningId: item,
         menuId: String(this.selector[item]),
@@ -156,7 +178,19 @@ export default class PcOrder extends tsx.Component<any> {
       content: '请确认下单内容正确，下单后不可更改',
       icon: 'cubeic-alert',
       onConfirm: async () => {
+        const toastLoading = this.$createToast({
+          txt: 'loading',
+          time: 0,
+          mask: true,
+        });
+        // 超过300毫秒的可取下才显示 toast
+        this.timer = setTimeout(() => {
+          toastLoading.show();
+        }, 300);
         const res = await orderDishes(idList);
+        toastLoading.hide();
+        clearTimeout(this.timer);
+        this.timer = null;
         if (res.code === 200) {
           this.showFinish = true;
         } else {
@@ -204,22 +238,38 @@ export default class PcOrder extends tsx.Component<any> {
     const toast = this.$createToast({
       txt: 'loading...',
       mask: true,
+      time: 0,
     });
     const timer = setTimeout(() => {
       toast.show();
     }, 300);
     const res = await fetchWeekdayDishes();
+    toast.hide();
+    clearTimeout(timer);
     if (res.code !== 200) {
       return;
     }
     if (res.data.dinings.length > 0) {
       const selector: { [key: string]: string | null } = {};
+      const orders = res.data.orders;
       this.list = res.data.dinings;
-      this.list.forEach((_) => (selector[_._id] = null));
+      // 判断是否已经点过，点过的直接帮他选上
+      if (orders.length <= 0) {
+        this.list.forEach((_) => (selector[_._id] = null));
+      } else {
+        // 整理成 key value 形式
+        const orderByKey: { [key: string]: string } = lodash(orders)
+          .keyBy('dining_id')
+          .mapValues('menu_id')
+          .value();
+        this.list.forEach((value) => {
+          selector[value._id] = orderByKey[value._id];
+        });
+        // 先送去结束界面
+        this.showFinish = true;
+      }
       this.selector = selector;
       this.refreshTitle();
-      clearTimeout(timer);
-      toast.hide();
     } else {
       this.showFinish = true;
     }
@@ -232,14 +282,14 @@ export default class PcOrder extends tsx.Component<any> {
     const myDishesRes = await fetchMyDishes();
     if (myDishesRes.code === 200) {
       const myDishes = myDishesRes.data || [];
-      const mealList = myDishes.map((dish: IMyDish) => {
+      const mealList = myDishes.map((dish: IMyDining) => {
         return {
-          time: dish.mealDay,
+          time: dish.pick_start,
           title: dish.name,
-          desc: dish.desc ? dish.desc.toString() : '',
-          isVoteDown: dish.badEval,
-          type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-          id: dish._id,
+          desc: dish.menu.desc ?? '',
+          isVoteDown: false,
+          type: getTimeType(dish)?.key ?? MENU_TIME_TYPE.BREAKFAST,
+          id: dish.id,
         };
       });
       const str = createIcal(mealList);
