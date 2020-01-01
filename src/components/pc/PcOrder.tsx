@@ -220,10 +220,10 @@ export default class PcOrder extends tsx.Component<any> {
       this.refreshTitle();
       clearTimeout(timer);
       toast.hide();
-      this.show = true;
     } else {
       this.showFinish = true;
     }
+    this.show = true;
   }
   private loginOut() {
     loginOut(this);
