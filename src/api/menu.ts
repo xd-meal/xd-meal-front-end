@@ -4,8 +4,8 @@ import axios from 'axios';
 import Mock from 'mockjs';
 import { defaultResponse, defaultOkMock, commonResponse } from '@/api/common';
 const WEEKDAY_DISHES_API = '/api/v1/dining/list';
-const ORDER_DISHES_API = '/api/v1/OrderDishes';
-const MY_DISHES_API = '/api/v1/GetOrderDishes';
+const ORDER_DISHES_API = '/api/v1/order';
+const MY_DISHES_API = '/api/v1/orders';
 // const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
 const EVAL_DISH_API = '/api/v1/EvalDish';
 
