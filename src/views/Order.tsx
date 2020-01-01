@@ -180,6 +180,7 @@ export default class Order extends tsx.Component<any> {
   }
   private submit() {
     if (_.some(this.selector, (item) => !item)) {
+      // 只要有没有选的就不让他提交
       return false;
     }
     const ids: Array<{ diningId: string; menuId: string }> = _.map(

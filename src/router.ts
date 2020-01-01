@@ -14,7 +14,6 @@ import Profile from '@/components/app/profile/Profile.tsx';
 import Setting from '@/components/app/profile/Setting';
 import ResetPassword from '@/components/app/profile/ResetPassword';
 
-import PcLogin from '@/components/pc/PcLogin.tsx';
 import PcOrder from '@/components/pc/PcOrder.tsx';
 
 import AdminLogin from '@/components/admin/AdminLogin.tsx';
@@ -36,7 +35,6 @@ export const ROUTER_NAME = {
   APP_SETTING: 'setting',
   APP_RESET_PSW: 'resetpsw',
   PC: 'pc',
-  PC_LOGIN: 'pcLogin',
   PC_ORDER: 'pcOrder',
   ADMIN: 'admin',
   ADMIN_LOGIN: 'adminLogin',
@@ -57,6 +55,9 @@ export default new Router({
       path: '/login',
       name: ROUTER_NAME.LOGIN,
       component: Login,
+      meta: {
+        top: true,
+      },
     },
     {
       path: '/order',
@@ -108,8 +109,14 @@ export default new Router({
       name: 'pc',
       component: Pc,
       children: [
-        { path: 'login', name: ROUTER_NAME.PC_LOGIN, component: PcLogin },
-        { path: 'order', name: ROUTER_NAME.PC_ORDER, component: PcOrder },
+        {
+          path: 'order',
+          name: ROUTER_NAME.PC_ORDER,
+          component: PcOrder,
+          meta: {
+            stop: true,
+          },
+        },
       ],
     },
     // XXX: 先写这边，后面单独抽离出去
