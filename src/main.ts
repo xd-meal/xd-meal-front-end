@@ -24,7 +24,6 @@ new Vue({
 // 先判断有没有 cookie 在判断网络连通性
 if (
   [
-    '/',
     '/admin',
     '/admin/import',
     '/admin/edit',
