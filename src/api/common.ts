@@ -120,12 +120,16 @@ if (isDev) {
 
   axios.interceptors.response.use(
     (data) => {
-      if (data.data && /请先登录/.test(data.data.msg)) {
+      if (/未登录/.test(String(data?.data?.msg))) {
         gotoLogin();
       }
       return data;
     },
-    (error) => {
+    (error: AxiosError) => {
+      const msg = error?.response?.data?.msg;
+      if (/未登录/.test(String(msg))) {
+        gotoLogin();
+      }
       return Promise.resolve(new CommonErrorRespond(error));
     },
   );
