@@ -1,28 +1,24 @@
 import {
   fetchMyDishes,
   fetchWeekdayDishes,
-  IMyDish,
+  IMyDining,
   orderDishes,
 } from '@/api/menu';
-import Checkbox from '@/components/utils/Checkbox.tsx';
 import PcDining from '@/components/pc/PcDining';
+import Checkbox from '@/components/utils/Checkbox.tsx';
+import { getTimeType } from '@/components/utils/diningTime';
 import { createIcal } from '@/components/utils/ical';
-import { MENU, MENU_TIME_TYPE } from '@/store/menu';
-import {
-  IOrderSingleItem,
-  IStoreDining,
-  MENU_TYPE,
-  ORDER,
-  ORDER_NAMESPACE,
-} from '@/store/order';
+import { MENU_TIME_TYPE } from '@/store/menu';
+import { IStoreDining } from '@/store/order';
 import { loginOut } from '@/utils/common';
 import lodash from 'lodash';
 import moment from 'moment';
 import { VNode } from 'vue';
 
-import { Component, Watch } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import './PcOrder.scss';
+
 const TIME_STRING_TEMPLATE = 'MM月DD日';
 declare interface IChooseItem {
   type: string;
@@ -286,14 +282,14 @@ export default class PcOrder extends tsx.Component<any> {
     const myDishesRes = await fetchMyDishes();
     if (myDishesRes.code === 200) {
       const myDishes = myDishesRes.data || [];
-      const mealList = myDishes.map((dish: IMyDish) => {
+      const mealList = myDishes.map((dish: IMyDining) => {
         return {
-          time: dish.mealDay,
+          time: dish.pick_start,
           title: dish.name,
-          desc: dish.desc ? dish.desc.toString() : '',
-          isVoteDown: dish.badEval,
-          type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-          id: dish._id,
+          desc: dish.menu.desc ?? '',
+          isVoteDown: false,
+          type: getTimeType(dish)?.key ?? MENU_TIME_TYPE.BREAKFAST,
+          id: dish.id,
         };
       });
       const str = createIcal(mealList);

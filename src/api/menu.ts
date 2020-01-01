@@ -1,11 +1,14 @@
 import { IHttpResponse } from '@/api/http';
+import { resetPwd } from '@/api/login';
+import order from '@/store/order';
 import { isDev } from '@/utils/common';
+import lodash from 'lodash';
 import axios from 'axios';
 import Mock from 'mockjs';
 import { defaultResponse, defaultOkMock, commonResponse } from '@/api/common';
 const WEEKDAY_DISHES_API = '/api/v1/dining/list';
 const ORDER_DISHES_API = '/api/v1/order';
-const MY_DISHES_API = '/api/v1/myDish';
+const MY_DISHES_API = '/api/v1/orders';
 // const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
 const EVAL_DISH_API = '/api/v1/EvalDish';
 
@@ -75,9 +78,23 @@ export interface IWeekdayDishesResponse extends IHttpResponse {
     orders: IHttpOrderDining[];
   };
 }
-
+export interface IOrder {
+  _id: string;
+  dining_id: string;
+  menu_id: string;
+  picked: false;
+}
+export interface IMyDining {
+  id: string;
+  name: string;
+  order_start: string;
+  order_end: string;
+  pick_start: string;
+  pick_end: string;
+  menu: IHttpDish;
+}
 export interface IMyDishesResponse extends IHttpResponse {
-  data: IMyDish[];
+  data: IMyDining[];
 }
 
 export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
@@ -94,7 +111,41 @@ export async function orderDishes(
 
 export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const response = await axios.get(MY_DISHES_API);
-  return response ? commonResponse(response) : defaultResponse;
+  const data: {
+    dinings: IHttpDining[];
+    ordered: IOrder[];
+  } = response.data;
+  const dinings: { [key: string]: IHttpDining } = lodash(data.dinings)
+    .keyBy('_id')
+    .value();
+  const mydinings: IMyDining[] = lodash(data.ordered)
+    .map((orderedItem: IOrder) => {
+      const dining = dinings[orderedItem.dining_id];
+      const menuKeys: { [key: string]: IHttpDish } = lodash(dining.menu)
+        .keyBy('_id')
+        .value();
+      return {
+        id: orderedItem._id,
+        name: dining.name,
+        order_start: dining.order_start,
+        order_end: dining.order_end,
+        pick_start: dining.pick_start,
+        pick_end: dining.pick_end,
+        menu: menuKeys[orderedItem.menu_id],
+      };
+    })
+    .value();
+  return response
+    ? {
+        code: response?.status,
+        data: mydinings,
+        msg: response?.data?.msg,
+      }
+    : {
+        code: 404,
+        data: [],
+        msg: '未知错误',
+      };
 }
 
 export async function VoteDown(
