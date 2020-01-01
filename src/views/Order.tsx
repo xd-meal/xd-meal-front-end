@@ -187,8 +187,8 @@ export default class Order extends tsx.Component<any> {
       this.selector,
       (item, key) => {
         return {
-          diningId: String(item),
-          menuId: key,
+          diningId: key,
+          menuId: String(item),
         };
       },
     );
