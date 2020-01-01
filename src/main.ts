@@ -22,28 +22,28 @@ new Vue({
 }).$mount('#app');
 
 // 先判断有没有 cookie 在判断网络连通性
-if (
-  [
-    '/admin',
-    '/admin/import',
-    '/admin/edit',
-    '/admin/switch',
-    '/admin/output',
-    '/admin/login',
-  ].indexOf(router.currentRoute.fullPath) >= 0
-) {
-  // TODO: 识别一下
-  // 登陆了而且目标是 admin 页面，则不动
-} else {
-  // 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
-  const session = getCookie('XD-MEAL-SESSION');
-  if (session) {
-    if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
-      gotoIndex();
-    }
-  } else {
-    gotoLogin();
+
+// 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
+const session = getCookie('XD-MEAL-SESSION');
+if (session) {
+  // 登陆了且在 login 以及首页的跳转到 index
+  if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
+    gotoIndex();
+  } else if (
+    [
+      '/admin',
+      '/admin/import',
+      '/admin/edit',
+      '/admin/switch',
+      '/admin/output',
+      '/admin/login',
+    ].indexOf(router.currentRoute.fullPath) >= 0
+  ) {
+    // 登陆了而且目标是 admin 页面，则不动
   }
+} else {
+  // 尚未登陆的前往登陆页面
+  gotoLogin();
 }
 
 router.beforeEach((to, from, next) => {
