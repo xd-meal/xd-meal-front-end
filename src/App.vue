@@ -22,12 +22,10 @@ export default class Home extends Vue {
   public onChangeValue(newVal: Route, oldVal: Route) {
     if (newVal.meta.noAnimation || oldVal.meta.noAnimation) {
       this.transitionName = 'none';
-      console.log(1);
       return;
     }
     if (newVal.meta.stop || oldVal.meta.stop) {
       this.transitionName = 'none';
-      console.log(2);
       return;
     }
     if (oldVal.meta.rightOut) {
