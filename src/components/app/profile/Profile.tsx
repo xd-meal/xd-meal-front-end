@@ -14,10 +14,14 @@ export default class Index extends tsx.Component<any> {
       <div class='profile'>
         <div class='profile-wrap'>
           <div class='profile-name'>
-            <div class='profile-name-title'>心动吴彦祖</div>
+            <div class='profile-name-title'>{this.name}</div>
             <div class='profile-name-desc'>在忙也要好好吃饭哟～</div>
           </div>
-          <div class='profile-avatar'></div>
+          {Boolean(this.avatar.trim()) && (
+            <div class='profile-avatar'>
+              <img src={this.avatar} alt='' />
+            </div>
+          )}
         </div>
         <div class='profile-context'>
           {[
@@ -29,13 +33,14 @@ export default class Index extends tsx.Component<any> {
             //   name: '商家收藏',
             //   target: 'profile',
             // },
-            {
-              name: '通知提醒',
-              target: ROUTER_NAME.APP_NOTIFICATION,
-            },
+
             {
               name: '设置',
               target: ROUTER_NAME.APP_SETTING,
+            },
+            {
+              name: '重设密码',
+              target: ROUTER_NAME.APP_RESET_PSW,
             },
             {
               name: '退出登录',
@@ -72,5 +77,11 @@ export default class Index extends tsx.Component<any> {
   }
   private loginout() {
     loginOut(this);
+  }
+  private get name() {
+    return this.$store.state.user.username || '木得名字的宝宝';
+  }
+  private get avatar() {
+    return this.$store.state.user.avatar;
   }
 }

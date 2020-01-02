@@ -1,4 +1,4 @@
-import { fetchMyDishes, fetchWeekdayDishes, IMyDish } from '@/api/menu';
+import { fetchMyDishes, IMyDining } from '@/api/menu';
 import { ActionTree, MutationTree } from 'vuex';
 
 export enum MENU_TIME_TYPE {
@@ -27,7 +27,7 @@ export interface ISingleMenuItem {
 }
 
 export interface IMenuGlobal {
-  list: ISingleMenuItem[];
+  list: IMyDining[];
 }
 
 const state: IMenuGlobal = {
@@ -56,27 +56,18 @@ const actions: ActionTree<IMenuGlobal, any> = {
 };
 const mutations: MutationTree<IMenuGlobal> = {
   [MENU.SET_MENUS](_, { myDishes = [] }) {
-    _.list = myDishes.map((dish: IMyDish) => {
-      return {
-        time: dish.mealDay,
-        title: dish.name,
-        desc: dish.desc ? dish.desc.toString() : '',
-        isVoteDown: dish.badEval,
-        type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-        id: dish._id,
-      };
-    });
+    _.list = myDishes;
   },
   [MENU.SET_MENU](
     _,
     { dish, isVoteDown }: { dish: ISingleMenuItem; isVoteDown: boolean },
   ) {
-    for (const item of _.list) {
-      if (item.id === dish.id) {
-        item.isVoteDown = isVoteDown;
-        return;
-      }
-    }
+    // for (const item of _.list) {
+    //   if (item.id === dish.id) {
+    //     item.isVoteDown = isVoteDown;
+    //     return;
+    //   }
+    // }
   },
 };
 export default {

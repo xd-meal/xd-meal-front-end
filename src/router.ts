@@ -14,7 +14,6 @@ import Profile from '@/components/app/profile/Profile.tsx';
 import Setting from '@/components/app/profile/Setting';
 import ResetPassword from '@/components/app/profile/ResetPassword';
 
-import PcLogin from '@/components/pc/PcLogin.tsx';
 import PcOrder from '@/components/pc/PcOrder.tsx';
 
 import AdminLogin from '@/components/admin/AdminLogin.tsx';
@@ -23,6 +22,7 @@ import AdminImport from '@/components/admin/AdminImport.tsx';
 import AdminSwitch from '@/components/admin/AdminSwitch';
 import AdminOutput from '@/components/admin/AdminOutput.tsx';
 import AdminUser from '@/components/admin/AdminUser.tsx';
+import AdminDiningList from '@/components/admin/AdminDiningList';
 export const ROUTER_NAME = {
   LOGIN: 'login',
   QR_LOGIN: 'qrlogin',
@@ -35,7 +35,6 @@ export const ROUTER_NAME = {
   APP_SETTING: 'setting',
   APP_RESET_PSW: 'resetpsw',
   PC: 'pc',
-  PC_LOGIN: 'pcLogin',
   PC_ORDER: 'pcOrder',
   ADMIN: 'admin',
   ADMIN_LOGIN: 'adminLogin',
@@ -44,17 +43,22 @@ export const ROUTER_NAME = {
   ADMIN_EDIT: 'adminEdit',
   ADMIN_SWITCH: 'adminSwitch',
   ADMIN_USER: 'adminUser',
+  ADMIN_DINING: 'adminDining',
 };
 Vue.use(Router);
 
 export default new Router({
   mode: 'hash',
-  base: '/login',
+  base: '/admin',
   routes: [
     {
       path: '/login',
       name: ROUTER_NAME.LOGIN,
       component: Login,
+      meta: {
+        stop: true,
+        noAnimation: true,
+      },
     },
     {
       path: '/order',
@@ -98,7 +102,8 @@ export default new Router({
       component: ResetPassword,
       name: ROUTER_NAME.APP_RESET_PSW,
       meta: {
-        stop: true,
+        rightIn: true,
+        rightOut: true,
       },
     },
     {
@@ -106,8 +111,14 @@ export default new Router({
       name: 'pc',
       component: Pc,
       children: [
-        { path: 'login', name: ROUTER_NAME.PC_LOGIN, component: PcLogin },
-        { path: 'order', name: ROUTER_NAME.PC_ORDER, component: PcOrder },
+        {
+          path: 'order',
+          name: ROUTER_NAME.PC_ORDER,
+          component: PcOrder,
+          meta: {
+            stop: true,
+          },
+        },
       ],
     },
     // XXX: 先写这边，后面单独抽离出去
@@ -121,6 +132,11 @@ export default new Router({
           path: 'import',
           name: ROUTER_NAME.ADMIN_IMPORT,
           component: AdminImport,
+        },
+        {
+          path: 'dining',
+          name: ROUTER_NAME.ADMIN_DINING,
+          component: AdminDiningList,
         },
         {
           path: 'output',

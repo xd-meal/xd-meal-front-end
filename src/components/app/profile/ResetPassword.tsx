@@ -1,5 +1,5 @@
 import './ResetPassword.scss';
-import { resetPwd } from '@/api/login';
+import { resetUserPsw } from '@/api/user';
 import { gotoLogin } from '@/utils/common';
 import { VNode } from 'vue';
 import { Component, Vue } from 'vue-property-decorator';
@@ -40,6 +40,7 @@ export default class ResetPassword extends tsx.Component<any> {
             maxlength={22}
             clearable={true}
           />
+          <h6>注：企业微信用户暂时无法使用用户名密码登陆！</h6>
           <cube-button onClick={this.resetPassword.bind(this)} primary={true}>
             确认重设密码
           </cube-button>
@@ -54,14 +55,20 @@ export default class ResetPassword extends tsx.Component<any> {
         type: 'text',
       }).show();
     }
-    if (this.newPsw.length <= 6) {
+    if (this.newPsw.length < 8) {
       return this.$createToast({
-        txt: '密码位数不得小于 7',
+        txt: '密码位数不得小于 8',
+        type: 'text',
+      }).show();
+    }
+    if (this.newPsw.length >= 22) {
+      return this.$createToast({
+        txt: '密码位数不得大于 22',
         type: 'text',
       }).show();
     }
     // TODO: 对接 API
-    const res = await resetPwd(this.oldPsw, this.newPsw);
+    const res = await resetUserPsw(this.oldPsw, this.newPsw);
     if (res.code === 200) {
       return this.$createDialog({
         type: 'alert',

@@ -1,12 +1,10 @@
 import { IHttpResponse } from '@/api/http';
-import { isDev } from '@/utils/common';
+import lodash from 'lodash';
 import axios from 'axios';
-import Mock from 'mockjs';
-import { defaultResponse, defaultOkMock } from '@/api/common';
-const WEEKDAY_DISHES_API = '/api/v1/GetDishes';
-const ORDER_DISHES_API = '/api/v1/OrderDishes';
-const MY_DISHES_API = '/api/v1/GetOrderDishes';
-const CAN_ORDER_SWITCH_API = '/api/v1/GetUserOrderSwitch';
+import { defaultResponse, commonResponse } from '@/api/common';
+const WEEKDAY_DISHES_API = '/api/v1/dining/list';
+const ORDER_DISHES_API = '/api/v1/order';
+const MY_DISHES_API = '/api/v1/orders';
 const EVAL_DISH_API = '/api/v1/EvalDish';
 
 export interface IMyDish {
@@ -50,856 +48,99 @@ export interface IDishes {
   updateTime: string;
   mealNum?: number;
 }
+export interface IHttpDish {
+  _id: string;
+  title: string;
+  desc: string;
+}
+export interface IHttpDining {
+  _id: string;
+  name: string;
+  order_start: string;
+  order_end: string;
+  pick_start: string;
+  pick_end: string;
+  stat_type: 0 | 1;
+  menu: IHttpDish[];
+}
+export interface IHttpOrderDining {
+  dining_id: string;
+  menu_id: string;
+}
 export interface IWeekdayDishesResponse extends IHttpResponse {
-  data: IDishes[];
+  data: {
+    dinings: IHttpDining[];
+    orders: IHttpOrderDining[];
+  };
 }
-
+export interface IOrder {
+  _id: string;
+  dining_id: string;
+  menu_id: string;
+  picked: false;
+}
+export interface IMyDining {
+  id: string;
+  name: string;
+  order_start: string;
+  order_end: string;
+  pick_start: string;
+  pick_end: string;
+  menu: IHttpDish;
+}
 export interface IMyDishesResponse extends IHttpResponse {
-  data: IMyDish[];
-}
-
-if (isDev) {
-  const allDishes = {
-    code: 200,
-    data: [
-      {
-        _id: '5dea015e26a606122cf74d4c',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d4d',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d4e',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d4f',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d50',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d51',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d52',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d53',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d54',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d55',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d56',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d57',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d58',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d59',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5a',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5b',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5c',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5d',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5e',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5f',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d60',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d61',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d62',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d63',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d64',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d65',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d66',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-08',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d67',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d68',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d69',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6a',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6b',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6c',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6d',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6e',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d6f',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d70',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d71',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d72',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d73',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d74',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d75',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d76',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d77',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d78',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-10',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d79',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7a',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7b',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7c',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7d',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7e',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d7f',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d80',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d81',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-11',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d82',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d83',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d84',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 2,
-        name: '爆炒子姜鸭',
-        status: 0,
-        supplier: '红采餐饮',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d85',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 3,
-        name: '水煮肉片',
-        status: 0,
-        supplier: '颂饭',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d86',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 4,
-        name: '特色干拌套餐',
-        status: 0,
-        supplier: '觅哥麻辣烫',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d87',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d88',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 1,
-        name: '牛肉串串',
-        status: 0,
-        supplier: '卤人甲',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d89',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 2,
-        name: '酸菜爱心鸡排堡',
-        status: 0,
-        supplier: '德克士',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015f26a606122cf74d8a',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-12',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-    ],
-    msg: 'ok',
-  };
-  const myDishes = {
-    code: 200,
-    data: [
-      {
-        _id: '5dea015e26a606122cf74d4c',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 1,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d54',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-06',
-        mealNum: 3,
-        name: '东北手卷春饼',
-        status: 0,
-        supplier: '大宁东北水饺',
-        typeA: 2,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d5a',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-07',
-        mealNum: 0,
-        name: '自助餐',
-        status: 0,
-        supplier: '园沁餐厅',
-        typeA: 2,
-        typeB: 1,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-      {
-        _id: '5dea015e26a606122cf74d68',
-        createTime: '2019-12-06T15:20:32.751+08:00',
-        mealDay: '2019-12-09',
-        mealNum: 1,
-        name: '健康水果轻食',
-        status: 0,
-        supplier: '多点沙拉',
-        typeA: 1,
-        typeB: 2,
-        updateTime: '2019-12-06T15:20:32.751+08:00',
-      },
-    ],
-    msg: 'ok',
-  };
-  Mock.mock(WEEKDAY_DISHES_API, 'post', allDishes);
-  Mock.mock(ORDER_DISHES_API, 'post', defaultOkMock);
-  Mock.mock(MY_DISHES_API, 'post', myDishes);
+  data: IMyDining[];
 }
 
 export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
   const response = await axios.get(WEEKDAY_DISHES_API);
-  return response ? response.data : defaultResponse;
+  return response ? commonResponse(response) : defaultResponse;
 }
 
-export async function orderDishes(dishIds: string[]): Promise<IHttpResponse> {
-  const response = await axios.post(ORDER_DISHES_API, {
-    dishIds,
-  });
-  return response ? response.data : defaultResponse;
+export async function orderDishes(
+  dishIds: Array<{ diningId: string; menuId: string }>,
+): Promise<IHttpResponse> {
+  const response = await axios.post(ORDER_DISHES_API, dishIds);
+  return response ? commonResponse(response) : defaultResponse;
 }
 
 export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const response = await axios.get(MY_DISHES_API);
-  return response ? response.data : defaultResponse;
-}
-
-export async function CanUserOrder(): Promise<IHttpResponse> {
-  const response = await axios.get(CAN_ORDER_SWITCH_API);
-  return response ? response.data : defaultResponse;
+  const data: {
+    dinings: IHttpDining[];
+    ordered: IOrder[];
+  } = response.data;
+  const dinings: { [key: string]: IHttpDining } = lodash(data.dinings)
+    .keyBy('_id')
+    .value();
+  const mydinings: IMyDining[] = lodash(data.ordered)
+    .map((orderedItem: IOrder) => {
+      const dining = dinings[orderedItem.dining_id];
+      const menuKeys: { [key: string]: IHttpDish } = lodash(dining.menu)
+        .keyBy('_id')
+        .value();
+      return {
+        id: orderedItem._id,
+        name: dining.name,
+        order_start: dining.order_start,
+        order_end: dining.order_end,
+        pick_start: dining.pick_start,
+        pick_end: dining.pick_end,
+        menu: menuKeys[orderedItem.menu_id],
+      };
+    })
+    .value();
+  return response
+    ? {
+        code: response?.status,
+        data: mydinings,
+        msg: response?.data?.msg,
+      }
+    : {
+        code: 404,
+        data: [],
+        msg: '未知错误',
+      };
 }
 
 export async function VoteDown(

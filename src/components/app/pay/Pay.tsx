@@ -8,8 +8,9 @@ import * as tsx from 'vue-tsx-support';
 
 @Component
 export default class Pay extends tsx.Component<any> {
-  protected code: string = '';
+  protected d: any = {};
   protected timer: any;
+  protected msg: string = '';
   protected timeInterval: number = 0;
   protected render(): VNode {
     return (
@@ -19,11 +20,11 @@ export default class Pay extends tsx.Component<any> {
           <div class='pay-logo' />
           <div class='pay-container'>
             <div class='pay-qr'>
-              <div class='pay-qr-tips'>二维码30秒自动刷新</div>
-              {this.code && (
-                <qriously class='pay-qr-code' value={this.code} size={270} />
+              <div class='pay-qr-tips'>二维码60秒自动刷新</div>
+              {this.d.token && (
+                <qriously class='pay-qr-code' value={this.d.token} size={270} />
               )}
-              {!this.code && (
+              {!this.d.token && (
                 <div class='pay-qr-code pay-qr-code_disable'>
                   <button
                     class='pay-qr-code_disable-refresh'
@@ -31,11 +32,21 @@ export default class Pay extends tsx.Component<any> {
                   />
                 </div>
               )}
+              <div class='pay-qr-hint'>{this.dish || this.msg}</div>
             </div>
           </div>
         </div>
       </div>
     );
+  }
+  private get dish() {
+    if (!(this.d.dining && this.d.order)) {
+      return '';
+    }
+    const dish = this.d.dining.menu.find((el: any) => {
+      return el._id === this.d.order.menu_id;
+    });
+    return dish.title;
   }
   private destroyed() {
     this.stopTimer();
@@ -63,13 +74,19 @@ export default class Pay extends tsx.Component<any> {
     const res = await payCode();
     this.stopTimer();
     if (res.code === 200) {
-      this.code = res.data;
-      this.$store.commit(USER_NAMESPACE + USER.SET_TOKEN, {
-        payCode: this.code,
-      });
+      this.d = res.data;
+      this.msg = res.msg || '';
+      // this.$store.commit(USER_NAMESPACE + USER.SET_TOKEN, {
+      //   payCode: this.d.token,
+      // });
+      this.startTimer(60);
+    } else if (res.msg) {
+      this.d = {};
+      this.msg = res.msg;
       this.startTimer(30);
     } else {
-      this.startTimer(1);
+      this.d = {};
+      this.startTimer(5);
     }
     toast.hide();
   }
@@ -78,7 +95,7 @@ export default class Pay extends tsx.Component<any> {
     this.refreshToken(true);
   }
   private mounted() {
-    this.code = this.$store.state.user.payCode;
+    // this.code = this.$store.state.user.payCode;
     this.refreshToken();
   }
 }

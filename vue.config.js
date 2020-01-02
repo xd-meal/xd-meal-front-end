@@ -14,11 +14,16 @@ module.exports = {
       postCompile: true,
       theme: false,
     },
+    quasar: {
+      importStrategy: 'kebab',
+      rtlSupport: false,
+    },
   },
+  transpileDependencies: ['quasar'],
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://meal.wcmoon.com/',
+        target: 'http://127.0.0.1:7001/',
         ws: true,
         changeOrigin: true,
       },

@@ -1,21 +1,24 @@
-import { CanUserOrder, fetchMyDishes, IMyDish, orderDishes } from '@/api/menu';
-import Checkbox from '@/components/utils/Checkbox.tsx';
-import { createIcal } from '@/components/utils/ical';
-import { MENU, MENU_TIME_TYPE } from '@/store/menu';
 import {
-  IOrderSingleItem,
-  MENU_TYPE,
-  ORDER,
-  ORDER_NAMESPACE,
-} from '@/store/order';
+  fetchMyDishes,
+  fetchWeekdayDishes,
+  IMyDining,
+  orderDishes,
+} from '@/api/menu';
+import PcDining from '@/components/pc/PcDining';
+import Checkbox from '@/components/utils/Checkbox.tsx';
+import { getTimeType } from '@/components/utils/diningTime';
+import { createIcal } from '@/components/utils/ical';
+import { MENU_TIME_TYPE } from '@/store/menu';
+import { IStoreDining } from '@/store/order';
 import { loginOut } from '@/utils/common';
 import lodash from 'lodash';
 import moment from 'moment';
 import { VNode } from 'vue';
 
-import { Component, Watch } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import './PcOrder.scss';
+
 const TIME_STRING_TEMPLATE = 'MM月DD日';
 declare interface IChooseItem {
   type: string;
@@ -31,13 +34,17 @@ declare interface IOrder {
 @Component({
   components: {
     Checkbox,
+    PcDining,
   },
 })
 export default class PcOrder extends tsx.Component<any> {
-  protected list: IOrder[] = [];
+  protected list: IStoreDining[] = [];
+  protected selector: { [key: string]: string | null } = {};
   protected title: string = '';
   protected showFinish: boolean = false;
   protected show: boolean = false;
+
+  private timer: any = null;
   protected render(): VNode {
     return (
       <div class='pcorder' style={{ opacity: this.show ? 1 : 0 }}>
@@ -61,42 +68,9 @@ export default class PcOrder extends tsx.Component<any> {
               </span>
             </h3>
             <div class='pc-order-content'>
-              {this.list.map((item, index) => {
+              {this.list.map((dining) => {
                 return (
-                  <section class='pc-day-menu'>
-                    <h3>{item.title}</h3>
-                    {item.chooseList.map((_) => {
-                      return (
-                        <div class='pc-single-check'>
-                          <div
-                            style={{
-                              marginRight: '30px',
-                              display: 'inline-block',
-                              paddingTop: '3px',
-                            }}
-                          >
-                            <Checkbox
-                              vModel={_.checked}
-                              onChange={this.select.bind(this, item, _, index)}
-                            />
-                          </div>
-                          <div
-                            class='pc-single-check-wrap'
-                            style={{ lineHeight: '24px' }}
-                          >
-                            <div class='pc-single-check-text'>
-                              <div class='pc-single-check-text-title'>
-                                {_.type}
-                              </div>
-                              <div class='pc-single-check-text-desc'>
-                                {_.desc}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </section>
+                  <PcDining vModel={this.selector[dining._id]} data={dining} />
                 );
               })}
             </div>
@@ -106,7 +80,16 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='pc-order-wrap pc-order-wrap_finish'>
             <div class='pc-order-wrap_finish-wrap'>
               <div class='pc-order-wrap_finish-wrap-center'>
-                <h3>您已完成订餐！</h3>
+                <h3>
+                  您已完成订餐！（
+                  <span
+                    style='cursor: pointer;'
+                    onClick={() => (this.showFinish = false)}
+                  >
+                    重选请点击这里
+                  </span>
+                  ）
+                </h3>
                 <h4>扫描下方二维码前往手机查看订餐详情</h4>
                 <h4>
                   或点击
@@ -164,29 +147,29 @@ export default class PcOrder extends tsx.Component<any> {
       </div>
     );
   }
-  private select(item: IOrder, choose: IChooseItem, index: number) {
-    item.chooseList.forEach((chooseItem: IChooseItem) => {
-      if (choose !== chooseItem) {
-        chooseItem.checked = false;
-      }
-    });
-    this.list.splice(index, 1, item);
-  }
   private submit() {
-    const idList: string[] = [];
-    for (const item of this.list) {
-      const choosed = item.chooseList.filter((_) => _.checked);
-      if (choosed.length >= 1) {
-        idList.push(choosed[0].id);
-      } else {
-        // window.console.log('error');
+    if (this.timer) {
+      // 重复点击不提交
+      return;
+    }
+
+    const idList: Array<{ diningId: string; menuId: string }> = [];
+    // tslint:disable-next-line:forin
+    for (const item in this.selector) {
+      if (!this.selector[item]) {
+        // TODO: 跳转到没选择的条目位置
         this.$createToast({
-          txt: '尚未完成选餐',
-          time: 2000,
-          type: 'txt',
+          txt: '存在尚未选择的条目',
+          mask: true,
+          type: 'text',
+          timeout: 3000,
         }).show();
         return;
       }
+      idList.push({
+        diningId: item,
+        menuId: String(this.selector[item]),
+      });
     }
 
     this.$createDialog({
@@ -195,7 +178,19 @@ export default class PcOrder extends tsx.Component<any> {
       content: '请确认下单内容正确，下单后不可更改',
       icon: 'cubeic-alert',
       onConfirm: async () => {
+        const toastLoading = this.$createToast({
+          txt: 'loading',
+          time: 0,
+          mask: true,
+        });
+        // 超过300毫秒的可取下才显示 toast
+        this.timer = setTimeout(() => {
+          toastLoading.show();
+        }, 300);
         const res = await orderDishes(idList);
+        toastLoading.hide();
+        clearTimeout(this.timer);
+        this.timer = null;
         if (res.code === 200) {
           this.showFinish = true;
         } else {
@@ -210,43 +205,74 @@ export default class PcOrder extends tsx.Component<any> {
     }).show();
   }
   private allBuffet() {
-    this.list.forEach((item) =>
-      item.chooseList
-        .filter((_) => _.isBuffet)
-        .forEach((buffetItem) => (buffetItem.checked = true)),
-    );
-    this.$set(this, 'list', this.list);
+    const textRegex = /自助/;
+    this.list.forEach((_) => {
+      const buffetList = _.menu.filter((menu) => textRegex.test(menu.title));
+      if (buffetList.length > 0) {
+        this.selector[_._id] = buffetList[0]._id;
+      }
+    });
   }
   private random() {
-    this.list.forEach((item) => {
-      const index = Math.floor(Math.random() * item.chooseList.length);
-      item.chooseList.forEach((_, i) => {
-        if (i === index) {
-          _.checked = true;
-        } else {
-          _.checked = false;
-        }
-      });
+    this.list.forEach((_) => {
+      const index = Math.floor(Math.random() * _.menu.length);
+      this.selector[_._id] = _.menu[index]._id;
     });
+  }
+  private refreshTitle() {
+    const times = lodash(this.list)
+      .groupBy('pick_start')
+      .keys()
+      .map((_) => moment(_).unix())
+      .value();
+
+    const timeMax = lodash.max(times);
+    const timeMin = lodash.min(times);
+    this.title =
+      moment(timeMin).format(TIME_STRING_TEMPLATE) +
+      '-' +
+      moment(timeMax).format(TIME_STRING_TEMPLATE) +
+      '一周选饭';
   }
   private async mounted() {
     const toast = this.$createToast({
       txt: 'loading...',
       mask: true,
+      time: 0,
     });
     const timer = setTimeout(() => {
       toast.show();
     }, 300);
-    const canUserOrder = (await CanUserOrder()).data;
-    if (canUserOrder) {
-      await this.$store.dispatch(
-        ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
-      );
+    const res = await fetchWeekdayDishes();
+    toast.hide();
+    clearTimeout(timer);
+    if (res.code !== 200) {
+      return;
+    }
+    if (res.data.dinings.length > 0) {
+      const selector: { [key: string]: string | null } = {};
+      const orders = res.data.orders;
+      this.list = res.data.dinings;
+      // 判断是否已经点过，点过的直接帮他选上
+      if (orders.length <= 0) {
+        this.list.forEach((_) => (selector[_._id] = null));
+      } else {
+        // 整理成 key value 形式
+        const orderByKey: { [key: string]: string } = lodash(orders)
+          .keyBy('dining_id')
+          .mapValues('menu_id')
+          .value();
+        this.list.forEach((value) => {
+          selector[value._id] = orderByKey[value._id];
+        });
+        // 先送去结束界面
+        this.showFinish = true;
+      }
+      this.selector = selector;
+      this.refreshTitle();
     } else {
       this.showFinish = true;
     }
-    clearTimeout(timer);
-    toast.hide();
     this.show = true;
   }
   private loginOut() {
@@ -256,14 +282,14 @@ export default class PcOrder extends tsx.Component<any> {
     const myDishesRes = await fetchMyDishes();
     if (myDishesRes.code === 200) {
       const myDishes = myDishesRes.data || [];
-      const mealList = myDishes.map((dish: IMyDish) => {
+      const mealList = myDishes.map((dish: IMyDining) => {
         return {
-          time: dish.mealDay,
+          time: dish.pick_start,
           title: dish.name,
-          desc: dish.desc ? dish.desc.toString() : '',
-          isVoteDown: dish.badEval,
-          type: dish.typeA === 1 ? MENU_TIME_TYPE.LUNCH : MENU_TIME_TYPE.DINNER,
-          id: dish._id,
+          desc: dish.menu.desc ?? '',
+          isVoteDown: false,
+          type: getTimeType(dish)?.key ?? MENU_TIME_TYPE.BREAKFAST,
+          id: dish.id,
         };
       });
       const str = createIcal(mealList);
@@ -281,45 +307,11 @@ export default class PcOrder extends tsx.Component<any> {
       // TODO: 异常处理情况
     }
   }
-  @Watch('$store.state.order.list')
-  private onStoreOrderChanged(newVal: IOrderSingleItem[]) {
-    const listGroupByDateTime = lodash.groupBy(newVal, 'time');
-    this.list = [];
-    const TimeKeys = [];
-    // tslint:disable-next-line:forin
-    for (const key in listGroupByDateTime) {
-      TimeKeys.push(moment(key).valueOf());
-      const singleList = listGroupByDateTime[key];
-      // 按照 上下午 分类
-      lodash(singleList)
-        .groupBy('type')
-        .forEach((item, type) => {
-          const time = type === MENU_TIME_TYPE.LUNCH ? '午饭' : '晚饭';
-          this.list.push({
-            title: moment(key).format(TIME_STRING_TEMPLATE) + time,
-            chooseList: item.map((_: IOrderSingleItem) => ({
-              type: _.menuType === MENU_TYPE.BUFFE ? '自助' : '简餐',
-              desc: `${_.title}: ${_.desc}`,
-              id: _.id,
-              isBuffet: _.menuType === MENU_TYPE.BUFFE,
-              checked: false,
-            })),
-          });
-        });
-    }
-    const timeMax = lodash.max(TimeKeys);
-    const timeMin = lodash.min(TimeKeys);
-    this.title =
-      moment(timeMin).format(TIME_STRING_TEMPLATE) +
-      '-' +
-      moment(timeMax).format(TIME_STRING_TEMPLATE) +
-      '一周选饭';
-  }
   // getter
   get progressLength() {
-    const selectMenuLength = this.list.filter((item) =>
-      item.chooseList.some((_) => _.checked),
-    ).length;
-    return (selectMenuLength / this.list.length) * 100 + '%';
+    const selectList = lodash(this.selector)
+      .filter((_) => Boolean(_))
+      .value();
+    return (selectList.length / this.list.length) * 100 + '%';
   }
 }

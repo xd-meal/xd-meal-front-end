@@ -120,9 +120,10 @@
       display: flex;
       align-items: center;
       padding-left: 20px;
-      justify-content: space-between;
       position: relative;
       z-index: 14;
+      height: 100%;
+      justify-content: flex-end;
     }
     .submit {
       z-index: 13;

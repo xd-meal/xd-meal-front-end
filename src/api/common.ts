@@ -1,7 +1,7 @@
 import { IHttpResponse } from '@/api/http';
 import { isDev } from '@/utils/common';
 import Mock from 'mockjs';
-import axios, { AxiosError, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { gotoLogin } from '@/utils/common';
 
 export const defaultResponse = {
@@ -15,7 +15,17 @@ export const defaultOkMock = {
   data: '',
   msg: '操作成功（这是一个 mock 数据）',
 };
-
+export function adminResponse(response: AxiosResponse) {
+  const msg = response.data
+    ? response.data.msg || response.data.message || response.data.error
+    : '';
+  return {
+    code: response.status,
+    data: response.data,
+    msg,
+  };
+}
+export const commonResponse = adminResponse;
 export class CommonErrorRespond {
   public data: IHttpResponse = defaultResponse;
   constructor(error: AxiosError) {
@@ -47,6 +57,18 @@ export class CommonErrorRespond {
       msg: `其他错误: ${message}(${code})`,
     };
   }
+}
+
+export function buildParams(
+  url: string,
+  query: { [key: string]: string | number },
+) {
+  for (const key in query) {
+    if (query.hasOwnProperty(key)) {
+      url = url.replace(new RegExp(`:${key}`, 'g'), String(query[key]));
+    }
+  }
+  return url;
 }
 if (isDev) {
   Mock.setup({
@@ -98,12 +120,16 @@ if (isDev) {
 
   axios.interceptors.response.use(
     (data) => {
-      if (data.data && /请先登录/.test(data.data.msg)) {
+      if (/未登录/.test(String(data?.data?.msg))) {
         gotoLogin();
       }
       return data;
     },
-    (error) => {
+    (error: AxiosError) => {
+      const msg = error?.response?.data?.msg;
+      if (/未登录/.test(String(msg))) {
+        gotoLogin();
+      }
       return Promise.resolve(new CommonErrorRespond(error));
     },
   );

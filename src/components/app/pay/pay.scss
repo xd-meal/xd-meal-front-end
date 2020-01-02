@@ -58,7 +58,7 @@
       color: #cbcbcb;
     }
     &-code {
-      position: absolute;
+      // position: absolute;
       top: 0;
       left: 0;
       width: 100%;
@@ -88,6 +88,9 @@
           border-width: 0;
         }
       }
+    }
+    &-hint {
+      font-size: 20px;
     }
   }
 }
