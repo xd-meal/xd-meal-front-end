@@ -56,7 +56,8 @@ export default new Router({
       name: ROUTER_NAME.LOGIN,
       component: Login,
       meta: {
-        top: true,
+        stop: true,
+        noAnimation: true,
       },
     },
     {

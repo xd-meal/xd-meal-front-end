@@ -20,8 +20,14 @@ export default class Home extends Vue {
 
   @Watch('$route')
   public onChangeValue(newVal: Route, oldVal: Route) {
+    if (newVal.meta.noAnimation || oldVal.meta.noAnimation) {
+      this.transitionName = 'none';
+      console.log(1);
+      return;
+    }
     if (newVal.meta.stop || oldVal.meta.stop) {
-      this.transitionName = '';
+      this.transitionName = 'none';
+      console.log(2);
       return;
     }
     if (oldVal.meta.rightOut) {
@@ -121,5 +127,13 @@ html {
 .slide-right-enter {
   opacity: 0;
   transform: translate(-100%, 0);
+}
+.none-leave-active {
+  transition: none;
+  z-index: -1;
+}
+.none-enter {
+  z-index: 1;
+  transition: none;
 }
 </style>
