@@ -1,6 +1,12 @@
-import { MENU, MENU_TIME_TYPE } from '@/store/menu';
+import { MENU } from '@/store/menu';
 import moment from 'moment';
-
+// XXX: don`t know why error
+enum MENU_TIME_TYPE {
+  BREAKFAST = 'breakfast',
+  LUNCH = 'lunch',
+  DINNER = 'dinner',
+  FRUIT = 'fruit',
+}
 export const timeIteration = [
   {
     label: '早餐',

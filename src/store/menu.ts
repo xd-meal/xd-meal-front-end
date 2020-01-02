@@ -1,9 +1,4 @@
-import {
-  fetchMyDishes,
-  fetchWeekdayDishes,
-  IMyDining,
-  IMyDish,
-} from '@/api/menu';
+import { fetchMyDishes, IMyDining } from '@/api/menu';
 import { ActionTree, MutationTree } from 'vuex';
 
 export enum MENU_TIME_TYPE {

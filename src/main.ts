@@ -1,4 +1,3 @@
-import { checkUserLogin } from '@/api/login';
 import { getCookie } from '@/utils/cookies';
 import os from '@/utils/os';
 import Vue from 'vue';

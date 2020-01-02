@@ -9,6 +9,7 @@ module.exports = {
   transformIgnorePatterns: ['/node_modules/'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
+    quasar: '<rootDir>/node_modules/quasar',
   },
   snapshotSerializers: ['jest-serializer-vue'],
   testMatch: [
