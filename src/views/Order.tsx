@@ -37,7 +37,8 @@ export default class Order extends tsx.Component<any> {
   protected current: any = null;
   protected errorText: string = '';
   protected selector: { [key: string]: string | null } = {};
-
+  protected randomBtn: boolean = false;
+  protected allBuffetBtn: boolean = false;
   protected render(): VNode {
     return (
       <ChildPageConstruction class='order'>
@@ -93,18 +94,22 @@ export default class Order extends tsx.Component<any> {
           </div>
           <div class='bg' />
           <div class='order-footer-wrap'>
-            <div
-              class='order-footer-text-btn'
-              onclick={() => this.selectAllBuffet()}
-            >
-              全自助
-            </div>
-            <div
-              class='order-footer-text-btn'
-              onclick={() => this.selectAllRandom()}
-            >
-              随机选
-            </div>
+            {this.randomBtn && (
+              <div
+                class='order-footer-text-btn'
+                onclick={() => this.selectAllBuffet()}
+              >
+                全自助
+              </div>
+            )}
+            {this.randomBtn && (
+              <div
+                class='order-footer-text-btn'
+                onclick={() => this.selectAllRandom()}
+              >
+                随机选
+              </div>
+            )}
             <button
               class={{ submit: true, submit_disable: this.submitDisable }}
               onclick={this.submit.bind(this)}
@@ -136,6 +141,9 @@ export default class Order extends tsx.Component<any> {
   }
   // events
   protected mounted() {
+    const config = this.$store.state.user.config;
+    this.randomBtn = config.randomBtn;
+    this.allBuffetBtn = config.allBuffetBtn;
     const list = this.$store.state.order.list;
     const selector: { [key: string]: string | null } = {};
     const timeGroup: { [key: string]: IStoreDining[] } = {};

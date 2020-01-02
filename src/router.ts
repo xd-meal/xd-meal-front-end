@@ -101,7 +101,8 @@ export default new Router({
       component: ResetPassword,
       name: ROUTER_NAME.APP_RESET_PSW,
       meta: {
-        stop: true,
+        rightIn: true,
+        rightOut: true,
       },
     },
     {

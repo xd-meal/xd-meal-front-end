@@ -1,6 +1,7 @@
 import './AppMain.scss';
 import { ROUTER_NAME } from '@/router';
 import { ORDER, ORDER_NAMESPACE } from '@/store/order';
+import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -92,6 +93,7 @@ export default class AppMain extends tsx.Component<any> {
     );
   }
   private mounted() {
+    this.$store.dispatch(USER_NAMESPACE + USER.FETCH_USER_PROFILE_ACTION);
     const index =
       components[this.$router.currentRoute.name as string].index || 0;
     this.current = ComponentList[index];

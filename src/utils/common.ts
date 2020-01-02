@@ -1,6 +1,7 @@
 import { fetchWeworkCode, logoutApi } from '@/api/login';
 import router from '@/router';
 import os from '@/utils/os';
+import store from 'store';
 
 export const isDev = false; // process.env.NODE_ENV === 'development';
 
@@ -82,6 +83,7 @@ export function gotoIndex() {
 export async function loginOut(targetDom: Vue) {
   const res = await logoutApi();
   if (res.code === 200) {
+    store.clearAll();
     gotoLogin();
   } else {
     targetDom

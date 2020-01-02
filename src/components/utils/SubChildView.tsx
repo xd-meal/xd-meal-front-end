@@ -17,6 +17,10 @@ export default class SubChildView extends tsx.Component<any> {
   protected title!: string;
   @Prop()
   protected goBackPath!: RouteConfig | string;
+
+  public refresh() {
+    (this.$refs.scroll as any).refresh();
+  }
   private render(): VNode {
     return (
       <ChildPageConstruction class='subchild'>
@@ -27,7 +31,7 @@ export default class SubChildView extends tsx.Component<any> {
             goBackPath={this.goBackPath}
           />
         </div>
-        <div class='subchild-body' slot='context'>
+        <div class='subchild-body' slot='context' style='height: 100%;'>
           <cube-scroll
             ref='scroll'
             options={{
