@@ -17,7 +17,7 @@ function callWeWorkLogin(corp: string) {
       break;
 
     case 'tap':
-      // TODO: call xd global wework login
+      params.set('appid', 'wwc2b230af5a43715b');
       break;
 
     // case 'xdg':

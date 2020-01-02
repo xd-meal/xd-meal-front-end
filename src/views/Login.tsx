@@ -57,7 +57,7 @@ export default class Login extends tsx.Component<any> {
                 class='qrcode-icon-item'
                 data-corp='tap'
                 onClick={() => {
-                  // this.doQRLogin('tap');
+                  this.doQRLogin('tap');
                 }}
               />
               <img
@@ -125,6 +125,7 @@ export default class Login extends tsx.Component<any> {
         break;
       case 'tap':
         corpid = 'wwc2b230af5a43715b';
+        agentid = '1000034';
         break;
       // case '?':
       //   corpid = 'wxe2be6e5c62e7b072';
