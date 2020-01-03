@@ -8,7 +8,7 @@ import {
 import { getDay, timeMMDD, timeParser } from '@/components/utils/time.ts';
 import { MENU_TIME_TYPE } from '@/store/menu';
 import moment from 'moment';
-import { json } from 'tests/unit/component/utils/ical';
+import { json } from './ical';
 
 describe('@/components/utils/time.ts', () => {
   it('getDay', () => {
