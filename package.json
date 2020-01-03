@@ -28,6 +28,7 @@
     "vue-qriously": "^1.1.1",
     "vue-router": "^3.0.3",
     "vue-tsx-support": "^2.3.2",
+    "vuedraggable": "^2.23.2",
     "vuex": "^3.0.1",
     "xlsx": "^0.15.4"
   },
