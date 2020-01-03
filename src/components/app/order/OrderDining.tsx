@@ -12,10 +12,11 @@ export default class OrderDining extends tsx.Component<any> {
   })
   protected data!: IStoreDining;
   private render(): VNode {
+    const dataMenu: IStoreDish[] = this.data?.menu ?? [];
     return (
       <div class='menu-checkbox dining'>
         <div class='menu-title'>{this.data && getTimeName(this.data)}</div>
-        {this.data?.menu.map((menu: IStoreDish) => (
+        {dataMenu.map((menu: IStoreDish) => (
           <div class='menu-checkbox'>
             <div class='menu-checkbox-wrap'>
               <div class='menu-checkbox-title'>{menu.title}</div>
@@ -27,11 +28,16 @@ export default class OrderDining extends tsx.Component<any> {
                 onClick={() => this.$emit('change', menu._id)}
               />
             </div>
-            <div class='menu-checkbox-wrap'>
-              {menu.desc.split(/[,，]/).map((str) => (
-                <div class='menu-checkbox-desc'>{str}</div>
-              ))}
-            </div>
+            {/自助/g.test(menu.title) && (
+              <div class='menu-checkbox-wrap buffet'>
+                {menu.desc.split(/[,，]/).map((str) => (
+                  <div class='menu-checkbox-desc'>{str}</div>
+                ))}
+              </div>
+            )}
+            {menu.supplier && (
+              <div class='menu-supplier'>供应商：{menu.supplier}</div>
+            )}
           </div>
         ))}
       </div>

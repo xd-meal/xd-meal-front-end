@@ -1,6 +1,8 @@
 import './index.scss';
 import { IMyDining, VoteDown } from '@/api/menu';
-import { getTimeType } from '@/components/utils/diningTime';
+import { getTimeName, getTimeType } from '@/components/utils/diningTime';
+import { getMenuGroupBy } from '@/components/utils/group';
+import { IStoreDining } from '@/store/order';
 
 import Vue, { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
@@ -22,6 +24,10 @@ import { timeParser } from '@/components/utils/time';
 export default class Index extends tsx.Component<any> {
   // data
   protected innerPromise = false;
+  protected list: Array<{
+    key: string;
+    value: IMyDining[];
+  }> = [];
 
   protected render(): VNode {
     return (
@@ -36,15 +42,20 @@ export default class Index extends tsx.Component<any> {
               directionLockThreshold: 0,
             }}
           >
-            {_(this.menus)
-              .sortBy('pick_start')
-              .map((item: IMyDining) => (
-                <div class='app-day-menu'>
-                  <div class='app-day-menu-time'>
-                    <span class='icon' />
-                    <span class='time'>{timeParser(item.pick_start)}</span>
-                  </div>
+            {this.list.map((diningList) => (
+              <div class='app-day-menu'>
+                <div class='app-day-menu-time'>
+                  <span class='icon' />
+                  <span class='time'>{timeParser(diningList.key)}</span>
+                </div>
+                {diningList.value.map((item) => (
                   <div class='app-day-menu-body'>
+                    <div
+                      class='time-title'
+                      style='line-height: 28px;font-size: 20px;margin: 14px 0;font-weight: 500;'
+                    >
+                      {item && getTimeName(item)}
+                    </div>
                     <div class='app-day-menu-body-wrap'>
                       <div class='title'>{item.menu.title}</div>
                       <div
@@ -55,15 +66,17 @@ export default class Index extends tsx.Component<any> {
                         // onClick={this.voteDownDishes.bind(this, item)}
                       />
                     </div>
-                    <div class='app-day-menu-body-wrap'>
-                      {item.menu.desc.split(/[,，]/).map((desc) => (
-                        <div class='desc'>{desc}</div>
-                      ))}
-                    </div>
+                    {/自助/g.test(item.menu.title) && (
+                      <div class='app-day-menu-body-wrap'>
+                        {item.menu.desc.split(/[,，]/).map((desc) => (
+                          <div class='desc'>{desc}</div>
+                        ))}
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))
-              .value()}
+                ))}
+              </div>
+            ))}
           </cube-scroll>
         </div>
       </div>
@@ -75,8 +88,9 @@ export default class Index extends tsx.Component<any> {
   }
 
   // event
-  private mounted() {
-    this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
+  private async mounted() {
+    await this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
+    this.list = getMenuGroupBy<IMyDining>(this.menus);
   }
 
   private async voteDownDishes(dish: ISingleMenuItem) {
