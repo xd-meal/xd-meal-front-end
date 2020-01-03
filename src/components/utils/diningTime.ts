@@ -1,4 +1,3 @@
-import { MENU } from '@/store/menu';
 import moment from 'moment';
 // XXX: don`t know why error
 enum MENU_TIME_TYPE {
@@ -21,15 +20,15 @@ export function getTimeNumber(time: string | number): number[] {
     const timeArr: string[] = String(time).split(':');
     return [parseInt(timeArr[0], 10), parseInt(timeArr[1], 10)];
   } else {
-    const timeMoment = moment(time);
+    const timeMoment = moment(time).utcOffset(480);
     return [timeMoment.get('hour'), timeMoment.get('minute')];
   }
 }
 export function timeNumberBeforeTarget(source: number[], target: number[]) {
-  return source[0] <= target[0] && source[1] <= target[1];
+  return source[0] * 60 + source[1] <= target[0] * 60 + target[1];
 }
 export function timeNumberAfterTarget(source: number[], target: number[]) {
-  return source[0] >= target[0] && source[1] >= target[1];
+  return source[0] * 60 + source[1] >= target[0] * 60 + target[1];
 }
 export function getTimeType(dining: {
   pick_start: string;
@@ -68,8 +67,12 @@ export function getTimeName(dining: { pick_start: string; pick_end: string }) {
   }
   const outputStr = 'HH:mm';
   return (
-    moment(dining.pick_start).format(outputStr) +
+    moment(dining.pick_start)
+      .utcOffset(480)
+      .format(outputStr) +
     '-' +
-    moment(dining.pick_end).format(outputStr)
+    moment(dining.pick_end)
+      .utcOffset(480)
+      .format(outputStr)
   );
 }

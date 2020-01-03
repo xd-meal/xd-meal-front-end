@@ -14,6 +14,7 @@ import {
   QItemSection,
   QItemLabel,
 } from 'quasar';
+import draggable from 'vuedraggable';
 import moment from 'moment';
 import { VNode } from 'vue';
 import lodash from 'lodash';
@@ -49,6 +50,7 @@ export interface IAdminDishSelectOption {
     QItem,
     QItemSection,
     QItemLabel,
+    draggable,
   },
 })
 export default class AdminImport extends tsx.Component<any> {
@@ -119,25 +121,27 @@ export default class AdminImport extends tsx.Component<any> {
           <div class='q-mb-sm'>
             <div class='text-h5 q-mb-sm'>菜品列表</div>
             {this.menu.length > 0 && (
-              <q-list bordered separator>
-                {this.menu.map((item, index) => (
-                  <q-item clickable>
-                    <q-item-section>
-                      <div style='display: flex; align-item: center;'>
-                        <div> 菜品名称：</div>
-                        <div>
-                          {item.title}({item._id})
+              <q-list bordered>
+                <draggable vModel={this.menu} draggable='.q-item'>
+                  {this.menu.map((item, index) => (
+                    <q-item clickable>
+                      <q-item-section>
+                        <div style='display: flex; align-item: center;'>
+                          <div> 菜品名称：</div>
+                          <div>
+                            {item.title}({item._id})
+                          </div>
+                          <div>
+                            <q-icon
+                              name='cancel'
+                              onClick={this.deleteFromMenu.bind(this, index)}
+                            />
+                          </div>
                         </div>
-                        <div>
-                          <q-icon
-                            name='cancel'
-                            onClick={this.deleteFromMenu.bind(this, index)}
-                          />
-                        </div>
-                      </div>
-                    </q-item-section>
-                  </q-item>
-                ))}
+                      </q-item-section>
+                    </q-item>
+                  ))}
+                </draggable>
               </q-list>
             )}
           </div>
