@@ -1,0 +1,6 @@
+@import 'quasar.variables';
+@import '~quasar-styl';
+// @import '~quasar-addon-styl';
+:not(.q-layout-container) h2 {
+  font-size: unset;
+}

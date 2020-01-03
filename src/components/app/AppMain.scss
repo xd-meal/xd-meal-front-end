@@ -1,0 +1,87 @@
+.app-main {
+  .child-view {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+  .body {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: auto;
+    bottom: 56px;
+  }
+  .footer-bar {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    border-top: .5px solid #ddd;
+    z-index: 2;
+    background-color: #fff;
+    .footer-bar-wrap {
+      display: flex;
+      width: 100%;
+      height: 56px;
+      line-height: 56px;
+    }
+    .footer-active {
+      position: absolute;
+      transition: left 0.3s ease-in-out;
+      &:after {
+        content: '';
+        display: block;
+        width: 44px;
+        background-color: #ff6600;
+        height: 5px;
+        left: 50%;
+        position: absolute;
+        margin-left: -22px;
+      }
+    }
+    .tab {
+      flex: 1;
+      color: #999999;
+      text-align: center;
+      padding: 4px 0;
+      box-sizing: border-box;
+      .icon {
+        width: 29px;
+        height: 29px;
+        margin: 0 auto 2px;
+        background-size: contain;
+        background-color: transparent;
+        &.index {
+          background-image: url("../../assets/icon/main-menu.svg");
+        }
+        &.pay {
+          background-image: url("../../assets/icon/qrcode.svg");
+        }
+        &.profile {
+          background-image: url("../../assets/icon/single.svg");
+        }
+      }
+
+      &_active {
+        color: #333;
+        .icon {
+          &.index {
+            background-image: url("../../assets/icon/main-menu-active.svg");
+          }
+          &.pay {
+            background-image: url("../../assets/icon/qrcode-active.svg");
+          }
+          &.profile {
+            background-image: url("../../assets/icon/single-active.svg");
+          }
+        }
+      }
+      .text {
+        width: 25px;
+        font-size: 12px;
+        line-height: 17px;
+        margin: 0 auto;
+      }
+    }
+  }
+}

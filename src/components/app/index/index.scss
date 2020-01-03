@@ -1,0 +1,137 @@
+.index {
+  display: flex;
+  flex-direction: column;
+  &-header {
+    height: 28px + 15px + 15px;
+    &-tab {
+      padding-top: 15px;
+      width: 280px;
+      position: relative;
+    }
+    .nav-link.notification {
+      background-image: url("../../../assets/icon/notification.svg");
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      background-position: center center;
+      width: 24px;
+      height: 24px;
+      display: block;
+      position: absolute;
+      right: 10px;
+    }
+  }
+  &-body {
+    flex: 1;
+    text-align: left;
+    overflow: hidden;
+    background-color: #f8f8f8;
+    color: #333;
+  }
+  .app-day-menu {
+    margin-bottom: 8px;
+    padding: 16px 20px;
+    background-color: #fff;
+    &-time {
+      line-height: 20px;
+      margin-bottom: 20px;
+      .icon {
+        height: 20px;
+        line-height: 20px;
+        width: 20px;
+        //background-color: #444;
+        background-image: url('../../../assets/icon/calendar.svg');
+        background-size: contain;
+        margin-right: 10px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+      .time {
+        font-size: 14px;
+        line-height: 20px;
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+    &-body {
+      line-height: 20px;
+      font-size: 14px;
+
+      &-wrap {
+        position: relative;
+      }
+      .title {
+        margin-bottom: 17px;
+        padding-right: 5px + 20px + 15px;
+      }
+      .down-vote {
+        position: absolute;
+        right: 5px;
+        top: 0;
+        width: 20px;
+        height: 20px;
+        //background-color: #949494;
+        background-image: url('../../../assets/icon/vote-down.svg');
+        background-size: contain;
+        &_active {
+          //background-color: #515151;
+          background-image: url('../../../assets/icon/vote-down2.svg');
+        }
+      }
+      .desc {
+        margin-bottom: 17px;
+      }
+    }
+  }
+  .cube-tab-bar {
+    height: 28px;
+    position: absolute;
+    width: 100%;
+    .cube-tab {
+      font-size: 20px;
+      color: #c6c6c6;
+      &_active {
+        color: #000;
+        > div {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+  .tab-slide-container {
+    position: relative;
+  }
+}
+
+.order-btn {
+  position: fixed;
+  bottom: 124px;
+  right: 10px;
+  width: 60px;
+  height: 60px;
+  border-right: 60px;
+  background: linear-gradient(145deg, #ff9f00, #ff6600);
+  border-radius: 60px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 60px;
+  display: block;
+  z-index: 1;
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  animation: fade-in ease-in-out .5s;
+  .order-icon {
+    background-image: url('../../../assets/icon/order.svg');
+    width: 25px;
+    height: 35px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    vertical-align: middle;
+    display: inline-block;
+  }
+}

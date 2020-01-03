@@ -1,0 +1,107 @@
+.app-login {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  input {
+    appearance: none;
+    box-shadow: none;
+  }
+  button {
+    border-width: 0;
+  }
+  .xd-logo {
+    position: relative;
+    top: 0;
+    margin-bottom: 80px;
+    height: 69px;
+    width: 247px;
+    //background-color: #ff6600;
+    background-image: url('../assets/icon/logo.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    left: 50%;
+    margin-left: -247px * 0.5;
+  }
+  &-wrap {
+    width: 288px;
+    margin: 0 auto;
+    position: relative;
+  }
+  &__input-wrap {
+    width: 100%;
+    margin-bottom: 22px;
+    &.password {
+      margin-bottom: 8px;
+    }
+  }
+  &-input {
+    width: 100%;
+    outline: none;
+    height: 49px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-sizing: border-box;
+    padding: 0 15px;
+  }
+  &-forget {
+    margin-bottom: 9px;
+    font-size: 12px;
+    color: #999999;
+    line-height: 25px;
+    text-align: right;
+  }
+
+  &-buttons {
+    display: flex;
+    width: 100%;
+    height: 50px;
+  }
+
+  &-submit {
+    background-color: #ea5c03;
+    border-radius: 10px;
+    color: #ffffff;
+    font-size: 20px;
+    width: 100%;
+    height: 50px;
+  }
+
+  &-buttons {
+    margin-top: 10px;
+    background-color: #ea5c03;
+    border-radius: 10px;
+    color: #ffffff;
+    width: 100%;
+    height: 50px;
+  }
+
+  &-qrcode {
+    background-image: url('../assets/icon/qr-code-reverse.svg');
+    display: inline-block;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin: auto 0 auto 15px;
+    height: 30px;
+    width: 30px;
+  }
+
+  .qrcode-icon-container {
+    display: inline-block;
+    position: relative;
+    width: 70%;
+    height: 35px;
+    margin: auto;
+    display: flex;
+    justify-content: space-evenly;
+    > .qrcode-icon-item {
+      height: 35px;
+      cursor: pointer;
+      width: 35px;
+      background: white;
+      border-radius: 50%;
+    }
+  }
+}
