@@ -5,7 +5,7 @@ import {
   icalTimeStart,
   icalTitleFromMealList,
 } from '@/components/utils/ical';
-import { getDay, timeMMDD, timeParser } from '@/components/utils/time.js';
+import { getDay, timeMMDD, timeParser } from '@/components/utils/time.ts';
 import { MENU_TIME_TYPE } from '@/store/menu';
 import moment from 'moment';
 import { json } from 'tests/unit/component/utils/ical';

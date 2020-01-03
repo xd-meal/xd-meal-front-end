@@ -20,7 +20,7 @@ export function getTimeNumber(time: string | number): number[] {
     const timeArr: string[] = String(time).split(':');
     return [parseInt(timeArr[0], 10), parseInt(timeArr[1], 10)];
   } else {
-    const timeMoment = moment(time);
+    const timeMoment = moment(time).utcOffset(480);
     return [timeMoment.get('hour'), timeMoment.get('minute')];
   }
 }
@@ -67,8 +67,12 @@ export function getTimeName(dining: { pick_start: string; pick_end: string }) {
   }
   const outputStr = 'HH:mm';
   return (
-    moment(dining.pick_start).format(outputStr) +
+    moment(dining.pick_start)
+      .utcOffset(480)
+      .format(outputStr) +
     '-' +
-    moment(dining.pick_end).format(outputStr)
+    moment(dining.pick_end)
+      .utcOffset(480)
+      .format(outputStr)
   );
 }
