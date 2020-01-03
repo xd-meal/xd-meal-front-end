@@ -94,7 +94,7 @@ export default class Order extends tsx.Component<any> {
           </div>
           <div class='bg' />
           <div class='order-footer-wrap'>
-            {this.randomBtn && (
+            {this.allBuffetBtn && (
               <div
                 class='order-footer-text-btn'
                 onclick={() => this.selectAllBuffet()}
