@@ -5,10 +5,10 @@ import {
   icalTimeStart,
   icalTitleFromMealList,
 } from '@/components/utils/ical';
-import { getDay, timeMMDD, timeParser } from '@/components/utils/time.ts';
+import { getDay, timeMMDD, timeParser } from '@/components/utils/time.js';
 import { MENU_TIME_TYPE } from '@/store/menu';
 import moment from 'moment';
-import { json } from './ical';
+import { json } from 'tests/unit/component/utils/ical';
 
 describe('@/components/utils/time.ts', () => {
   it('getDay', () => {
