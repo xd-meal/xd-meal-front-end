@@ -29,14 +29,14 @@ export default class Index extends tsx.Component<any> {
             //   name: '商家收藏',
             //   target: 'profile',
             // },
-            // {
-            //   name: '商家收藏',
-            //   target: 'profile',
-            // },
 
             {
               name: '设置',
               target: ROUTER_NAME.APP_SETTING,
+            },
+            {
+              name: '加班餐',
+              target: ROUTER_NAME.APP_SPECIAL_ORDER,
             },
             {
               name: '重设密码',

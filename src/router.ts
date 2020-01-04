@@ -34,6 +34,7 @@ export const ROUTER_NAME = {
   APP_NOTIFICATION: 'notification',
   APP_SETTING: 'setting',
   APP_RESET_PSW: 'resetpsw',
+  APP_SPECIAL_ORDER: 'appSpecialOrder',
   PC: 'pc',
   PC_ORDER: 'pcOrder',
   ADMIN: 'admin',
@@ -65,6 +66,16 @@ export default new Router({
       name: ROUTER_NAME.APP_ORDER,
       component: Order,
       meta: {
+        rightIn: true,
+        rightOut: true,
+      },
+    },
+    {
+      path: '/special/order',
+      name: ROUTER_NAME.APP_SPECIAL_ORDER,
+      component: Order,
+      meta: {
+        isSpecial: true,
         rightIn: true,
         rightOut: true,
       },
