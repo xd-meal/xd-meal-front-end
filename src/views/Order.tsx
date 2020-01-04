@@ -143,7 +143,7 @@ export default class Order extends tsx.Component<any> {
   protected mounted() {
     const config = this.$store.state.user.config;
     this.randomBtn = config.randomBtn;
-    this.allBuffetBtn = config.allBuffetBtn;
+    this.allBuffetBtn = config.buffetBtn;
     const list = this.$store.state.order.list;
     const selector: { [key: string]: string | null } = {};
     const timeGroup: { [key: string]: IStoreDining[] } = {};
