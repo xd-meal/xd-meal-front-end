@@ -120,11 +120,23 @@
     position: relative;
     &-text-btn {
       line-height: 58px;
-      width: 82px;
+      width: 92px;
       height: 58px;
       font-size: 18px;
       font-weight: 400;
       color: #fff;
+      .btn-checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url('../assets/icon/unselected.svg');
+        &_active {
+          background-image: url('../assets/icon/selected.svg');
+        }
+      }
     }
     &-wrap {
       display: flex;
