@@ -20,7 +20,7 @@ const components: ComponentMap = {
     index: 0,
   },
   pay: {
-    name: '支付',
+    name: '取餐',
     index: 1,
   },
   profile: {
