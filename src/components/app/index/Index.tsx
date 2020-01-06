@@ -35,7 +35,13 @@ export default class Index extends tsx.Component<any> {
         {/*<div class='index-header'>*/}
         {/*  <div class='index-header-tab'></div>*/}
         {/*</div>*/}
-        <div class='index-body'>
+        <div
+          class={{
+            'index-body': true,
+            'index-body_empty': this.list.length === 0,
+          }}
+        >
+          {this.list.length === 0 && <div class='tip'>还未选餐哟！</div>}
           <cube-scroll
             data={this.menus}
             options={{

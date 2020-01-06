@@ -20,7 +20,7 @@ export interface IAdminDing {
   pick_start: number;
   pick_end: number;
   stat_type: 0 | 1;
-  title: string;
+  name: string;
   menu: IAdminDish[];
 }
 @Component({

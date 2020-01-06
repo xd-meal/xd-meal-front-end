@@ -7,6 +7,11 @@
     height: 100%;
     text-align: left;
     color: #333;
+    &_empty {
+      background-image: url('../assets/icon/xd.svg');
+      background-size: 40% auto;
+      background-position: 60% 60%;
+    }
     .cube-scroll-nav-bar {
       background-color: #f8f8f8;
       &-item {

@@ -9,7 +9,7 @@
       position: relative;
     }
     .nav-link.notification {
-      background-image: url("../../../assets/icon/notification.svg");
+      background-image: url('../../../assets/icon/notification.svg');
       background-repeat: no-repeat;
       background-size: auto 100%;
       background-position: center center;
@@ -26,6 +26,21 @@
     overflow: hidden;
     background-color: #f8f8f8;
     color: #333;
+    &_empty {
+      background-image: url('../../../assets/icon/xd.svg');
+      background-size: 80% auto;
+      background-position: center 60%;
+      background-repeat: no-repeat;
+      .tip {
+        font-size: 15px;
+        position: absolute;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: #999;
+        top: 30%;
+      }
+    }
   }
   .app-day-menu {
     margin-bottom: 8px;
@@ -124,7 +139,7 @@
       opacity: 1;
     }
   }
-  animation: fade-in ease-in-out .5s;
+  animation: fade-in ease-in-out 0.5s;
   .order-icon {
     background-image: url('../../../assets/icon/order.svg');
     width: 25px;
