@@ -7,6 +7,11 @@
     height: 100%;
     text-align: left;
     color: #333;
+    &_empty {
+      background-image: url('../assets/icon/xd.svg');
+      background-size: 40% auto;
+      background-position: 60% 60%;
+    }
     .cube-scroll-nav-bar {
       background-color: #f8f8f8;
       &-item {
@@ -39,7 +44,7 @@
       padding-left: 22px;
       padding-bottom: 10px;
       word-break: break-all;
-      //border-bottom: 1px solid #ddd;
+      border-bottom: 1px solid #ddd;
       padding-right: 22px;
     }
     .cube-sticky-fixed .cube-scroll-nav-panel-title {
@@ -77,16 +82,26 @@
       font-weight: 500;
     }
     .menu-checkbox {
+      margin-bottom: 17px;
       &-wrap {
         position: relative;
         line-height: 20px;
+        &.buffet {
+          margin-bottom: 17px;
+        }
       }
       &-title {
-        margin-bottom: 17px;
         padding-right: 20px + 15px;
       }
       &-desc {
         margin-bottom: 17px;
+        padding-left: 10px;
+        font-size: 13px;
+      }
+      .menu-supplier {
+        margin-top: 1px;
+        color: #999;
+        font-size: 10px;
       }
       &-check {
         position: absolute;
@@ -110,11 +125,23 @@
     position: relative;
     &-text-btn {
       line-height: 58px;
-      width: 82px;
+      width: 92px;
       height: 58px;
       font-size: 18px;
       font-weight: 400;
       color: #fff;
+      .btn-checkbox {
+        display: inline-block;
+        vertical-align: middle;
+        background-size: contain;
+        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url('../assets/icon/unselected.svg');
+        &_active {
+          background-image: url('../assets/icon/selected.svg');
+        }
+      }
     }
     &-wrap {
       display: flex;

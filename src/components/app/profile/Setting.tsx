@@ -45,7 +45,7 @@ export default class Setting extends tsx.Component<any> {
             {/*  重设密码*/}
             {/*</cube-button>*/}
           </div>
-          {this.advance && (
+          {false && (
             <div>
               <p>高级设定</p>
               <p style='font-size: 12px;margin: 10px 15px;'>

@@ -52,6 +52,7 @@ export interface IHttpDish {
   _id: string;
   title: string;
   desc: string;
+  supplier: string;
 }
 export interface IHttpDining {
   _id: string;
