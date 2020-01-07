@@ -40,7 +40,7 @@ export default class Pay extends tsx.Component<any> {
     );
   }
   private get dish() {
-    if (!(this.d.dining && this.d.order)) {
+    if (!(this.d.dining && this.d.order && this.d.dining.stat_type)) {
       return '';
     }
     const dish = this.d.dining.menu.find((el: any) => {
