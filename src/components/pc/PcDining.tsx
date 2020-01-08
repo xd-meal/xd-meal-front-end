@@ -50,8 +50,8 @@ export default class PcDining extends tsx.Component<any> {
     if (!this.data) {
       return '';
     }
-    if (this.data.name) {
-      return this.data.name;
+    if (this.data.title) {
+      return this.data.title;
     } else {
       return timeMMDD(this.data.pick_start) + getTimeName(this.data);
     }

@@ -40,6 +40,7 @@ export default class Order extends tsx.Component<any> {
   protected randomBtn: boolean = false;
   protected allBuffetBtn: boolean = false;
   protected allRandomed: boolean = false;
+  protected allBuffeted: boolean = false;
   protected render(): VNode {
     return (
       <ChildPageConstruction class='order'>
@@ -101,34 +102,36 @@ export default class Order extends tsx.Component<any> {
           </div>
           <div class='bg' />
           <div class='order-footer-wrap'>
-            {this.allBuffetBtn && (
-              <div
-                class='order-footer-text-btn'
-                onclick={() => this.selectAllBuffet()}
-              >
-                <span
-                  class={{
-                    'btn-checkbox': true,
-                    'btn-checkbox_active': this.allBuffeted,
-                  }}
-                />
-                <span>全自助</span>
-              </div>
-            )}
-            {this.randomBtn && (
-              <div
-                class='order-footer-text-btn'
-                onclick={() => this.selectAllRandom()}
-              >
-                <span
-                  class={{
-                    'btn-checkbox': true,
-                    'btn-checkbox_active': this.allRandomed,
-                  }}
-                />
-                <span>随机选</span>
-              </div>
-            )}
+            <div class='order-footer-left'>
+              {this.allBuffetBtn && (
+                <div
+                  class='order-footer-text-btn'
+                  onclick={() => this.selectAllBuffet()}
+                >
+                  <span
+                    class={{
+                      'btn-checkbox': true,
+                      'btn-checkbox_active': this.allBuffeted,
+                    }}
+                  />
+                  <span>全自助</span>
+                </div>
+              )}
+              {this.randomBtn && (
+                <div
+                  class='order-footer-text-btn'
+                  onclick={() => this.selectAllRandom()}
+                >
+                  <span
+                    class={{
+                      'btn-checkbox': true,
+                      'btn-checkbox_active': this.allRandomed,
+                    }}
+                  />
+                  <span>随机选</span>
+                </div>
+              )}
+            </div>
             <button
               class={{ submit: true, submit_disable: this.submitDisable }}
               onclick={this.submit.bind(this)}
@@ -181,7 +184,7 @@ export default class Order extends tsx.Component<any> {
   }
   // method
   private selectAllBuffet() {
-    const regex = /自助/g;
+    const regex = /自助/;
     this.list.forEach(({ value }) => {
       value.forEach((dining) => {
         const menuBuffet = dining.menu.filter((str) => regex.test(str.title));
@@ -195,6 +198,7 @@ export default class Order extends tsx.Component<any> {
         }
       });
     });
+    this.allBuffeted = !this.allBuffeted;
   }
   private selectAllRandom() {
     this.allRandomed = true;
@@ -205,18 +209,27 @@ export default class Order extends tsx.Component<any> {
       });
     });
   }
-  private get allBuffeted() {
-    const regex = /自助餐/g;
+  private refreshBuffeted() {
+    const regex = /自助/;
     const allMenus: { [key: string]: IStoreDish } = _(this.list)
       .map((v) => v.value.map((vv) => vv.menu))
       .flatten()
       .flatten()
       .mapKeys((v) => v._id)
       .value();
-    return _(this.selector).every((s: string | null) =>
-      Boolean(s && regex.test(allMenus[s].title)),
-    );
-    // return _(this.selector).;
+    // tslint:disable-next-line:forin
+    for (const key in this.selector) {
+      const s = this.selector[key];
+      let title = '';
+      if (s && allMenus[String(s)]?.title) {
+        title = allMenus[String(s)]?.title;
+      }
+      if (!regex.test(title.toString())) {
+        this.allBuffeted = false;
+        return;
+      }
+    }
+    this.allBuffeted = true;
   }
 
   private submit() {
@@ -266,6 +279,7 @@ export default class Order extends tsx.Component<any> {
     (this.$refs.cubeScrollNav as any).refresh();
   }
   private refreshError() {
+    this.refreshBuffeted();
     this.allRandomed = false;
     for (const { value } of this.list) {
       for (const item of value) {

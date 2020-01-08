@@ -285,7 +285,7 @@ export default class PcOrder extends tsx.Component<any> {
       const mealList = myDishes.map((dish: IMyDining) => {
         return {
           time: dish.pick_start,
-          title: dish.name,
+          title: dish.title,
           desc: dish.menu.desc ?? '',
           isVoteDown: false,
           type: getTimeType(dish)?.key ?? MENU_TIME_TYPE.BREAKFAST,

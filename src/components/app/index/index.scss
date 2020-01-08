@@ -28,9 +28,9 @@
     color: #333;
     &_empty {
       background-image: url('../../../assets/icon/xd.svg');
-      background-size: 80% auto;
-      background-position: center 60%;
       background-repeat: no-repeat;
+      background-size: 120px auto;
+      background-position: center center;
       .tip {
         font-size: 15px;
         position: absolute;

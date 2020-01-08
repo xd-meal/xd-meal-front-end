@@ -2,7 +2,7 @@
   height: 100%;
   display: flex;
   align-items: center;
-  background-color: #fff;
+  background-color: #f8f8f8;
   input {
     appearance: none;
     box-shadow: none;
@@ -70,7 +70,7 @@
 
   &-buttons {
     margin-top: 10px;
-    background-color: #ea5c03;
+    background-color: transparent;
     border-radius: 10px;
     color: #ffffff;
     width: 100%;
