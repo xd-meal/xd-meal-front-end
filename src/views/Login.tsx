@@ -43,7 +43,6 @@ export default class Login extends tsx.Component<any> {
             登陆
           </button>
           <div class='app-login-buttons'>
-            <span class='app-login-qrcode'></span>
             <span class='qrcode-icon-container'>
               <img
                 src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/03c142137b24ad6b14494ccd0369863010d972e0.svg'
