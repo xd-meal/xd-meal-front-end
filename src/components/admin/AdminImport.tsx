@@ -222,7 +222,7 @@ export default class AdminImport extends tsx.Component<any> {
       pickTimeValue = this.pickTime.value;
     }
     return {
-      name: this.title,
+      title: this.title,
       order_start: moment(this.orderStartTime).unix() * 1000,
       order_end: moment(this.orderEndTime).unix() * 1000,
       pick_start: moment(`${this.pickDate} ${pickTimeValue[0]} `).unix() * 1000,

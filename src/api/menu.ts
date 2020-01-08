@@ -56,7 +56,7 @@ export interface IHttpDish {
 }
 export interface IHttpDining {
   _id: string;
-  name: string;
+  title: string;
   order_start: string;
   order_end: string;
   pick_start: string;
@@ -82,7 +82,7 @@ export interface IOrder {
 }
 export interface IMyDining {
   id: string;
-  name: string;
+  title: string;
   order_start: string;
   order_end: string;
   pick_start: string;
@@ -122,7 +122,7 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
         .value();
       return {
         id: orderedItem._id,
-        name: dining.name,
+        title: dining.title,
         order_start: dining.order_start,
         order_end: dining.order_end,
         pick_start: dining.pick_start,
