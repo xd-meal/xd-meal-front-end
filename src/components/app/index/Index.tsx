@@ -41,7 +41,7 @@ export default class Index extends tsx.Component<any> {
             'index-body_empty': this.list.length === 0,
           }}
         >
-          {this.list.length === 0 && <div class='tip'>还未选餐哟！</div>}
+          {this.list.length === 0 && <div class='tip'></div>}
           <cube-scroll
             data={this.menus}
             options={{
