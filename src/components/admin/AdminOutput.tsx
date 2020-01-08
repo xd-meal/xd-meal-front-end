@@ -6,6 +6,7 @@ import moment from 'moment';
 import { IAdminDing } from '@/components/admin/AdminAddDishDialog';
 import AdminTimeSelect from '@/components/admin/AdminTimeSelect';
 import axios, { AxiosResponse } from 'axios';
+import XLSX from 'xlsx';
 import {
   QBtn,
   QSelect,
@@ -87,7 +88,10 @@ export default class AdminOutput extends tsx.Component<any> {
         // this.$set(menuById[el.menu_id], el.corp, el.count);
       });
       return {
-        title: dining._id.title,
+        title:
+          dining._id.title +
+          ' ' +
+          moment(dining._id.pick_start).format('YYYY-MM-DD HH:mm:ss'),
         stat: Object.values(menuById),
       };
     });
@@ -110,15 +114,23 @@ export default class AdminOutput extends tsx.Component<any> {
             color='primary'
             onClick={this.queryDiningsByDate}
           />
+          <span style='margin: 0 16px;display: inline-block;' />
+          <q-btn flat label='导出 Excel' onClick={this.exportXSLX} />
         </div>
         {this.rawData.map((item: any, index: number) => (
-          <div style='margin: 15px;'>
+          <div
+            class='stat-table'
+            style='margin: 15px;display: inline-block;min-width: 500px;'
+          >
             <q-table
-              title={item._id.title}
+              title={this.tableData[index].title}
               data={this.tableData[index].stat}
               columns={this.corps}
               row-key='dish'
-            />
+              pagination={{ rowsPerPage: 0 }}
+            >
+              <span slot='bottom'></span>
+            </q-table>
           </div>
         ))}
       </div>
@@ -133,5 +145,27 @@ export default class AdminOutput extends tsx.Component<any> {
           moment(this.endTime).unix() * 1000,
       )
     ).data;
+  }
+  private exportXSLX() {
+    if (!this.rawData.length) {
+      return;
+    }
+    const book = XLSX.utils.book_new();
+    const tables = Array.from(document.querySelectorAll('.stat-table'));
+    tables.forEach((el: any) => {
+      const sheet = XLSX.utils.table_to_sheet(el.querySelector('table'));
+      XLSX.utils.book_append_sheet(
+        book,
+        sheet,
+        el.querySelector('.q-table__title').innerText,
+      );
+    });
+    XLSX.writeFile(
+      book,
+      moment(this.startTime).format('YYYY-MM-DD') +
+        ' - ' +
+        moment(this.endTime).format('YYYY-MM-DD') +
+        ' 点餐统计.xlsx',
+    );
   }
 }
