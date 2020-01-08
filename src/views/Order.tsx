@@ -165,9 +165,9 @@ export default class Order extends tsx.Component<any> {
     this.allBuffetBtn = config.buffetBtn;
     let list = this.$store.state.order.list;
     if (this.isSpecial) {
-      list = list.filter((item: IStoreDining) => /加班/.test(item.name));
+      list = list.filter((item: IStoreDining) => /加班/.test(item.title));
     } else {
-      list = list.filter((item: IStoreDining) => !/加班/.test(item.name));
+      list = list.filter((item: IStoreDining) => !/加班/.test(item.title));
     }
 
     const selector: { [key: string]: string | null } = {};
