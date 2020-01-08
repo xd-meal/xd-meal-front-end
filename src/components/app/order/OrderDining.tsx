@@ -17,7 +17,8 @@ export default class OrderDining extends tsx.Component<any> {
       <div class='menu-checkbox dining'>
         <div class='menu-title'>{this.data && getTimeName(this.data)}</div>
         {dataMenu.map((menu: IStoreDish) => (
-          <div class='menu-checkbox'>
+          <div class='menu-checkbox'
+          onClick={() => this.$emit('change', menu._id)}>
             <div class='menu-checkbox-wrap'>
               <div class='menu-checkbox-title'>{menu.title}</div>
               <div
@@ -25,7 +26,6 @@ export default class OrderDining extends tsx.Component<any> {
                   'menu-checkbox-check': true,
                   'menu-checkbox-check_active': menu._id === this.value,
                 }}
-                onClick={() => this.$emit('change', menu._id)}
               />
             </div>
             {/自助/g.test(menu.title) && (
