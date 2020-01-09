@@ -30,13 +30,11 @@ export default class OrderDining extends tsx.Component<any> {
                 }}
               />
             </div>
-            {/自助/g.test(menu.title) && (
-              <div class='menu-checkbox-wrap buffet'>
-                {menu.desc.split(/[,，]/).map((str) => (
-                  <div class='menu-checkbox-desc'>{str}</div>
-                ))}
-              </div>
-            )}
+            <div class='menu-checkbox-wrap buffet'>
+              {menu.desc.split(/[,，]/).map((str) => (
+                <div class='menu-checkbox-desc'>{str}</div>
+              ))}
+            </div>
             {menu.supplier && (
               <div class='menu-supplier'>供应商：{menu.supplier}</div>
             )}
