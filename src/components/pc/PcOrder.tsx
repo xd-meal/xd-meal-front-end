@@ -223,7 +223,7 @@ export default class PcOrder extends tsx.Component<any> {
     const times = lodash(this.list)
       .groupBy('pick_start')
       .keys()
-      .map((_) => moment(_).unix())
+      .map((_) => moment(_).unix() * 1000)
       .value();
 
     const timeMax = lodash.max(times);

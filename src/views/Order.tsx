@@ -47,7 +47,7 @@ export default class Order extends tsx.Component<any> {
         <div class='order-header' Slot='header'>
           <CommonHeader
             Slot='header'
-            title='下周选饭'
+            title={this.isSpecial ? '加班餐' : '下周选饭'}
             goBackPath={{
               name: 'index',
             }}
