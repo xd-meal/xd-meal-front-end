@@ -252,7 +252,7 @@ export default class PcOrder extends tsx.Component<any> {
     if (res.data.dinings.length > 0) {
       const selector: { [key: string]: string | null } = {};
       const orders = res.data.orders;
-      this.list = res.data.dinings;
+      this.list = lodash.sortBy(res.data.dinings, 'pick_start');
       // 判断是否已经点过，点过的直接帮他选上
       if (orders.length <= 0) {
         this.list.forEach((_) => (selector[_._id] = null));
