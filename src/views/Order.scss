@@ -45,7 +45,7 @@
       padding-left: 22px;
       padding-bottom: 10px;
       word-break: break-all;
-      border-bottom: 1px solid #ddd;
+      //border-bottom: 1px solid #ddd;
       padding-right: 22px;
     }
     .cube-sticky-fixed .cube-scroll-nav-panel-title {
@@ -93,11 +93,13 @@
       }
       &-title {
         padding-right: 20px + 15px;
+        font-size: 14px;
       }
       &-desc {
         margin-bottom: 17px;
-        padding-left: 10px;
-        font-size: 13px;
+        //padding-left: 10px;
+        padding-right: 60px;
+        font-size: 12px;
       }
       .menu-supplier {
         margin-top: 1px;
@@ -142,6 +144,9 @@
         &_active {
           background-image: url('../assets/icon/selected.svg');
         }
+      }
+      span {
+        vertical-align: middle;
       }
     }
     &-wrap {

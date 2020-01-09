@@ -24,7 +24,12 @@ export default class AdminSideBar extends tsx.Component<any> {
     },
     {
       name: 'adminOutput',
-      text: '统计报表',
+      text: '选餐统计',
+      icon: 'output',
+    },
+    {
+      name: 'adminBreakfast',
+      text: '早餐统计',
       icon: 'output',
     },
     {
