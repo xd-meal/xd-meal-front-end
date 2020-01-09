@@ -90,19 +90,19 @@ export default class PcOrder extends tsx.Component<any> {
                   </span>
                   ）
                 </h3>
-                <h4>扫描下方二维码前往手机查看订餐详情</h4>
+                <h4>请前往 企业微信 -> 今天吃啥 查看订餐详情</h4>
                 <h4>
                   或点击
                   <a onClick={this.download}>这里</a>
                   下载日历
                 </h4>
-                <div style={{ marginTop: '24px' }}>
-                  <qriously
-                    className='pay-qr-code'
-                    value={'http://meal.xd.com/#/'}
-                    size={140}
-                  />
-                </div>
+                {/*<div style={{ marginTop: '24px' }}>*/}
+                {/*  <qriously*/}
+                {/*    className='pay-qr-code'*/}
+                {/*    value={'http://meal.xd.com/#/'}*/}
+                {/*    size={140}*/}
+                {/*  />*/}
+                {/*</div>*/}
               </div>
             </div>
           </div>
