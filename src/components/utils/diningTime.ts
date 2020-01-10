@@ -15,14 +15,19 @@ export const timeIteration = [
   { label: '午餐', value: ['10:00', '13:30', 1], key: MENU_TIME_TYPE.LUNCH },
   { label: '晚餐', value: ['17:00', '18:30', 1], key: MENU_TIME_TYPE.DINNER },
 ];
+const cache: { [key: string]: number[] } = {};
 export function getTimeNumber(time: string | number): number[] {
+  if (cache[time]) {
+    return cache[time];
+  }
   if (/^\d{2}:\d{2}$/.test(String(time))) {
     const timeArr: string[] = String(time).split(':');
-    return [parseInt(timeArr[0], 10), parseInt(timeArr[1], 10)];
-  } else {
-    const timeMoment = moment(time).utcOffset(480);
-    return [timeMoment.get('hour'), timeMoment.get('minute')];
+    cache[time] = [parseInt(timeArr[0], 10), parseInt(timeArr[1], 10)];
+    return cache[time];
   }
+  const timeMoment = moment(time).utcOffset(480);
+  cache[time] = [timeMoment.get('hour'), timeMoment.get('minute')];
+  return cache[time];
 }
 export function timeNumberBeforeTarget(source: number[], target: number[]) {
   return source[0] * 60 + source[1] <= target[0] * 60 + target[1];
@@ -52,7 +57,15 @@ export function getTimeType(dining: {
   }
   return null;
 }
-export function getTimeName(dining: { pick_start: string; pick_end: string }) {
+const timeNameCache: { [key: string]: string } = {};
+export function getTimeName(dining: {
+  pick_start: string;
+  pick_end: string;
+}): string {
+  const key = dining.pick_start + dining.pick_end;
+  if (timeNameCache[key]) {
+    return timeNameCache[key];
+  }
   const startTime = getTimeNumber(dining.pick_start);
   const endTime = getTimeNumber(dining.pick_end);
   for (const time of timeIteration) {
@@ -62,17 +75,19 @@ export function getTimeName(dining: { pick_start: string; pick_end: string }) {
       timeNumberAfterTarget(startTime, startTimeNumber) &&
       timeNumberBeforeTarget(endTime, endTimeNumber)
     ) {
+      timeNameCache[key] = time.label;
       return time.label;
     }
   }
   const outputStr = 'HH:mm';
-  return (
+  timeNameCache[key] =
     moment(dining.pick_start)
       .utcOffset(480)
       .format(outputStr) +
     '-' +
     moment(dining.pick_end)
       .utcOffset(480)
-      .format(outputStr)
-  );
+      .format(outputStr);
+
+  return timeNameCache[key];
 }
