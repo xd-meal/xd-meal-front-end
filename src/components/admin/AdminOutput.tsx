@@ -137,7 +137,7 @@ export default class AdminOutput extends tsx.Component<any> {
     );
   }
   private async queryDiningsByDate() {
-    this.rawData = (
+    const res = (
       await axios.get(
         '/api/v1/report/order_count/' +
           moment(this.startTime).unix() * 1000 +
@@ -145,6 +145,10 @@ export default class AdminOutput extends tsx.Component<any> {
           moment(this.endTime).unix() * 1000,
       )
     ).data;
+    res.sort((a: any, b: any) => {
+      return moment(a._id.pick_start).unix() - moment(b._id.pick_start).unix();
+    });
+    this.rawData = res;
   }
   private exportXSLX() {
     if (!this.rawData.length) {

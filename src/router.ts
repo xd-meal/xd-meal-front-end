@@ -21,6 +21,7 @@ import AdminEdit from '@/components/admin/AdminEdit.tsx';
 import AdminImport from '@/components/admin/AdminImport.tsx';
 import AdminSwitch from '@/components/admin/AdminSwitch';
 import AdminOutput from '@/components/admin/AdminOutput.tsx';
+import AdminBreakfast from '@/components/admin/AdminBreakfast.tsx';
 import AdminUser from '@/components/admin/AdminUser.tsx';
 import AdminDiningList from '@/components/admin/AdminDiningList';
 import { VueRouter } from 'vue-router/types/router';
@@ -42,6 +43,7 @@ export const ROUTER_NAME = {
   ADMIN_LOGIN: 'adminLogin',
   ADMIN_IMPORT: 'adminImport',
   ADMIN_OUTPUT: 'adminOutput',
+  ADMIN_BREAKFAST: 'adminBreakfast',
   ADMIN_EDIT: 'adminEdit',
   ADMIN_SWITCH: 'adminSwitch',
   ADMIN_USER: 'adminUser',
@@ -154,6 +156,11 @@ const router: VueRouter = new Router({
           path: 'output',
           name: ROUTER_NAME.ADMIN_OUTPUT,
           component: AdminOutput,
+        },
+        {
+          path: 'breakfast',
+          name: ROUTER_NAME.ADMIN_BREAKFAST,
+          component: AdminBreakfast,
         },
         { path: 'edit', name: ROUTER_NAME.ADMIN_EDIT, component: AdminEdit },
         {
