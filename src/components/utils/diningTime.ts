@@ -9,11 +9,11 @@ enum MENU_TIME_TYPE {
 export const timeIteration = [
   {
     label: '早餐',
-    value: ['08:00', '10:00', 0],
+    value: ['08:25', '09:45', 0],
     key: MENU_TIME_TYPE.BREAKFAST,
   },
-  { label: '午餐', value: ['10:00', '13:30', 1], key: MENU_TIME_TYPE.LUNCH },
-  { label: '晚餐', value: ['17:00', '18:30', 1], key: MENU_TIME_TYPE.DINNER },
+  { label: '午餐', value: ['11:45', '13:15', 1], key: MENU_TIME_TYPE.LUNCH },
+  { label: '晚餐', value: ['17:45', '19:00', 1], key: MENU_TIME_TYPE.DINNER },
 ];
 const cache: { [key: string]: number[] } = {};
 export function getTimeNumber(time: string | number): number[] {
