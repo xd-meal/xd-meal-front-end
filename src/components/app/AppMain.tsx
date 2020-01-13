@@ -1,5 +1,5 @@
 import './AppMain.scss';
-import { ROUTER_NAME } from '@/router';
+import { isEvent, ROUTER_NAME } from '@/router';
 import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
@@ -38,7 +38,6 @@ const ComponentList: SingleComponent[] = Object.keys(components).map(
 );
 @Component
 export default class AppMain extends tsx.Component<any> {
-  private current: SingleComponent = ComponentList[0];
   private tabList: SingleComponent[] = ComponentList;
   private transitionName: string = '';
   private orderBtnShow: boolean = false;
@@ -55,8 +54,16 @@ export default class AppMain extends tsx.Component<any> {
   }
 
   public changeTabName(tab: SingleComponent) {
-    this.current = tab;
     this.$router.push({ name: tab.key as string });
+  }
+
+  public get current(): SingleComponent {
+    for (const component of ComponentList) {
+      if (component.key === this.$route.name) {
+        return component;
+      }
+    }
+    return ComponentList[0];
   }
 
   protected render(): VNode {
@@ -64,10 +71,15 @@ export default class AppMain extends tsx.Component<any> {
       <div class='app-main'>
         <div class='body'>
           <transition name={this.transitionName}>
-            <router-view class='child-view' />
+            <router-view
+              class={{
+                'child-view': true,
+                'none-transition': this.transitionName === 'none',
+              }}
+            />
           </transition>
         </div>
-        {this.current.key === 'index' && this.orderBtnShow && (
+        {this.current?.key === 'index' && this.orderBtnShow && (
           <router-link class='order-btn' to={{ name: 'order' }}>
             <span class='order-icon' />
           </router-link>
@@ -94,10 +106,7 @@ export default class AppMain extends tsx.Component<any> {
   }
   private mounted() {
     this.$store.dispatch(USER_NAMESPACE + USER.FETCH_USER_PROFILE_ACTION);
-    const index =
-      components[this.$router.currentRoute.name as string].index || 0;
-    this.current = ComponentList[index];
-    if (index === 0) {
+    if (this.current.index === 0) {
       this.refreshOrderBtn().catch(() => (this.orderBtnShow = false));
     }
   }
@@ -117,12 +126,14 @@ export default class AppMain extends tsx.Component<any> {
   @Watch('$route')
   private onChangeValue(newVal: Route, oldVal: Route) {
     const index = components[newVal.name as string].index || 0;
-    this.current = ComponentList[index];
     const toIndex = index;
     const fromIndex = components[oldVal.name as string].index || 0;
     this.transitionName = toIndex < fromIndex ? 'slide-right' : 'slide-left';
     if (index === 0) {
       this.refreshOrderBtn().catch(() => (this.orderBtnShow = false));
+    }
+    if (!isEvent()) {
+      this.transitionName = 'none';
     }
   }
 }

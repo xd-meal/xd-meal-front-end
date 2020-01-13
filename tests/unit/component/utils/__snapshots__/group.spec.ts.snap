@@ -1,0 +1,51 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`@/components/utils/group getMenuGroupBy was sorted by pick_start time and return instance of each menu instead of clone item: menuGroupSnapshot 1`] = `
+Array [
+  Object {
+    "key": "2020-01-11",
+    "value": Array [
+      Object {
+        "id": 4,
+        "pick_start": "2020-01-11T09:00:00.000Z",
+      },
+    ],
+  },
+  Object {
+    "key": "2020-01-16",
+    "value": Array [
+      Object {
+        "id": 2,
+        "pick_start": "2020-01-16T09:00:00.000Z",
+      },
+    ],
+  },
+  Object {
+    "key": "2020-01-17",
+    "value": Array [
+      Object {
+        "id": 1,
+        "pick_start": "2020-01-17T09:00:00.000Z",
+      },
+    ],
+  },
+  Object {
+    "key": "2020-01-19",
+    "value": Array [
+      Object {
+        "id": 3,
+        "pick_start": "2020-01-19T09:00:00.000Z",
+      },
+    ],
+  },
+  Object {
+    "key": "2020-01-20",
+    "value": Array [
+      Object {
+        "id": 5,
+        "pick_start": "2020-01-20T09:00:00.000Z",
+      },
+    ],
+  },
+]
+`;
