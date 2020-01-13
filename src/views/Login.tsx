@@ -40,7 +40,7 @@ export default class Login extends tsx.Component<any> {
           </div>
           <div class='app-login-forget'>找回密码</div>
           <button class='app-login-submit' onClick={() => this.login()}>
-            登陆
+            登录
           </button>
           <div class='app-login-buttons'>
             <span class='qrcode-icon-container'>

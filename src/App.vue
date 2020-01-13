@@ -1,12 +1,13 @@
 <template>
   <div id="app" :class="nowClass">
     <transition :name="transitionName">
-      <router-view />
+      <router-view :class="{ 'none-transition': transitionName === 'none' }" />
     </transition>
   </div>
 </template>
 
 <script lang="ts">
+import { isEvent } from '@/router';
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { Route } from 'vue-router';
 
@@ -20,6 +21,10 @@ export default class Home extends Vue {
 
   @Watch('$route')
   public onChangeValue(newVal: Route, oldVal: Route) {
+    if (!isEvent()) {
+      this.transitionName = 'none';
+      return;
+    }
     if (newVal.meta.noAnimation || oldVal.meta.noAnimation) {
       this.transitionName = 'none';
       return;
@@ -126,6 +131,11 @@ html {
   opacity: 0;
   transform: translate(-100%, 0);
 }
+
+.none-transition {
+  transition: none;
+}
+
 .none-leave-active {
   transition: none;
   z-index: -1;

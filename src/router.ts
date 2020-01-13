@@ -24,6 +24,7 @@ import AdminOutput from '@/components/admin/AdminOutput.tsx';
 import AdminBreakfast from '@/components/admin/AdminBreakfast.tsx';
 import AdminUser from '@/components/admin/AdminUser.tsx';
 import AdminDiningList from '@/components/admin/AdminDiningList';
+import { VueRouter } from 'vue-router/types/router';
 export const ROUTER_NAME = {
   LOGIN: 'login',
   QR_LOGIN: 'qrlogin',
@@ -50,7 +51,7 @@ export const ROUTER_NAME = {
 };
 Vue.use(Router);
 
-export default new Router({
+const router: VueRouter = new Router({
   mode: 'hash',
   base: '/admin',
   routes: [
@@ -173,3 +174,29 @@ export default new Router({
     // import(/* webpackChunkName: "about" */ './views/About.vue')
   ],
 });
+/*========= start ========*/
+/*========= ⚠ warning️: this is a hack method for ios========*/
+let isEventCall: boolean = false;
+
+/**
+ * @description router is called by event or not
+ */
+export function isEvent() {
+  return isEventCall;
+}
+const methods = ['push', 'go', 'replace', 'forward', 'back'];
+methods.forEach((key) => {
+  const method = (router as any)[key].bind(router);
+  (router as any)[key] = (...args: any[]) => {
+    isEventCall = true;
+    method.apply(null, args);
+  };
+});
+router.afterEach(() => {
+  setTimeout(() => {
+    isEventCall = false;
+  }, 100);
+});
+/*========= ⚠ warning️: this is a hack method for ios ========*/
+/*========= END ========*/
+export default router;
