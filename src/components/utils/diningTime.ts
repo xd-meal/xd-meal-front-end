@@ -26,7 +26,10 @@ export function getTimeNumber(time: string | number): number[] {
     return cache[time];
   }
   const timeMoment = moment(time);
-  cache[time] = [timeMoment.get('hour'), timeMoment.get('minute')];
+  cache[time] = [
+    timeMoment.utcOffset(480).get('hour'),
+    timeMoment.utcOffset(480).get('minute'),
+  ];
   return cache[time];
 }
 export function timeNumberBeforeTarget(source: number[], target: number[]) {
