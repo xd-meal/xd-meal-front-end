@@ -1,7 +1,8 @@
 import { getCookie } from '@/utils/cookies';
 import os from '@/utils/os';
 import Vue from 'vue';
-import './vendor/quasar';
+import 'babel-polyfill';
+import 'es6-promise/auto';
 import './vendor/cube-ui';
 import './vendor/qriously';
 
@@ -10,7 +11,6 @@ import router, { ROUTER_NAME } from '@/router';
 
 import store from './store';
 import { gotoIndex, gotoLogin } from './utils/common';
-
 Vue.config.productionTip = false;
 
 new Vue({
@@ -27,17 +27,6 @@ if (session) {
   // 登陆了且在 login 以及首页的跳转到 index
   if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
     gotoIndex();
-  } else if (
-    [
-      '/admin',
-      '/admin/import',
-      '/admin/edit',
-      '/admin/switch',
-      '/admin/output',
-      '/admin/login',
-    ].indexOf(router.currentRoute.fullPath) >= 0
-  ) {
-    // 登陆了而且目标是 admin 页面，则不动
   }
 } else {
   // 尚未登陆的前往登陆页面

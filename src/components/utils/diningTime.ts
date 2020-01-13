@@ -25,7 +25,7 @@ export function getTimeNumber(time: string | number): number[] {
     cache[time] = [parseInt(timeArr[0], 10), parseInt(timeArr[1], 10)];
     return cache[time];
   }
-  const timeMoment = moment(time).utcOffset(480);
+  const timeMoment = moment(time);
   cache[time] = [timeMoment.get('hour'), timeMoment.get('minute')];
   return cache[time];
 }

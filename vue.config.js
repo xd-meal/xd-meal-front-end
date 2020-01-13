@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+var momentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
 module.exports = {
   outputDir: './cordova-app/www/',
   publicPath: './',
@@ -14,12 +16,7 @@ module.exports = {
       postCompile: true,
       theme: false,
     },
-    quasar: {
-      importStrategy: 'kebab',
-      rtlSupport: false,
-    },
   },
-  transpileDependencies: ['quasar'],
   devServer: {
     proxy: {
       '/api': {
@@ -28,5 +25,16 @@ module.exports = {
         changeOrigin: true,
       },
     },
+  },
+  chainWebpack: (config) => {
+    config
+      .plugin('ignore')
+      .use(new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/));
+    config.plugin('momentTimezoneDataPlugin').use(
+      new momentTimezoneDataPlugin({
+        startYear: 2018,
+        endYear: 2050,
+      }),
+    );
   },
 };
