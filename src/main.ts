@@ -9,7 +9,6 @@ import App from './App.vue';
 import router, { ROUTER_NAME } from '@/router';
 
 import store from './store';
-import './registerServiceWorker';
 import { gotoIndex, gotoLogin } from './utils/common';
 
 Vue.config.productionTip = false;
