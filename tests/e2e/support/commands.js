@@ -23,3 +23,28 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+
+Cypress.Commands.add('doLogin', function() {
+  cy.setCookie('XD-MEAL-SESSION', '111111');
+});
+Cypress.Commands.add('defaultRouter', function() {
+  cy.server();
+  cy.route('/api/v1/orders', {
+    dinings: [],
+    ordered: [],
+  });
+  cy.route('api/v1/user/profile', {
+    config: {
+      advance: false,
+      randomBtn: false,
+      buffetBtn: false,
+    },
+    avatar: '',
+    username: '11',
+  });
+  cy.route('/api/v1/dining/list', {
+    dinings: [],
+    orders: [],
+  });
+  cy.route('/api/v1/myDish', {});
+});
