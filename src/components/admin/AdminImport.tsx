@@ -64,9 +64,9 @@ export default class AdminImport extends tsx.Component<any> {
   protected pickDate: string | null = null;
   protected menu: IAdminDish[] = [];
   protected timeOption = [
-    { label: '早餐', value: ['08:00', '10:00', 0] },
-    { label: '午餐', value: ['10:00', '13:30', 1] },
-    { label: '晚餐', value: ['17:00', '18:30', 1] },
+    { label: '早餐', value: ['08:25', '09:45', 0] },
+    { label: '午餐', value: ['11:45', '13:30', 1] },
+    { label: '晚餐', value: ['17:45', '19:30', 1] },
   ];
 
   private render(): VNode {
