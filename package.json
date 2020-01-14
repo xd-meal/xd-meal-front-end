@@ -7,6 +7,8 @@
     "build": "vue-cli-service build --skip-plugins pwa,workbox",
     "lint": "vue-cli-service lint",
     "lint:travis": "vue-cli-service lint  --no-fix",
+    "test:e2e:travis": "vue-cli-service test:e2e --headless",
+    "test:e2e": "vue-cli-service test:e2e",
     "test:unit": "vue-cli-service test:unit --collectCoverage"
   },
   "dependencies": {
@@ -38,6 +40,7 @@
     "@types/mockjs": "^1.0.2",
     "@types/store": "^2.0.2",
     "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-e2e-cypress": "^4.1.2",
     "@vue/cli-plugin-eslint": "^3.0.5",
     "@vue/cli-plugin-pwa": "^3.0.5",
     "@vue/cli-plugin-typescript": "^3.0.5",
