@@ -37,4 +37,10 @@ module.exports = {
       }),
     );
   },
+
+  baseUrl: undefined,
+  assetsDir: undefined,
+  runtimeCompiler: undefined,
+  productionSourceMap: false,
+  parallel: undefined,
 };
