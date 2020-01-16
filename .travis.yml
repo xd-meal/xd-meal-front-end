@@ -14,7 +14,7 @@ cache:
 env:
   - TEST_SUITE="./ci-script/travis-job-codecov.sh"
   - TEST_SUITE="./ci-script/travis-job-cypress.sh"
-  - TEST_SUITE="./ci-script/travis-job-linter.sh"
+
 #运行的脚本命令
 script: ./${TEST_SUITE}
 
