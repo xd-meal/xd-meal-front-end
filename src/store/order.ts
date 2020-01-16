@@ -1,32 +1,7 @@
-import {
-  fetchWeekdayDishes,
-  IDishes,
-  IHttpDining,
-  IHttpDish,
-} from '@/api/menu';
+import { fetchWeekdayDishes, IHttpDining, IHttpDish } from '@/api/menu';
 import moment from 'moment';
 import { ActionTree, GetterTree, MutationTree } from 'vuex';
-import { MENU_TIME_TYPE } from './menu';
 
-export interface IIterableDesc {
-  title: string;
-  desc: string;
-}
-
-export enum MENU_TYPE {
-  BUFFE = 'buffet',
-  NORMAL = 'normal',
-}
-export interface IOrderSingleItem {
-  type: MENU_TIME_TYPE;
-  iterableDesc?: IIterableDesc[];
-  // 2019-10-20
-  time: string;
-  title: string;
-  desc: string;
-  id: string;
-  menuType: MENU_TYPE;
-}
 export interface IStoreDish extends IHttpDish {
   _id: string;
 }

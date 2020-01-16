@@ -5,7 +5,6 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import Router from '@/router';
 import store from 'store';
 import { loginApi, IUserLoginData } from '@/api/login';
-import { INotificationGlobal } from '@/store/notification';
 
 export enum LOGIN_STATUS {
   FAIL = 'fail',
@@ -16,11 +15,7 @@ export interface IUserLoginGlobal {
   username: string;
   payCode: string;
   loginStatus: LOGIN_STATUS;
-  config: {
-    advance: boolean;
-    randomBtn: boolean;
-    buffetBtn: boolean;
-  };
+  config: IUserConfig;
   avatar: string;
 }
 const config = store.get('config') || {};
@@ -33,6 +28,7 @@ const state: IUserLoginGlobal = {
     advance: Boolean(config.advance),
     randomBtn: Boolean(config.randomBtn),
     buffetBtn: Boolean(config.buffetBtn),
+    ppx: Boolean(config.ppx),
   },
   avatar: store.get('avatar'),
 };
@@ -54,7 +50,7 @@ export enum USER {
   FETCH_USER_PROFILE_ACTION = 'fetchUserProfileAction',
 }
 
-const getters: GetterTree<INotificationGlobal, any> = {
+const getters: GetterTree<IUserLoginGlobal, any> = {
   code() {
     return '5948d29214d1';
   },

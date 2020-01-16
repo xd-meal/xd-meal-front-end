@@ -31,13 +31,12 @@ export default class OrderDining extends tsx.Component<any> {
               />
             </div>
             <div class='menu-checkbox-wrap buffet'>
-              {menu.desc.split(/[,，]/).map((str) => (
-                <div class='menu-checkbox-desc'>{str}</div>
-              ))}
+              <div class='menu-checkbox-desc'>{menu.desc}</div>
             </div>
             {menu.supplier && (
               <div class='menu-supplier'>供应商：{menu.supplier}</div>
             )}
+            <div class='next-line-split' />
           </div>
         ))}
       </div>

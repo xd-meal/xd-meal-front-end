@@ -1,6 +1,5 @@
 import './pay.scss';
 import { payCode } from '@/api/pay';
-import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 
 import { Component } from 'vue-property-decorator';
@@ -80,9 +79,6 @@ export default class Pay extends tsx.Component<any> {
     if (res.code === 200) {
       this.d = res.data;
       this.msg = res.msg || '';
-      // this.$store.commit(USER_NAMESPACE + USER.SET_TOKEN, {
-      //   payCode: this.d.token,
-      // });
       this.startTimer(60);
     } else if (res.msg) {
       this.d = {};
@@ -99,7 +95,6 @@ export default class Pay extends tsx.Component<any> {
     this.refreshToken(true);
   }
   private mounted() {
-    // this.code = this.$store.state.user.payCode;
     this.refreshToken();
   }
 }

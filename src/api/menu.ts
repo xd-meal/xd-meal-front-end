@@ -7,47 +7,6 @@ const ORDER_DISHES_API = '/api/v1/order';
 const MY_DISHES_API = '/api/v1/orders';
 const EVAL_DISH_API = '/api/v1/EvalDish';
 
-export interface IMyDish {
-  _id: string;
-  dishId: string;
-  mealDay: string;
-  status: number;
-  uid: string;
-  createTime: string;
-  mealNum: number;
-  name: string;
-  supplier: string;
-  desc?: string;
-  /**
-   * @desc 1 午餐 2 晚餐
-   */
-  typeA: number;
-  /**
-   * @desc 1 自助 2 简餐
-   */
-  typeB: number;
-  updateTime: string;
-  badEval: boolean;
-}
-
-export interface IDishes {
-  _id: string;
-  createTime: string;
-  mealDay: string;
-  name: string;
-  status: number;
-  supplier: string;
-  /**
-   * @desc 1 午餐 2 晚餐
-   */
-  typeA: number;
-  /**
-   * @desc 1 自助 2 简餐
-   */
-  typeB: number;
-  updateTime: string;
-  mealNum?: number;
-}
 export interface IHttpDish {
   _id: string;
   title: string;

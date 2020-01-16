@@ -1,12 +1,12 @@
 import './Profile.scss';
-import { logoutApi } from '@/api/login';
+import { getActivity } from '@/components/app/ppx/activity';
+import { __ } from '@/components/app/ppx/textTransform';
 import { ROUTER_NAME } from '@/router';
-import { gotoLogin, loginOut } from '@/utils/common';
+import { loginOut } from '@/utils/common';
 import { VNode } from 'vue';
 
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
-
 @Component
 export default class Index extends tsx.Component<any> {
   protected render(): VNode {
@@ -15,7 +15,7 @@ export default class Index extends tsx.Component<any> {
         <div class='profile-wrap'>
           <div class='profile-name'>
             <div class='profile-name-title'>{this.name}</div>
-            <div class='profile-name-desc'>在忙也要好好吃饭哟～</div>
+            <div class='profile-name-desc'>{this.profileDesc}</div>
           </div>
           {Boolean(this.avatar.trim()) && (
             <div class='profile-avatar'>
@@ -29,21 +29,20 @@ export default class Index extends tsx.Component<any> {
             //   name: '商家收藏',
             //   target: 'profile',
             // },
-
             {
-              name: '设置',
+              name: __('设置'),
               target: ROUTER_NAME.APP_SETTING,
             },
             {
-              name: '加班餐',
+              name: __('加班餐'),
               target: ROUTER_NAME.APP_SPECIAL_ORDER,
             },
             {
-              name: '重设密码',
+              name: __('重设密码'),
               target: ROUTER_NAME.APP_RESET_PSW,
             },
             {
-              name: '退出登录',
+              name: __('退出登录'),
               onClick: this.loginout.bind(this),
               class: {
                 error: true,
@@ -74,6 +73,13 @@ export default class Index extends tsx.Component<any> {
         </div>
       </div>
     );
+  }
+  private get profileDesc() {
+    const config = this.$store.state.user.config;
+    if (config.ppx) {
+      return getActivity();
+    }
+    return '再忙也要好好吃饭哟～';
   }
   private loginout() {
     loginOut(this);
