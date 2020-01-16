@@ -1,8 +1,6 @@
 import axios from 'axios';
 import { IHttpResponse, ILoginResponse } from '@/api/http';
-import Mock from 'mockjs';
 
-import { isDev } from '@/utils/common';
 import {
   defaultResponse,
   defaultOkMock,
@@ -14,11 +12,6 @@ export const LOGIN_OUT_API = '/api/v1/user/logout';
 export const LOGIN_STATUS_API = '/api/v1/CheckUserLogin';
 export const RESET_PASSWORD_API = '/api/v1/ResetPasswordByUser';
 export const LOGIN_WEWORK_API = '/api/v1/user/wework?corp=:corp&code=:code';
-if (isDev) {
-  Mock.mock(LOGIN_API, 'post', defaultOkMock);
-  Mock.mock(LOGIN_OUT_API, 'post', defaultOkMock);
-  Mock.mock(LOGIN_STATUS_API, 'post', defaultOkMock);
-}
 
 export interface IUserLoginData {
   email: string;
