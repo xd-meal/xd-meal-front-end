@@ -9,8 +9,39 @@ const act = [
   '死亡如风常伴吾身！',
   '今天也要快乐哟~哈撒给！！！',
   '吃的苦中苦，还是普通人',
+  '再忙，也要好好吃饭~',
+  '虽然你赚的少，但是你吃的多啊',
+  '工作要认真，饭也要好好吃鸭~',
+  '甜蜜也许会迟到，但一定不会缺席',
+  '人生处处有宝藏，要坚持鸭',
+  '无肉不欢，多吃点肉',
+  '全心全力，不如人家随便搞搞',
+  '人生就是这样起起落落落落落落落落',
+  '秒回你的人，肯定在玩手机',
+  '劝人大度，遭雷劈',
+  '穷就好好工作，不要出去浪了',
+  '万事开头难，后面更特么难',
+  '黄渤有钱后，看起来都清秀了',
+  '第一个选完饭截图的陈总请喝奶茶',
+  '没什么事比吃饱饭还重要的',
+  '记忆不是越多越好，是越深刻越好',
+  'hhhhhhhhhhhhhhhhhhhhhhh',
+  '做人真累，下辈子好好做只猪',
+  '从今往后有酒有肉有人疼',
+  '前半生浪荡，后半生煲汤',
+  '没有梦想，至少还可以做梦啊',
+  '脚踏实地，才能仰望星空',
+  '新产生的BUG将比修复的更多',
+  '面向西南方写程序，BUG 最少',
 ];
-
-export function getActivity() {
-  return act[4];
+// 按照名字+日期获得一个随机数字
+export function getActivity(name: string) {
+  const now = new Date();
+  let total = 0;
+  for (const i of name) {
+    total += i.charCodeAt(0);
+  }
+  total += now.getFullYear() + now.getMonth() + now.getDate();
+  const index = total % act.length;
+  return act[index];
 }

@@ -43,9 +43,9 @@ export default class Index extends tsx.Component<any> {
               <div
                 class={{
                   'down-vote': true,
-                  // 'down-vote_active': item.isVoteDown,
+                  'down-vote_active': item.isVoteDown,
                 }}
-                // onClick={this.voteDownDishes.bind(this, item)}
+                onClick={this.voteDownDishes.bind(this, item)}
               />
             </div>
             <div class='app-day-menu-body-wrap'>
@@ -106,7 +106,7 @@ export default class Index extends tsx.Component<any> {
     }));
   }
 
-  private async voteDownDishes(dish: ISingleMenuItem) {
+  private async voteDownDishes(dish: IIndexMyDining) {
     if (this.innerPromise) {
       return;
     }
@@ -122,6 +122,7 @@ export default class Index extends tsx.Component<any> {
         isVoteDown: !dish.isVoteDown,
         dish,
       });
+      dish.isVoteDown = !dish.isVoteDown;
     }
     this.innerPromise = false;
   }

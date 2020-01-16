@@ -77,7 +77,7 @@ export default class Index extends tsx.Component<any> {
   private get profileDesc() {
     const config = this.$store.state.user.config;
     if (config.ppx) {
-      return getActivity();
+      return getActivity(this.name);
     }
     return '再忙也要好好吃饭哟～';
   }

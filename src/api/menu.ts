@@ -1,11 +1,12 @@
 import { IHttpResponse } from '@/api/http';
+import { LOGIN_WEWORK_API } from '@/api/login';
 import lodash from 'lodash';
 import axios from 'axios';
-import { defaultResponse, commonResponse } from '@/api/common';
+import { defaultResponse, commonResponse, buildParams } from '@/api/common';
 const WEEKDAY_DISHES_API = '/api/v1/dining/list';
 const ORDER_DISHES_API = '/api/v1/order';
 const MY_DISHES_API = '/api/v1/orders';
-const EVAL_DISH_API = '/api/v1/EvalDish';
+const HATE_DISH_API = '/api/v1/order/:id/hate';
 
 export interface IHttpDish {
   _id: string;
@@ -22,6 +23,7 @@ export interface IHttpDining {
   pick_end: string;
   stat_type: 0 | 1;
   menu: IHttpDish[];
+  isVoteDown?: boolean;
 }
 export interface IHttpOrderDining {
   dining_id: string;
@@ -38,6 +40,7 @@ export interface IOrder {
   dining_id: string;
   menu_id: string;
   picked: false;
+  isVoteDown?: boolean;
 }
 export interface IMyDining {
   id: string;
@@ -47,6 +50,7 @@ export interface IMyDining {
   pick_start: string;
   pick_end: string;
   menu: IHttpDish;
+  isVoteDown: boolean;
 }
 export interface IMyDishesResponse extends IHttpResponse {
   data: IMyDining[];
@@ -87,6 +91,7 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
         pick_start: dining.pick_start,
         pick_end: dining.pick_end,
         menu: menuKeys[orderedItem.menu_id],
+        isVoteDown: Boolean(orderedItem.isVoteDown),
       };
     })
     .value();
@@ -105,8 +110,9 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
 
 export async function VoteDown(
   id: string,
-  value: boolean,
+  isVoteDown: boolean,
 ): Promise<IHttpResponse> {
-  const response = await axios.post(EVAL_DISH_API, { id, Eval: value });
-  return response ? response.data : defaultResponse;
+  const url = buildParams(HATE_DISH_API, { id });
+  const response = await axios.put(url, { id, isVoteDown });
+  return response ? commonResponse(response) : defaultResponse;
 }
