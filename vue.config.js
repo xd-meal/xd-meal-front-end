@@ -1,5 +1,7 @@
 var webpack = require('webpack');
 var momentTimezoneDataPlugin = require('moment-timezone-data-webpack-plugin');
+var isTest = process.env.TEST === 'true';
+console.warn('this is test env');
 module.exports = {
   outputDir: './cordova-app/www/',
   publicPath: './',
@@ -36,11 +38,12 @@ module.exports = {
         endYear: 2050,
       }),
     );
+    isTest && config.optimization.minimize(false);
   },
 
   baseUrl: undefined,
   assetsDir: undefined,
   runtimeCompiler: undefined,
-  productionSourceMap: false,
+  productionSourceMap: !isTest,
   parallel: undefined,
 };
