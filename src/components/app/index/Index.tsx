@@ -90,11 +90,6 @@ export default class Index extends tsx.Component<any> {
   // event
   private async mounted() {
     await this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
-    this.menus.forEach((v) => {
-      v.menu.supplier = 'jkasd';
-      v.menu.desc =
-        'asdddddddddddddddddddasdqwdkjhadsfjdsfhjkadgshjkldsahkjldashkjadsfhkjladfshjkladsfhkjadfskhjadfshkjl';
-    });
     const list = getMenuGroupBy<IMyDining>(this.menus);
 
     this.list = list.map(({ value, key }) => ({
