@@ -3,6 +3,10 @@
   overflow: initial;
   height: auto;
 }
+.dialog-pc-order {
+  text-align: center;
+  display: inline-block;
+}
 .pcorder {
   background-color: #f4f4f4;
   h3 {
@@ -31,7 +35,6 @@
   width: 100%;
   background-color: #fff;
   z-index: 2;
-  position: fixed;
   &-wrap {
     max-width: 1200px;
     height: 100%;
@@ -65,7 +68,7 @@
 }
 
 .pc-order-wrap {
-  padding: 60px + 38px 15px;
+  padding: 38px 15px;
   margin: 0 auto;
   max-width: 1200px;
   &_finish {
@@ -136,7 +139,7 @@
 
 .progress {
   background-color: #fff;
-  border-top: #dddddd 1px solid;
+  border-top: #eee 1px solid;
   height: 48px;
   position: fixed;
   bottom: 0;
@@ -172,22 +175,31 @@
     padding-right: 35px;
     &-btn {
       padding: 4px 15px;
-      width: 80px;
       text-align: center;
       border: none;
       border-radius: 15px;
       margin-right: 16px;
       font-size: 12px;
       font-weight: 500;
+      cursor: pointer;
     }
     &-btn.btn-primary {
       background-color: #ff6600;
       color: #fff;
+      width: 80px;
+      transition: all .3s ease-in-out;
+      &:hover {
+        background-color: rgba(255, 102, 0, 0.9);
+      }
     }
     &-btn.btn-default {
       background-color: #fff;
       color: #000;
-      border: 1px solid #000;
+      border: 1px solid #dddddd;
+      transition: all .3s ease-in-out;
+      &:hover {
+        border-color: #666;
+      }
     }
   }
 }

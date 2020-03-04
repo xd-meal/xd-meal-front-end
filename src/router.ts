@@ -1,3 +1,4 @@
+import os from '@/utils/os';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -7,7 +8,6 @@ import Order from '@/views/Order';
 import Pc from '@/views/Pc';
 
 import Index from '@/components/app/index/Index.tsx';
-import Notification from '@/components/app/notification/Notification';
 import Pay from '@/components/app/pay/Pay.tsx';
 import Profile from '@/components/app/profile/Profile.tsx';
 import Setting from '@/components/app/profile/Setting';
@@ -24,7 +24,6 @@ export const ROUTER_NAME = {
   APP_INDEX: 'index',
   APP_PAY: 'pay',
   APP_PROFILE: 'profile',
-  APP_NOTIFICATION: 'notification',
   APP_SETTING: 'setting',
   APP_RESET_PSW: 'resetpsw',
   APP_SPECIAL_ORDER: 'appSpecialOrder',
@@ -83,15 +82,6 @@ const router: VueRouter = new Router({
         { path: 'pay', component: Pay, name: ROUTER_NAME.APP_PAY },
         { path: 'profile', component: Profile, name: ROUTER_NAME.APP_PROFILE },
       ],
-    },
-    {
-      path: '/notification',
-      component: Notification,
-      name: ROUTER_NAME.APP_NOTIFICATION,
-      meta: {
-        rightIn: true,
-        rightOut: true,
-      },
     },
     {
       path: '/setting',
@@ -153,4 +143,23 @@ router.afterEach(() => {
 });
 /*========= ⚠ warning️: this is a hack method for ios ========*/
 /*========= END ========*/
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.length === 0) {
+    // 如果未匹配到路由
+    if (os.isPc) {
+      next({
+        name: 'pcOrder',
+      });
+    } else {
+      next({
+        name: 'index',
+      });
+    }
+  } else {
+    // 如果匹配到正确跳转
+    next();
+  }
+});
+
 export default router;

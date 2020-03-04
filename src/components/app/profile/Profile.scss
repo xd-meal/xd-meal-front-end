@@ -12,6 +12,7 @@
   &-name {
     text-align: left;
     float: left;
+    width: 80%;
     &-title {
       line-height: 45px;
       font-size: 32px;
@@ -49,7 +50,7 @@
       height: 57px;
       line-height: 57px;
       text-align: left;
-      border-bottom: 1px #eeeeee solid;
+      border-bottom: .5px #eeeeee solid;
       padding-left: 20px - 12px;
       &-menu {
         font-size: 16px;

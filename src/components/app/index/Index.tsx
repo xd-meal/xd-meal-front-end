@@ -1,22 +1,13 @@
 import './index.scss';
 import { IMyDining, VoteDown } from '@/api/menu';
-import { getTimeName, getTimeType } from '@/components/utils/diningTime';
+import { getTimeName } from '@/components/utils/diningTime';
 import { getMenuGroupBy } from '@/components/utils/group';
-import { IStoreDining } from '@/store/order';
 
-import Vue, { VNode } from 'vue';
+import { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
-import { Component, Ref } from 'vue-property-decorator';
-import moment from 'moment';
-import _ from 'lodash';
+import { Component } from 'vue-property-decorator';
 
-import {
-  ISingleMenuItem,
-  MENU_NAMESPACE,
-  MENU_TIME_TYPE,
-  MENU,
-} from '@/store/menu';
-// import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
+import { ISingleMenuItem, MENU_NAMESPACE, MENU } from '@/store/menu';
 
 import { timeParser } from '@/components/utils/time';
 
@@ -52,14 +43,15 @@ export default class Index extends tsx.Component<any> {
               <div
                 class={{
                   'down-vote': true,
-                  // 'down-vote_active': item.isVoteDown,
+                  'down-vote_active': item.isVoteDown,
                 }}
-                // onClick={this.voteDownDishes.bind(this, item)}
+                onClick={this.voteDownDishes.bind(this, item)}
               />
             </div>
             <div class='app-day-menu-body-wrap'>
               <div class='desc'>{item.menu.desc}</div>
             </div>
+            <div class='line-next-split' />
           </div>
         ))}
       </div>
@@ -76,7 +68,7 @@ export default class Index extends tsx.Component<any> {
             'index-body_empty': this.list.length === 0,
           }}
         >
-          {this.list.length === 0 && <div class='tip'></div>}
+          {this.list.length === 0 && <div class='tip' />}
           <cube-scroll
             data={this.menus}
             options={{
@@ -99,6 +91,7 @@ export default class Index extends tsx.Component<any> {
   private async mounted() {
     await this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
     const list = getMenuGroupBy<IMyDining>(this.menus);
+
     this.list = list.map(({ value, key }) => ({
       key: timeParser(key),
       value: value.map((menu) => ({
@@ -108,7 +101,7 @@ export default class Index extends tsx.Component<any> {
     }));
   }
 
-  private async voteDownDishes(dish: ISingleMenuItem) {
+  private async voteDownDishes(dish: IIndexMyDining) {
     if (this.innerPromise) {
       return;
     }
@@ -124,6 +117,7 @@ export default class Index extends tsx.Component<any> {
         isVoteDown: !dish.isVoteDown,
         dish,
       });
+      dish.isVoteDown = !dish.isVoteDown;
     }
     this.innerPromise = false;
   }

@@ -1,10 +1,10 @@
 import './Setting.scss';
+import { orderDishes } from '@/api/menu';
 import { userConfigUpdate } from '@/api/user';
 import { ROUTER_NAME } from '@/router';
-import { NOTIFICATION, NOTIFICATION_NAMESPACE } from '@/store/notification';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import SubChildView from '@/components/utils/SubChildView';
@@ -24,6 +24,8 @@ export default class Setting extends tsx.Component<any> {
   protected closeCache = false;
   protected useTest = false;
 
+  protected ppx = false;
+
   private render(): VNode {
     return (
       <SubChildView title='设置' class='setting' ref='subChild'>
@@ -35,15 +37,15 @@ export default class Setting extends tsx.Component<any> {
           </div>
           <p>用户设置</p>
           <div class='group'>
+            <cube-switch vModel={this.ppx} onInput={this.ppxAlert.bind(this)}>
+              皮皮虾模式
+            </cube-switch>
             <cube-switch
               vModel={this.advance}
-              onChange={() => (this.$refs.subChild as any).refresh()}
+              onInput={() => (this.$refs.subChild as any).refresh()}
             >
               高级模式
             </cube-switch>
-            {/*<cube-button onClick={this.resetPassword.bind(this)} primary={true}>*/}
-            {/*  重设密码*/}
-            {/*</cube-button>*/}
           </div>
           {false && (
             <div>
@@ -72,23 +74,28 @@ export default class Setting extends tsx.Component<any> {
       </SubChildView>
     );
   }
-  // watch
-  @Watch('notification')
-  private onChangeValue(newVal: boolean) {
-    this.$store.commit(NOTIFICATION_NAMESPACE + NOTIFICATION.SET_BUTTON, {
-      status: newVal,
-    });
-  }
   private mounted() {
     const config = this.$store.state.user.config;
     this.randomBtn = config.randomBtn;
     this.allBuffetBtn = config.buffetBtn;
     this.advance = config.advance;
   }
-  private resetPassword() {
-    this.$router.push({
-      name: ROUTER_NAME.APP_RESET_PSW,
-    });
+  private ppxAlert(value: false) {
+    if (value) {
+      const dialog = this.$createDialog({
+        type: 'confirm',
+        content: '您确定要开启皮皮虾模式嘛！<br/>这个很危险的哟！！！',
+        icon: 'cubeic-alert',
+        onConfirm: async () => {
+          dialog.hide();
+        },
+        onCancel: () => {
+          dialog.hide();
+          this.ppx = false;
+        },
+      });
+      dialog.show();
+    }
   }
   private async save() {
     const toast = this.$createToast({
@@ -100,11 +107,24 @@ export default class Setting extends tsx.Component<any> {
       randomBtn: this.randomBtn,
       buffetBtn: this.allBuffetBtn,
       advance: this.advance,
+      ppx: this.ppx,
     };
     const res = await userConfigUpdate(config);
     toast.hide();
     if (res.code === 200) {
       await this.$store.commit(USER_NAMESPACE + USER.SET_CONFIG, { c: config });
+      this.$createToast({
+        txt: '保存成功',
+        type: 'text',
+        icon: 'cubeic-ok',
+        timeout: 1500,
+      }).show();
+    } else {
+      this.$createToast({
+        txt: '保存失败',
+        type: 'text',
+        timeout: 1500,
+      }).show();
     }
   }
 }

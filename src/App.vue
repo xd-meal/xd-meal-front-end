@@ -56,14 +56,17 @@ export default class Home extends Vue {
     if (loader) {
       loader.setAttribute('style', 'display: none;');
     }
-    // this.nowClass.standalone =
-    // (window.navigator as any).standalone && os.iphoneX;
-    // this.nowClass.iosX = os.iphoneX;
   }
 }
 </script>
 
 <style lang="scss">
+.cube-dialog-main {
+  border-radius: 8px !important;
+}
+.cube-dialog-icon {
+  margin-top: 26px;
+}
 html {
   font-size: 62.5%;
 }

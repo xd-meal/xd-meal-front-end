@@ -35,3 +35,4 @@ yarn run test:unit
 1. 使用 typescript 开发
 2. 添加单元测试并做检查，但不强求完整单元测试,建议使用 snapshot 功能，做大致的快照检测即可
 3. 前端开发情况下所有 api 请自行构建 mock 数据
+4. 尽可能的保证 e2e 测试通过

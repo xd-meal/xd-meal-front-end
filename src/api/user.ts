@@ -1,4 +1,3 @@
-import { IHttpDining, IHttpOrderDining } from '@/api/menu';
 import axios from 'axios';
 import { commonResponse, defaultResponse } from '@/api/common';
 import { IHttpResponse } from '@/api/http';
@@ -10,6 +9,7 @@ export interface IUserConfig {
   advance: boolean;
   randomBtn: boolean;
   buffetBtn: boolean;
+  ppx: boolean;
 }
 
 export async function userConfigUpdate(
