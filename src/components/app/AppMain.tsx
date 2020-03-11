@@ -54,7 +54,7 @@ export default class AppMain extends tsx.Component<any> {
   }
 
   public changeTabName(tab: SingleComponent) {
-    this.$router.push({ name: tab.key as string });
+    this.$router.replace({ name: tab.key as string });
   }
 
   public get current(): SingleComponent {
