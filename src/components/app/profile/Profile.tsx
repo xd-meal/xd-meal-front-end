@@ -9,6 +9,12 @@ import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 @Component
 export default class Index extends tsx.Component<any> {
+  private routers: Array<{
+    name: string;
+    target?: string;
+    onClick?: () => void;
+    class?: any;
+  }> = [];
   protected render(): VNode {
     return (
       <div class='profile'>
@@ -24,31 +30,7 @@ export default class Index extends tsx.Component<any> {
           )}
         </div>
         <div class='profile-context'>
-          {[
-            // {
-            //   name: '商家收藏',
-            //   target: 'profile',
-            // },
-            {
-              name: __('设置'),
-              target: ROUTER_NAME.APP_SETTING,
-            },
-            {
-              name: __('加班餐'),
-              target: ROUTER_NAME.APP_SPECIAL_ORDER,
-            },
-            {
-              name: __('重设密码'),
-              target: ROUTER_NAME.APP_RESET_PSW,
-            },
-            {
-              name: __('退出登录'),
-              onClick: this.loginout.bind(this),
-              class: {
-                error: true,
-              },
-            },
-          ].map((item) => (
+          {this.routers.map((item) => (
             <div class='profile-context-item'>
               <div
                 class={{
@@ -73,6 +55,36 @@ export default class Index extends tsx.Component<any> {
         </div>
       </div>
     );
+  }
+  protected mounted() {
+    const isWework = Boolean(this.$store.state.user.wework_userid);
+    this.routers = [
+      // {
+      //   name: '商家收藏',
+      //   target: 'profile',
+      // },
+      {
+        name: __('设置'),
+        target: ROUTER_NAME.APP_SETTING,
+      },
+      {
+        name: __('加班餐'),
+        target: ROUTER_NAME.APP_SPECIAL_ORDER,
+      },
+    ];
+    if (isWework) {
+      this.routers.push({
+        name: __('重设密码'),
+        target: ROUTER_NAME.APP_RESET_PSW,
+      });
+    }
+    this.routers.push({
+      name: __('退出登录'),
+      onClick: this.loginout.bind(this),
+      class: {
+        error: true,
+      },
+    });
   }
   private get profileDesc() {
     const config = this.$store.state.user.config;

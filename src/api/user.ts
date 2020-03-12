@@ -8,6 +8,8 @@ const USER_RESET_PWD_API = '/api/v1/user/reset_pwd';
 export interface IUserConfig {
   advance: boolean;
   randomBtn: boolean;
+  randomForNoSpicy: boolean;
+  randomForEmpty: boolean;
   buffetBtn: boolean;
   ppx: boolean;
 }
@@ -22,6 +24,7 @@ export interface IProfile {
   config: IUserConfig;
   avatar: string;
   username: string;
+  wework_userid: string;
 }
 export interface IUserProfileResponse extends IHttpResponse {
   data: IProfile;
