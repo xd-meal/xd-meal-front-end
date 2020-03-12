@@ -141,6 +141,6 @@ export default class Login extends tsx.Component<any> {
     const url =
       'https://open.work.weixin.qq.com/wwopen/sso/qrConnect?' +
       params.toString();
-    window.location.href = url;
+    window.location.replace(url);
   }
 }

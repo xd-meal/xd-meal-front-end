@@ -36,7 +36,7 @@ function callWeWorkLogin(corp: string) {
     'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     params.toString() +
     '#wechat_redirect';
-  window.location.href = url;
+  window.location.replace(url);
 }
 
 export async function gotoLogin() {
