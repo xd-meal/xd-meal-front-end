@@ -17,6 +17,7 @@ export interface IUserLoginGlobal {
   loginStatus: LOGIN_STATUS;
   config: IUserConfig;
   avatar: string;
+  wework_userid: string | null;
 }
 const config = store.get('config') || {};
 const state: IUserLoginGlobal = {
@@ -28,8 +29,11 @@ const state: IUserLoginGlobal = {
     advance: Boolean(config.advance),
     randomBtn: Boolean(config.randomBtn),
     buffetBtn: Boolean(config.buffetBtn),
+    randomForEmpty: Boolean(config.randomForEmpty),
+    randomForNoSpicy: Boolean(config.randomForNoSpicy),
     ppx: Boolean(config.ppx),
   },
+  wework_userid: null,
   avatar: store.get('avatar'),
 };
 export const USER_NAMESPACE = 'user/';
@@ -135,6 +139,7 @@ const mutations: MutationTree<IUserLoginGlobal> = {
     },
   ) {
     _.username = profile.username;
+    _.wework_userid = profile.wework_userid;
     _.config = { ...profile.config };
     _.avatar = profile.avatar;
     store.set('config', profile.config);

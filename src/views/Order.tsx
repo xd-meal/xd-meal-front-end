@@ -1,5 +1,6 @@
 import './Order.scss';
 import { __ } from '@/components/app/ppx/textTransform';
+import { filterMenuList, IRule } from '@/components/utils/filter';
 import { getMenuGroupBy } from '@/components/utils/group';
 import { ROUTER_NAME } from '@/router';
 
@@ -37,6 +38,11 @@ export default class Order extends tsx.Component<any> {
   protected allBuffetBtn: boolean = false;
   protected allRandomed: boolean = false;
   protected allBuffeted: boolean = false;
+  protected randomForNoSpicy: boolean = false;
+  protected randomForEmpty: boolean = false;
+
+  protected randomRules: Array<string | IRule> = [];
+
   protected render(): VNode {
     return (
       <ChildPageConstruction class='order'>
@@ -162,6 +168,19 @@ export default class Order extends tsx.Component<any> {
     const config = this.$store.state.user.config;
     this.randomBtn = config.randomBtn;
     this.allBuffetBtn = config.buffetBtn;
+    this.randomForNoSpicy = config.randomForNoSpicy;
+    this.randomForEmpty = config.randomForEmpty;
+
+    if (this.randomForEmpty) {
+      this.randomRules = [];
+    } else {
+      this.randomRules = ['NO_EMPTY'];
+    }
+
+    if (this.randomForNoSpicy) {
+      this.randomRules.push('NO_SPICY');
+    }
+
     let list = this.$store.state.order.list;
     if (this.isSpecial) {
       list = list.filter((item: IStoreDining) => /加班/.test(item.title));
@@ -206,8 +225,9 @@ export default class Order extends tsx.Component<any> {
     this.allRandomed = true;
     this.list.forEach(({ value }) => {
       value.forEach((dining) => {
-        const index = Math.floor(dining.menu.length * Math.random());
-        this.selector[dining._id] = dining.menu[index]._id;
+        const menu = filterMenuList(dining.menu, this.randomRules);
+        const index = Math.floor(menu.length * Math.random());
+        this.selector[dining._id] = menu[index]._id;
       });
     });
     this.refreshError();
