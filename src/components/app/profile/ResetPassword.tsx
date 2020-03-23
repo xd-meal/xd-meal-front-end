@@ -2,7 +2,7 @@ import './ResetPassword.scss';
 import { resetUserPsw } from '@/api/user';
 import { gotoLogin } from '@/utils/common';
 import { VNode } from 'vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import SubChildView from '@/components/utils/SubChildView';

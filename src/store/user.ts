@@ -5,7 +5,6 @@ import { ActionTree, GetterTree, MutationTree } from 'vuex';
 import Router from '@/router';
 import store from 'store';
 import { loginApi, IUserLoginData } from '@/api/login';
-import { INotificationGlobal } from '@/store/notification';
 
 export enum LOGIN_STATUS {
   FAIL = 'fail',
@@ -16,12 +15,9 @@ export interface IUserLoginGlobal {
   username: string;
   payCode: string;
   loginStatus: LOGIN_STATUS;
-  config: {
-    advance: boolean;
-    randomBtn: boolean;
-    buffetBtn: boolean;
-  };
+  config: IUserConfig;
   avatar: string;
+  wework_userid: string | null;
 }
 const config = store.get('config') || {};
 const state: IUserLoginGlobal = {
@@ -33,7 +29,11 @@ const state: IUserLoginGlobal = {
     advance: Boolean(config.advance),
     randomBtn: Boolean(config.randomBtn),
     buffetBtn: Boolean(config.buffetBtn),
+    randomForEmpty: Boolean(config.randomForEmpty),
+    randomForNoSpicy: Boolean(config.randomForNoSpicy),
+    ppx: Boolean(config.ppx),
   },
+  wework_userid: null,
   avatar: store.get('avatar'),
 };
 export const USER_NAMESPACE = 'user/';
@@ -54,7 +54,7 @@ export enum USER {
   FETCH_USER_PROFILE_ACTION = 'fetchUserProfileAction',
 }
 
-const getters: GetterTree<INotificationGlobal, any> = {
+const getters: GetterTree<IUserLoginGlobal, any> = {
   code() {
     return '5948d29214d1';
   },
@@ -139,6 +139,7 @@ const mutations: MutationTree<IUserLoginGlobal> = {
     },
   ) {
     _.username = profile.username;
+    _.wework_userid = profile.wework_userid;
     _.config = { ...profile.config };
     _.avatar = profile.avatar;
     store.set('config', profile.config);

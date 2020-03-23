@@ -1,7 +1,7 @@
 import './ChildPageConstruction.scss';
 
 import { VNode } from 'vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 @Component

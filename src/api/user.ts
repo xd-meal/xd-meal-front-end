@@ -1,4 +1,3 @@
-import { IHttpDining, IHttpOrderDining } from '@/api/menu';
 import axios from 'axios';
 import { commonResponse, defaultResponse } from '@/api/common';
 import { IHttpResponse } from '@/api/http';
@@ -9,7 +8,10 @@ const USER_RESET_PWD_API = '/api/v1/user/reset_pwd';
 export interface IUserConfig {
   advance: boolean;
   randomBtn: boolean;
+  randomForNoSpicy: boolean;
+  randomForEmpty: boolean;
   buffetBtn: boolean;
+  ppx: boolean;
 }
 
 export async function userConfigUpdate(
@@ -22,6 +24,7 @@ export interface IProfile {
   config: IUserConfig;
   avatar: string;
   username: string;
+  wework_userid: string;
 }
 export interface IUserProfileResponse extends IHttpResponse {
   data: IProfile;

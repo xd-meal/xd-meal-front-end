@@ -1,9 +1,9 @@
 import './AppMain.scss';
-import { isEvent, ROUTER_NAME } from '@/router';
+import { isEvent } from '@/router';
 import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
-import { Component, Vue, Watch } from 'vue-property-decorator';
+import { Component, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import { Route } from 'vue-router';
 interface SingleComponent {
@@ -54,7 +54,7 @@ export default class AppMain extends tsx.Component<any> {
   }
 
   public changeTabName(tab: SingleComponent) {
-    this.$router.push({ name: tab.key as string });
+    this.$router.replace({ name: tab.key as string });
   }
 
   public get current(): SingleComponent {
@@ -85,7 +85,6 @@ export default class AppMain extends tsx.Component<any> {
           </router-link>
         )}
         <div class='footer-bar'>
-          {/*<div class='footer-active' style={this.footerActiveProp} />*/}
           <div class='footer-bar-wrap'>
             {this.tabList.map((tab) => {
               return (

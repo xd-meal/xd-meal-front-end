@@ -1,3 +1,4 @@
+import os from '@/utils/os';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -5,10 +6,8 @@ import Login from '@/views/Login';
 import App from '@/views/App';
 import Order from '@/views/Order';
 import Pc from '@/views/Pc';
-import Admin from '@/views/Admin';
 
 import Index from '@/components/app/index/Index.tsx';
-import Notification from '@/components/app/notification/Notification';
 import Pay from '@/components/app/pay/Pay.tsx';
 import Profile from '@/components/app/profile/Profile.tsx';
 import Setting from '@/components/app/profile/Setting';
@@ -16,14 +15,6 @@ import ResetPassword from '@/components/app/profile/ResetPassword';
 
 import PcOrder from '@/components/pc/PcOrder.tsx';
 
-import AdminLogin from '@/components/admin/AdminLogin.tsx';
-import AdminEdit from '@/components/admin/AdminEdit.tsx';
-import AdminImport from '@/components/admin/AdminImport.tsx';
-import AdminSwitch from '@/components/admin/AdminSwitch';
-import AdminOutput from '@/components/admin/AdminOutput.tsx';
-import AdminBreakfast from '@/components/admin/AdminBreakfast.tsx';
-import AdminUser from '@/components/admin/AdminUser.tsx';
-import AdminDiningList from '@/components/admin/AdminDiningList';
 import { VueRouter } from 'vue-router/types/router';
 export const ROUTER_NAME = {
   LOGIN: 'login',
@@ -33,7 +24,6 @@ export const ROUTER_NAME = {
   APP_INDEX: 'index',
   APP_PAY: 'pay',
   APP_PROFILE: 'profile',
-  APP_NOTIFICATION: 'notification',
   APP_SETTING: 'setting',
   APP_RESET_PSW: 'resetpsw',
   APP_SPECIAL_ORDER: 'appSpecialOrder',
@@ -94,15 +84,6 @@ const router: VueRouter = new Router({
       ],
     },
     {
-      path: '/notification',
-      component: Notification,
-      name: ROUTER_NAME.APP_NOTIFICATION,
-      meta: {
-        rightIn: true,
-        rightOut: true,
-      },
-    },
-    {
       path: '/setting',
       component: Setting,
       name: ROUTER_NAME.APP_SETTING,
@@ -135,43 +116,6 @@ const router: VueRouter = new Router({
         },
       ],
     },
-    // XXX: 先写这边，后面单独抽离出去
-    {
-      path: '/admin',
-      name: 'admin',
-      component: Admin,
-      children: [
-        { path: 'login', name: ROUTER_NAME.ADMIN_LOGIN, component: AdminLogin },
-        {
-          path: 'import',
-          name: ROUTER_NAME.ADMIN_IMPORT,
-          component: AdminImport,
-        },
-        {
-          path: 'dining',
-          name: ROUTER_NAME.ADMIN_DINING,
-          component: AdminDiningList,
-        },
-        {
-          path: 'output',
-          name: ROUTER_NAME.ADMIN_OUTPUT,
-          component: AdminOutput,
-        },
-        {
-          path: 'breakfast',
-          name: ROUTER_NAME.ADMIN_BREAKFAST,
-          component: AdminBreakfast,
-        },
-        { path: 'edit', name: ROUTER_NAME.ADMIN_EDIT, component: AdminEdit },
-        {
-          path: 'switch',
-          name: ROUTER_NAME.ADMIN_SWITCH,
-          component: AdminSwitch,
-        },
-        { path: 'user', name: ROUTER_NAME.ADMIN_USER, component: AdminUser },
-      ],
-    },
-    // import(/* webpackChunkName: "about" */ './views/About.vue')
   ],
 });
 /*========= start ========*/
@@ -199,4 +143,23 @@ router.afterEach(() => {
 });
 /*========= ⚠ warning️: this is a hack method for ios ========*/
 /*========= END ========*/
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.length === 0) {
+    // 如果未匹配到路由
+    if (os.isPc) {
+      next({
+        name: 'pcOrder',
+      });
+    } else {
+      next({
+        name: 'index',
+      });
+    }
+  } else {
+    // 如果匹配到正确跳转
+    next();
+  }
+});
+
 export default router;

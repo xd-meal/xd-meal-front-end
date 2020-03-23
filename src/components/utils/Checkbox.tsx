@@ -1,5 +1,5 @@
 import './Checkbox.scss';
-import { Component, Prop, Vue, Model } from 'vue-property-decorator';
+import { Component, Vue, Model } from 'vue-property-decorator';
 
 @Component
 export default class Checkbox extends Vue {

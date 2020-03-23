@@ -1,5 +1,6 @@
 import { fetchWeworkCode, logoutApi } from '@/api/login';
 import router from '@/router';
+import { getCookie } from '@/utils/cookies';
 import os from '@/utils/os';
 import store from 'store';
 
@@ -35,7 +36,7 @@ function callWeWorkLogin(corp: string) {
     'https://open.weixin.qq.com/connect/oauth2/authorize?' +
     params.toString() +
     '#wechat_redirect';
-  window.location.href = url;
+  window.location.replace(url);
 }
 
 export async function gotoLogin() {
@@ -57,7 +58,7 @@ export async function gotoLogin() {
     }
   }
   let query = {};
-  if (!/\/login/.test(router.currentRoute.fullPath)) {
+  if (!/\/(login|resetpsw)/.test(router.currentRoute.fullPath)) {
     query = { backPath: router.currentRoute.fullPath };
   }
   // 没有登陆，先去登陆
@@ -94,5 +95,20 @@ export async function loginOut(targetDom: Vue) {
         icon: 'cubeic-alert',
       })
       .show();
+  }
+}
+
+export function routerCheck() {
+  // 先判断有没有 cookie 在判断网络连通性
+  // 在首次进入页面时检测用户登陆状态，如果尚未登陆跳转到 login
+  const session = getCookie('XD-MEAL-SESSION');
+  if (session) {
+    // 登陆了且在 login 以及首页的跳转到 index
+    if (['/', '/login'].indexOf(router.currentRoute.fullPath) >= 0) {
+      gotoIndex();
+    }
+  } else {
+    // 尚未登陆的前往登陆页面
+    gotoLogin();
   }
 }
