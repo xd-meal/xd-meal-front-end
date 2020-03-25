@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>加班餐</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="75.5448191%" y1="13.8055099%" x2="22.4698153%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FF9F00" offset="0%"></stop>
+            <stop stop-color="#FF6600" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="加班餐" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="编组" transform="translate(1.000000, 1.000000)" fill="url(#linearGradient-1)">
+            <path d="M11,22 C17.075025,22 22,17.075025 22,11 C22,4.92497499 17.075025,0 11,0 C4.92497501,0 0,4.92497501 0,11 C0,17.075025 4.92497499,22 11,22 Z M9.70355563,10.0581275 L9.70355563,5.12739857 C9.70355563,4.50475353 10.2176322,4 10.8517778,4 C11.4859234,4 12,4.50475353 12,5.12739857 L12,10.5252463 C11.999935,10.8242265 11.8789193,11.110938 11.6635709,11.3223171 L7.97415332,15.6557906 C7.68586405,15.9488652 7.25895111,16.0664033 6.85749884,15.963229 C6.45604657,15.8600546 6.14253029,15.5522241 6.03745023,15.1580524 C5.93237017,14.7638806 6.05207923,14.34471 6.35056715,14.061649 L9.70355563,10.0581275 Z" id="形状"></path>
+        </g>
+    </g>
+</svg>

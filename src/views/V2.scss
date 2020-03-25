@@ -1,0 +1,10 @@
+.v2 {
+  background-color: #f8f8f8;
+  &-global-wrap {
+    transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+  .delay-leave-active {
+    transition-duration: 1.1s;
+    opacity: 1;
+  }
+}

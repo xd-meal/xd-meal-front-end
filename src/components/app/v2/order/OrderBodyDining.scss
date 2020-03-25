@@ -1,0 +1,129 @@
+.order-body-dining {
+  color: #333;
+  padding: 0 20px;
+  text-align: left;
+  &_title {
+    height: 28px;
+    line-height: 28px;
+    font-size: 20px;
+    font-weight: 400;
+    margin-bottom: 10px;
+    .name {
+      margin-right: 13px;
+    }
+  }
+
+  &_date-time {
+    padding: 26px 0 24px 0;
+    line-height: 20px;
+    height: 20px;
+    .date_time {
+      width: 18px;
+      height: 18px;
+      background-size: 100% 100%;
+      margin-right: 8px;
+      background-image: url('../../../../assets/icon/v2/calendar.svg');
+    }
+    span,
+    i {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+  &_checkbox {
+    font-size: 14px;
+    margin-bottom: 12px;
+    line-height: 22px;
+    &-title {
+      padding-right: 40px;
+    }
+    &-wrap {
+      position: relative;
+      height: 22px;
+      line-height: 22px;
+    }
+  }
+  &_wrap {
+    line-height: 22px;
+    font-size: 14px;
+  }
+  &_check {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    right: 0;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    display: inline-block;
+    vertical-align: middle;
+    .circle {
+      display: block;
+      width: 18px;
+      height: 18px;
+      border: 1px solid #e3e3e3;
+      border-radius: 20px;
+      @media (-webkit-device-pixel-ratio: 2) {
+        border: 0.5px solid #e3e3e3;
+      }
+    }
+    .active-icon {
+      display: block;
+      width: 100%;
+      height: 100%;
+      background-image: url('../../../../assets/icon/v2/select.svg');
+      background-size: 20px 20px;
+      background-repeat: no-repeat;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0;
+    }
+    &_active {
+      @keyframes pulse {
+        0% {
+          transform: scale3d(0, 0, 0);
+        }
+        20% {
+          transform: scale3d(1, 1, 1);
+        }
+
+        50% {
+          transform: scale3d(1.05, 1.05, 1.05);
+        }
+
+        to {
+          transform: scale3d(1, 1, 1);
+        }
+      }
+      .active-icon {
+        animation-name: pulse;
+        animation-duration: 0.45s;
+        opacity: 1;
+      }
+    }
+  }
+  &_desc {
+    padding-right: 40px;
+  }
+  &_supplier {
+    color: #999999;
+    font-size: 10px;
+    line-height: 14px;
+  }
+  .line-split {
+    display: none;
+    border-top: 1px solid #d8d8d8;
+    height: 0;
+    @media (-webkit-device-pixel-ratio: 2) {
+      border-top: 0.5px solid #d8d8d8;
+    }
+    @media (-webkit-device-pixel-ratio: 3) {
+      border-top: 0.333333px solid #d8d8d8;
+    }
+  }
+}

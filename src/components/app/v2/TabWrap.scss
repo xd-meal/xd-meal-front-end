@@ -1,0 +1,105 @@
+.v2-main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9;
+  //&-body {
+  //  overflow-x: hidden;
+  //  overflow-y: scroll;
+  //  -webkit-overflow-scrolling: touch;
+  //  position: absolute;
+  //  top: 0;
+  //  bottom: 68px;
+  //}
+  &-transition {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+  &_pay-wrap,
+  &_profile-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    .pay {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-footer {
+    position: fixed;
+    height: 68px;
+    border-radius: 36px 36px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 -5px 20px;
+    width: 100%;
+    bottom: 0;
+    z-index: 2;
+    background-color: white;
+    &_icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 58px;
+      height: 100%;
+    }
+    &_icon {
+      position: relative;
+      .click-wrap {
+        $size: 50px;
+        position: absolute;
+        width: $size;
+        height: $size;
+        margin: -$size * 0.5 0 0 -$size * 2;
+        top: 50%;
+        left: 50%;
+      }
+      i {
+        width: 32px;
+        height: 32px;
+        background-size: auto 32px;
+        background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        display: inline-block;
+        &.index {
+          background-image: url('../../../assets/icon/v2/dining.svg');
+          background-size: auto 29px;
+        }
+        &.qrcode {
+          background-image: url('../../../assets/icon/v2/qr.svg');
+        }
+        &.profile {
+          background-image: url('../../../assets/icon/v2/profile.svg');
+        }
+      }
+      &_active {
+        i {
+          &.index {
+            background-image: url('../../../assets/icon/v2/dining-active.svg');
+            background-size: auto 32px;
+          }
+          &.qrcode {
+            background-image: url('../../../assets/icon/v2/qr-active.svg');
+          }
+          &.profile {
+            background-image: url('../../../assets/icon/v2/profile-active.svg');
+          }
+        }
+      }
+    }
+  }
+}
+
+.v2-slide-left-enter,
+.v2-slide-right-leave-active {
+  opacity: 0;
+  transform: translate(100%, 0);
+}
+
+.v2-slide-left-leave-active,
+.v2-slide-right-enter {
+  opacity: 0;
+  transform: translate(-100%, 0);
+}

@@ -1,0 +1,21 @@
+.v2-main_index {
+  $bottom: 40px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: absolute;
+  top: 0;
+  bottom: 68px - $bottom;
+  height: auto;
+  padding-top: 59px - 40px;
+  padding-bottom: $bottom;
+  .v2-main_order-link {
+    position: absolute;
+    bottom: 225px;
+    right: 13px;
+    .order-btn {
+      //linear-gradient(45deg, #ff9f00, #ff6600);
+      box-shadow: rgba(255, 98, 0, 0.4) 0 8px 20px;
+    }
+  }
+}

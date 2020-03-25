@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 61.2 (89653) - https://sketch.com -->
+    <title>选中</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <linearGradient x1="74.4726562%" y1="24.53125%" x2="0%" y2="100%" id="linearGradient-1">
+            <stop stop-color="#FF9F00" offset="0%"></stop>
+            <stop stop-color="#FF6600" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="控件" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="选餐/模块1" transform="translate(-347.000000, -188.000000)" fill="url(#linearGradient-1)" fill-rule="nonzero">
+            <g id="编组-6" transform="translate(23.000000, 186.000000)">
+                <g id="编组" transform="translate(324.000000, 2.000000)">
+                    <path d="M10,0 C15.52275,0 20,4.47724999 20,10 C20,15.52275 15.52275,20 10,20 C4.47725001,20 0,15.52275 0,10 C0,4.47725001 4.47725001,0 10,0 Z M14.28,6.96925 C14.1392446,6.82866965 13.948404,6.74976944 13.7494696,6.74990991 C13.5505353,6.75005076 13.3598064,6.82922075 13.21925,6.97 L8.75600001,11.44 L6.77924999,9.47150001 C6.48512187,9.18313753 6.01347885,9.18594419 5.72280342,9.47778672 C5.43212799,9.76962926 5.43121126,10.2412797 5.72075001,10.53425 L8.22824999,13.0315 C8.52148122,13.3235394 8.99584647,13.3228682 9.28825,13.03 L14.28075,8.03000001 C14.4213303,7.88924463 14.5002306,7.69840405 14.5000901,7.49946966 C14.4999492,7.30053526 14.4207792,7.10980644 14.28,6.96925 L14.28,6.96925 Z" id="选中"></path>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

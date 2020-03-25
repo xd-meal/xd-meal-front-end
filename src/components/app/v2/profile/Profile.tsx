@@ -1,4 +1,4 @@
-import './Profile.scss';
+import '@/components/app/v2/profile/Profile.scss';
 import { getActivity } from '@/components/app/ppx/activity';
 import { __ } from '@/components/app/ppx/textTransform';
 import { ROUTER_NAME } from '@/router';
@@ -8,33 +8,37 @@ import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 @Component
-export default class Profile extends tsx.Component<any> {
+export default class V2Profile extends tsx.Component<any> {
   private routers: Array<{
     name: string;
     target?: string;
+    icon?: string;
     onClick?: () => void;
     class?: any;
   }> = [];
   protected render(): VNode {
     return (
-      <div class='profile'>
-        <div class='profile-wrap'>
-          <div class='profile-name'>
-            <div class='profile-name-title'>{this.name}</div>
-            <div class='profile-name-desc'>{this.profileDesc}</div>
+      <div class='v2_profile'>
+        <div class='v2_profile-wrap'>
+          <div class='v2_profile-name'>
+            <div class='v2_profile-name-title'>{this.name}</div>
+            <div class='v2_profile-name-desc'>{this.profileDesc}</div>
           </div>
           {Boolean(this.avatar.trim()) && (
-            <div class='profile-avatar'>
+            <div class='v2_profile-avatar'>
               <img src={this.avatar} alt='' />
             </div>
           )}
         </div>
-        <div class='profile-context'>
-          {this.routers.map((item) => (
-            <div class='profile-context-item'>
+        <div class='v2_profile-context'>
+          {this.routers.map((item, i) => (
+            <div
+              class='v2_profile-context-item'
+              style={i === this.routers.length - 1 ? 'border: none;' : ''}
+            >
               <div
                 class={{
-                  'profile-context-item-menu': true,
+                  'v2_profile-context-item-menu': true,
                   ...(item.class || {}),
                 }}
                 onClick={() => {
@@ -48,7 +52,8 @@ export default class Profile extends tsx.Component<any> {
                   }
                 }}
               >
-                {item.name}
+                <i class={item.icon} />
+                <span>{item.name}</span>
               </div>
             </div>
           ))}
@@ -59,27 +64,22 @@ export default class Profile extends tsx.Component<any> {
   protected mounted() {
     const isWework = Boolean(this.$store.state.user.wework_userid);
     this.routers = [
-      // {
-      //   name: '商家收藏',
-      //   target: 'profile',
-      // },
       {
         name: __('设置'),
         target: ROUTER_NAME.APP_SETTING,
-      },
-      {
-        name: __('加班餐'),
-        target: ROUTER_NAME.APP_SPECIAL_ORDER,
+        icon: 'icon setting',
       },
     ];
-    if (!isWework) {
+    if (isWework) {
       this.routers.push({
         name: __('重设密码'),
         target: ROUTER_NAME.APP_RESET_PSW,
+        icon: 'icon resetpwd',
       });
     }
     this.routers.push({
       name: __('退出登录'),
+      icon: 'icon logout',
       onClick: this.loginout.bind(this),
       class: {
         error: true,
