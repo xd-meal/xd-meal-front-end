@@ -1,3 +1,5 @@
+import { ORDER, ORDER_NAMESPACE } from '@/store/order';
+import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -28,7 +30,10 @@ export default class TabWrap extends tsx.Component<any> {
   private shows = [true, false, false];
   // 动画相关
   private transitionName: string = '';
-
+  private mounted() {
+    this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
+    this.$store.dispatch(USER_NAMESPACE + USER.FETCH_USER_PROFILE_ACTION);
+  }
   private render(): VNode {
     return (
       <div class='v2-main'>

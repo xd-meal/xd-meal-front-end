@@ -29,21 +29,25 @@ export default class IndexWrap extends tsx.Component<any> {
         {this.list.map((_) =>
           _.value.map((v) => <IndexPanel dining={v} time={_.key} />),
         )}
-        <div class='v2-main_order-link'>
-          <router-link
-            class='order-btn'
-            to={{ name: ROUTER_NAME.APP_ORDER_V2 }}
-          >
-            <span class='order-icon' />
-          </router-link>
-        </div>
+        {this.orderBtnShow && (
+          <div class='v2-main_order-link' data-for-test='orderBtn'>
+            <router-link
+              class='order-btn'
+              to={{ name: ROUTER_NAME.APP_ORDER_V2 }}
+            >
+              <span class='order-icon' />
+            </router-link>
+          </div>
+        )}
       </div>
     );
   }
   protected get menus(): IMyDining[] {
     return this.$store.state.menu.list;
   }
-
+  protected get orderBtnShow() {
+    return this.$store.state.order.list.length > 0;
+  }
   private async mounted() {
     await this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);
     const list = getMenuGroupBy<IMyDining>(this.menus);
