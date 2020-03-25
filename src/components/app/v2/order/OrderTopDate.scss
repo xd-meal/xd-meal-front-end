@@ -1,7 +1,10 @@
 .top-date {
   position: relative;
-  white-space: nowrap;
-  transition: transform 0.45s ease-in-out;
+  &-body {
+    position: relative;
+    white-space: nowrap;
+    transition: transform 0.45s ease-in-out;
+  }
   .fade-enter-active,
   .fade-leave-active {
     transition: opacity 0.5s;
@@ -68,6 +71,24 @@
       z-index: 2;
       font-weight: 500;
       transition: color 0.5s;
+    }
+  }
+  &_slide-pagination {
+    position: absolute;
+    bottom: -18px;
+    z-index: 12;
+    text-align: center;
+    width: 100%;
+    &-part {
+      width: 15px;
+      height: 3px;
+      display: inline-block;
+      background-color: #f4f4f4;
+      border-radius: 3px;
+      margin: 0 4px;
+      &_active {
+        background-color: #ddd;
+      }
     }
   }
 }

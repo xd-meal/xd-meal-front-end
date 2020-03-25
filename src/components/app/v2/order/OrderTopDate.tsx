@@ -95,79 +95,96 @@ export default class OrderTopDate extends tsx.Component<any> {
     return (
       <div
         class='top-date'
-        style={this.currentTransform}
         onTouchstart={this.touchStart.bind(this)}
         onTouchmove={this.touchMove.bind(this)}
         onTouchend={this.touchEnd.bind(this)}
-        ref='topDataBody'
       >
-        {this.slides.map((slides) => (
-          <div class='top-date_slide-wrap'>
-            <div class='top-date-wrap' style='padding: 16px 30px 0 30px;'>
-              {slides.map((d) =>
-                d.time === '0' ? (
-                  <div class='top-date_content' />
-                ) : (
-                  <div class='top-date_content'>
-                    <div class='top-date_content-weekday'>
-                      {timeWeekdayParser(d.time)}
-                    </div>
-                  </div>
-                ),
-              )}
-            </div>
-            <div class='top-date-wrap' style='margin: 14px 30px 16px 30px;'>
-              {slides.map((d) =>
-                d.time === '0' ? (
-                  <div class='top-date_content' />
-                ) : (
-                  <div
-                    class={{
-                      'top-date_content': true,
-                      'top-date_content_disable': !d.status,
-                    }}
-                  >
-                    {this.activeTime === d.time ? (
-                      <div
-                        class='top-date_content-date'
-                        style={`${
-                          this.currentTime === d.time ? 'color: #ff6600;' : ''
-                        }`}
-                        onclick={this.handleActiveChange.bind(this, d)}
-                        ref='activeElement'
-                      >
-                        <div class='top-date_content-text' style='color: #fff;'>
-                          {moment(d.time).date()}
-                        </div>
-                      </div>
-                    ) : (
-                      <div
-                        class='top-date_content-date'
-                        style={`${
-                          this.currentTime === d.time ? 'color: #ff6600;' : ''
-                        }`}
-                        onclick={this.handleActiveChange.bind(this, d)}
-                      >
-                        <div class='top-date_content-text'>
-                          {moment(d.time).date()}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ),
-              )}
-            </div>
-          </div>
-        ))}
-
         <div
-          class={{
-            'top-date_content-circle': true,
-            'close-animation': !this.headLoadFinish,
-          }}
-          style={this.pos}
+          class='top-date-body'
+          ref='topDataBody'
+          style={this.currentTransform}
         >
-          <div class='inner' />
+          {this.slides.map((slides) => (
+            <div class='top-date_slide-wrap'>
+              <div class='top-date-wrap' style='padding: 16px 30px 0 30px;'>
+                {slides.map((d) =>
+                  d.time === '0' ? (
+                    <div class='top-date_content' />
+                  ) : (
+                    <div class='top-date_content'>
+                      <div class='top-date_content-weekday'>
+                        {timeWeekdayParser(d.time)}
+                      </div>
+                    </div>
+                  ),
+                )}
+              </div>
+              <div class='top-date-wrap' style='margin: 14px 30px 16px 30px;'>
+                {slides.map((d) =>
+                  d.time === '0' ? (
+                    <div class='top-date_content' />
+                  ) : (
+                    <div
+                      class={{
+                        'top-date_content': true,
+                        'top-date_content_disable': !d.status,
+                      }}
+                    >
+                      {this.activeTime === d.time ? (
+                        <div
+                          class='top-date_content-date'
+                          style={`${
+                            this.currentTime === d.time ? 'color: #ff6600;' : ''
+                          }`}
+                          onclick={this.handleActiveChange.bind(this, d)}
+                          ref='activeElement'
+                        >
+                          <div
+                            class='top-date_content-text'
+                            style='color: #fff;'
+                          >
+                            {moment(d.time).date()}
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          class='top-date_content-date'
+                          style={`${
+                            this.currentTime === d.time ? 'color: #ff6600;' : ''
+                          }`}
+                          onclick={this.handleActiveChange.bind(this, d)}
+                        >
+                          <div class='top-date_content-text'>
+                            {moment(d.time).date()}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ),
+                )}
+              </div>
+            </div>
+          ))}
+          <div
+            class={{
+              'top-date_content-circle': true,
+              'close-animation': !this.headLoadFinish,
+            }}
+            style={this.pos}
+          >
+            <div class='inner' />
+          </div>
+        </div>
+        <div class='top-date_slide-pagination'>
+          {this.slides.map((_, index) => (
+            <div
+              class={{
+                'top-date_slide-pagination-part': true,
+                'top-date_slide-pagination-part_active':
+                  index === this.currentSlide,
+              }}
+            />
+          ))}
         </div>
       </div>
     );
