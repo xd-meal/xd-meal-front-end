@@ -10,7 +10,7 @@ const RULE_MAP: {
     filterFn: (i) => !/辣/g.test(i.title + i.desc),
   },
   NO_EMPTY: {
-    filterFn: (item) => item._id !== 'c5e1eae86623bc9589663614d',
+    filterFn: (item) => item._id !== '5e1eae86623bc9589663614d',
   },
 };
 export function filterMenuList(
