@@ -3,7 +3,7 @@ import { IStoreDish } from '@/store/order';
 
 const menus: IStoreDish[] = [
   {
-    _id: 'c5e1eae86623bc9589663614d',
+    _id: '5e1eae86623bc9589663614d',
     title: '今天不吃饭',
     desc: '选择了今天不吃饭的，这顿可就木的了！',
     supplier: '',
