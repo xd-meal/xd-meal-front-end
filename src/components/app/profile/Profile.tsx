@@ -72,7 +72,7 @@ export default class Index extends tsx.Component<any> {
         target: ROUTER_NAME.APP_SPECIAL_ORDER,
       },
     ];
-    if (isWework) {
+    if (!isWework) {
       this.routers.push({
         name: __('重设密码'),
         target: ROUTER_NAME.APP_RESET_PSW,

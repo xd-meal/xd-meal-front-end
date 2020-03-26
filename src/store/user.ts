@@ -33,7 +33,7 @@ const state: IUserLoginGlobal = {
     randomForNoSpicy: Boolean(config.randomForNoSpicy),
     ppx: Boolean(config.ppx),
   },
-  wework_userid: null,
+  wework_userid: store.get('wework_userid'),
   avatar: store.get('avatar'),
 };
 export const USER_NAMESPACE = 'user/';
@@ -145,6 +145,7 @@ const mutations: MutationTree<IUserLoginGlobal> = {
     store.set('config', profile.config);
     store.set('avatar', profile.avatar);
     store.set('username', profile.username);
+    store.set('wework_userid', profile.wework_userid);
   },
   [USER.USER_LAST_UPDATE](_: IUserLoginGlobal) {
     store.set(USER.USER_LAST_UPDATE, moment().unix());
