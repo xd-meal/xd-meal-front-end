@@ -144,22 +144,4 @@ router.afterEach(() => {
 /*========= ⚠ warning️: this is a hack method for ios ========*/
 /*========= END ========*/
 
-router.beforeEach((to, from, next) => {
-  if (to.matched.length === 0) {
-    // 如果未匹配到路由
-    if (os.isPc) {
-      next({
-        name: 'pcOrder',
-      });
-    } else {
-      next({
-        name: 'index',
-      });
-    }
-  } else {
-    // 如果匹配到正确跳转
-    next();
-  }
-});
-
 export default router;
