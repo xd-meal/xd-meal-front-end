@@ -42,7 +42,7 @@ const menus: IStoreDish[] = [
 describe('@/components/utils/filterList.ts', () => {
   it('NO_SPICY should filter spicy', () => {
     const newMenus = filterMenuList(menus, ['NO_SPICY']).map((_) => _._id);
-    expect(newMenus).toEqual(['c5e1eae86623bc9589663614d', '4', '5']);
+    expect(newMenus).toEqual(['5e1eae86623bc9589663614d', '4', '5']);
   });
   it('NO_EMPTY should filter `今天不吃饭`', () => {
     const newMenus = filterMenuList(menus, ['NO_EMPTY']).map((_) => _._id);
