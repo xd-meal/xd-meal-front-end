@@ -1,0 +1,20 @@
+{
+  "avatar": "http://wework.qpic.cn/bizmail/kpJvlBl5kX2wm8gGLbflXO4pAaANXaovWIHFibJAmAReyzBI6eWEMTg/0",
+  "config": {
+    "advance": true,
+    "randomBtn": true,
+    "buffetBtn": true,
+    "randomForNoSpicy": true,
+    "randomForEmpty": false
+  },
+  "_id": "122222222",
+  "username": "icepro",
+  "wework_userid": "icepro",
+  "wechat_corpid": "xd",
+  "role": 2,
+  "department": "1",
+  "email": "icepro@xindong.com",
+  "createTime": "2020-01-01T08:11:12.430Z",
+  "updateTime": "2020-03-25T09:24:38.593Z",
+  "__v": 0
+}

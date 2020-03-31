@@ -151,6 +151,7 @@ export default class OrderV2 extends tsx.Component<any> {
         onmousemove={(e: Event) => e.preventDefault()}
       >
         <div
+          data-for-test='orderHead'
           class={{
             'v2-order_header': true,
             'v2-order_header_scroll': this.inScrolling,
@@ -187,10 +188,11 @@ export default class OrderV2 extends tsx.Component<any> {
           class='v2-order_body'
           ref='orderV2Body'
           onScroll={this.onScroll.bind(this)}
+          data-for-test='orderBodyScroll'
         >
           <div class='v2-order_body-wrap'>
             <transition-group name='list' tag='div'>
-              {this.list.map((diningList, i) => (
+              {this.list.map((diningList) => (
                 <div
                   class='v2-order_panel'
                   key={String(diningList.key)}
@@ -202,7 +204,7 @@ export default class OrderV2 extends tsx.Component<any> {
                       data={dining}
                       time={diningList.key}
                       index={index}
-                      onChange={this.diningChange.bind(this, dining)}
+                      // onChange={this.diningChange.bind(this, dining)}
                     />
                   ))}
                 </div>
@@ -259,6 +261,7 @@ export default class OrderV2 extends tsx.Component<any> {
                 <div
                   class='v2-order_buttons-left-text'
                   onclick={this.submit.bind(this)}
+                  data-for-test='orderSubmit'
                 >
                   提交
                 </div>
@@ -277,7 +280,7 @@ export default class OrderV2 extends tsx.Component<any> {
     this.resetList();
     this.resetTime();
   }
-  private diningChange(dining: IStoreDining, value: string) {}
+  // private diningChange(dining: IStoreDining, value: string) {}
   private activeTimeChange(d: string) {
     this.selectTime = d;
     const ref = this.$refs[`d-${d}`];
@@ -306,11 +309,7 @@ export default class OrderV2 extends tsx.Component<any> {
     const oldTop = this.lastTop;
     const bodyTop = (this.$refs.orderV2Body as Element).scrollTop;
     this.lastTop = bodyTop;
-    if (bodyTop >= 30) {
-      this.inScrolling = true;
-    } else {
-      this.inScrolling = false;
-    }
+    this.inScrolling = bodyTop >= 30;
     if (!this.foldingTimer) {
       this.folding = bodyTop >= 90 && bodyTop - oldTop >= 0;
       this.foldingTimer = setTimeout(() => {
@@ -449,7 +448,7 @@ export default class OrderV2 extends tsx.Component<any> {
         const res = await orderDishes(ids);
         if (res.code === 200) {
           await this.$router.replace({
-            name: ROUTER_NAME.APP_INDEX,
+            name: ROUTER_NAME.TAB_WRAP,
           });
         } else {
           const toast = this.$createToast({

@@ -98,6 +98,7 @@ export default class OrderTopDate extends tsx.Component<any> {
         onTouchstart={this.touchStart.bind(this)}
         onTouchmove={this.touchMove.bind(this)}
         onTouchend={this.touchEnd.bind(this)}
+        data-for-test='orderTopDate'
       >
         <div
           class='top-date-body'
@@ -107,11 +108,14 @@ export default class OrderTopDate extends tsx.Component<any> {
           {this.slides.map((slides) => (
             <div class='top-date_slide-wrap'>
               <div class='top-date-wrap' style='padding: 16px 30px 0 30px;'>
-                {slides.map((d) =>
+                {slides.map((d, i) =>
                   d.time === '0' ? (
                     <div class='top-date_content' />
                   ) : (
-                    <div class='top-date_content'>
+                    <div
+                      class='top-date_content'
+                      data-for-test={'orderTopDateDayContent' + i}
+                    >
                       <div class='top-date_content-weekday'>
                         {timeWeekdayParser(d.time)}
                       </div>
@@ -120,7 +124,7 @@ export default class OrderTopDate extends tsx.Component<any> {
                 )}
               </div>
               <div class='top-date-wrap' style='margin: 14px 30px 16px 30px;'>
-                {slides.map((d) =>
+                {slides.map((d, i) =>
                   d.time === '0' ? (
                     <div class='top-date_content' />
                   ) : (
@@ -129,6 +133,7 @@ export default class OrderTopDate extends tsx.Component<any> {
                         'top-date_content': true,
                         'top-date_content_disable': !d.status,
                       }}
+                      data-for-test={'orderTopDateSlideContent' + i}
                     >
                       {this.activeTime === d.time ? (
                         <div

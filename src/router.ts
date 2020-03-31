@@ -25,6 +25,7 @@ export const ROUTER_NAME = {
   APP_ORDER_V2: 'order_v2',
   TAB_WRAP: 'tab_wrap',
   APP: 'app',
+  APP_v2: 'app_v2',
   APP_INDEX: 'index',
   APP_PAY: 'pay',
   APP_PROFILE: 'profile',
@@ -89,7 +90,7 @@ const router: VueRouter = new Router({
     },
     {
       path: '/v2',
-      name: ROUTER_NAME.APP,
+      name: ROUTER_NAME.APP_v2,
       component: V2,
       children: [
         { path: 'order', component: OrderV2, name: ROUTER_NAME.APP_ORDER_V2 },

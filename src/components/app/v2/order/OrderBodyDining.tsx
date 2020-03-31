@@ -1,6 +1,6 @@
 import '@/components/app/v2/order/OrderBodyDining.scss';
 import { getTimeNameV2 } from '@/components/utils/diningTime';
-import { timeMMDD, timeParser } from '@/components/utils/time';
+import { timeParser } from '@/components/utils/time';
 import { IStoreDining, IStoreDish } from '@/store/order';
 import { VNode } from 'vue';
 import { Component, Model, Prop } from 'vue-property-decorator';
@@ -25,7 +25,11 @@ export default class OrderBodyDining extends tsx.Component<any> {
     const dataMenu: IStoreDish[] = this.data?.menu ?? [];
     const names = getTimeNameV2(this.data);
     return (
-      <div class='order-body-dining' style={{}}>
+      <div
+        class='order-body-dining'
+        data-for-test={`dining`}
+        data-for-test-diningId={this.data._id}
+      >
         {this.index === 0 && (
           <div class='order-body-dining_date-time'>
             <i class='date_time' />
@@ -44,6 +48,8 @@ export default class OrderBodyDining extends tsx.Component<any> {
         {dataMenu.map((menu) => (
           <div
             class='order-body-dining_checkbox'
+            data-for-test={`diningCheckbox`}
+            data-for-test-menuId={menu._id}
             onClick={() => this.$emit('change', menu._id)}
           >
             <div class='order-body-dining_checkbox-wrap'>
