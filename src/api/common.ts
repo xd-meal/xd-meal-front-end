@@ -1,6 +1,4 @@
 import { IHttpResponse } from '@/api/http';
-import { isDev } from '@/utils/common';
-import Mock from 'mockjs';
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import { gotoLogin } from '@/utils/common';
 
@@ -70,67 +68,59 @@ export function buildParams(
   }
   return url;
 }
-if (isDev) {
-  Mock.setup({
-    timeout: '400-700',
-  });
-} else {
-  axios.defaults.baseURL = '/';
-  // 创建一个拦截器，当 axios 同时请求重复 api 的时，终止请求
-  const pending: {
-    [key: string]: any;
-  } = {};
-  const CancelToken = axios.CancelToken;
-  const removePending = (key: string, isRequest = false) => {
-    if (pending[key] && isRequest) {
-      pending[key]('取消重复请求');
+
+axios.defaults.baseURL = '/';
+// 创建一个拦截器，当 axios 同时请求重复 api 的时，终止请求
+const pending: {
+  [key: string]: any;
+} = {};
+const CancelToken = axios.CancelToken;
+const removePending = (key: string, isRequest = false) => {
+  if (pending[key] && isRequest) {
+    pending[key]('取消重复请求');
+  }
+  delete pending[key];
+};
+const getRequestIdentify = (config: AxiosRequestConfig, isRequest = false) => {
+  let url = config.url;
+  if (isRequest) {
+    if (config.url) {
+      url = config.baseURL + config.url.substring(1, config.url.length);
     }
-    delete pending[key];
-  };
-  const getRequestIdentify = (
-    config: AxiosRequestConfig,
-    isRequest = false,
-  ) => {
-    let url = config.url;
-    if (isRequest) {
-      if (config.url) {
-        url = config.baseURL + config.url.substring(1, config.url.length);
-      }
+  }
+  return config.method === 'get'
+    ? encodeURIComponent(url + JSON.stringify(config.params))
+    : encodeURIComponent(config.url + JSON.stringify(config.data));
+};
+axios.interceptors.request.use(
+  (config) => {
+    const requestData = getRequestIdentify(config, true);
+    removePending(requestData, true);
+
+    config.cancelToken = new CancelToken((c) => {
+      pending[requestData] = c;
+    });
+
+    return config;
+  },
+  (error) => {
+    // 强制处理成固定的 error 格式，这样可以在 await 下不实用 try catch 来捕获错误
+    return Promise.resolve(new CommonErrorRespond(error));
+  },
+);
+
+axios.interceptors.response.use(
+  (data) => {
+    if (/未登录/.test(String(data?.data?.msg))) {
+      gotoLogin();
     }
-    return config.method === 'get'
-      ? encodeURIComponent(url + JSON.stringify(config.params))
-      : encodeURIComponent(config.url + JSON.stringify(config.data));
-  };
-  axios.interceptors.request.use(
-    (config) => {
-      const requestData = getRequestIdentify(config, true);
-      removePending(requestData, true);
-
-      config.cancelToken = new CancelToken((c) => {
-        pending[requestData] = c;
-      });
-
-      return config;
-    },
-    (error) => {
-      // 强制处理成固定的 error 格式，这样可以在 await 下不实用 try catch 来捕获错误
-      return Promise.resolve(new CommonErrorRespond(error));
-    },
-  );
-
-  axios.interceptors.response.use(
-    (data) => {
-      if (/未登录/.test(String(data?.data?.msg))) {
-        gotoLogin();
-      }
-      return data;
-    },
-    (error: AxiosError) => {
-      const msg = error?.response?.data?.msg;
-      if (/未登录/.test(String(msg))) {
-        gotoLogin();
-      }
-      return Promise.resolve(new CommonErrorRespond(error));
-    },
-  );
-}
+    return data;
+  },
+  (error: AxiosError) => {
+    const msg = error?.response?.data?.msg;
+    if (/未登录/.test(String(msg))) {
+      gotoLogin();
+    }
+    return Promise.resolve(new CommonErrorRespond(error));
+  },
+);

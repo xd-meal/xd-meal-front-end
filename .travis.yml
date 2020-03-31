@@ -4,12 +4,19 @@ language: node_js
 node_js:
   - '12'
 
+cache:
+  yarn: true
+  directories:
+    - node_modules
+    - ~/.npm
+    - ~/.cache
+
+env:
+  - TEST_SUITE="./ci-script/travis-job-codecov.sh"
+  - TEST_SUITE="./ci-script/travis-job-cypress.sh"
+
 #运行的脚本命令
-script:
-  - npm run lint:travis
-  - npm run test:unit
-  - npm run test:e2e:travis
-  - codecov ./test/unit/coverage/clover.xml
+script: ./${TEST_SUITE}
 
 
 #指定分支，只有指定的分支提交时才会运行脚本

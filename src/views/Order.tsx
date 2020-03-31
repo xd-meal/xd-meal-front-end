@@ -1,26 +1,24 @@
 import './Order.scss';
+import { __ } from '@/components/app/ppx/textTransform';
+import { filterMenuList, IRule } from '@/components/utils/filter';
 import { getMenuGroupBy } from '@/components/utils/group';
 import { ROUTER_NAME } from '@/router';
 
 import _ from 'lodash';
-import moment from 'moment';
 import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 
 import { getDay, timeParser, timeMMDD } from '@/components/utils/time.ts';
 
-import { IOrderSingleItem, IStoreDining, IStoreDish } from '@/store/order';
+import { IStoreDining, IStoreDish } from '@/store/order';
 
-import { IHttpDish, orderDishes } from '@/api/menu.ts';
+import { orderDishes } from '@/api/menu.ts';
 
 import ChildPageConstruction from '@/components/utils/ChildPageConstruction';
 import CommonHeader from '@/components/utils/CommonHeader';
 import OrderDining from '@/components/app/order/OrderDining';
 
-export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
-  checked?: boolean;
-}
 @Component({
   components: {
     ChildPageConstruction,
@@ -29,7 +27,6 @@ export interface IOrderSingleItemWithChecked extends IOrderSingleItem {
   },
 })
 export default class Order extends tsx.Component<any> {
-  // protected orderList: IOrderSingleItemWithChecked[] = [];
   protected list: Array<{
     key: string;
     value: IStoreDining[];
@@ -41,6 +38,11 @@ export default class Order extends tsx.Component<any> {
   protected allBuffetBtn: boolean = false;
   protected allRandomed: boolean = false;
   protected allBuffeted: boolean = false;
+  protected randomForNoSpicy: boolean = false;
+  protected randomForEmpty: boolean = false;
+
+  protected randomRules: Array<string | IRule> = [];
+
   protected render(): VNode {
     return (
       <ChildPageConstruction class='order'>
@@ -83,7 +85,7 @@ export default class Order extends tsx.Component<any> {
                   <OrderDining
                     vModel={this.selector[dining._id]}
                     data={dining}
-                    onChange={this.refreshError.bind(this)}
+                    onChange={this.diningChange.bind(this, dining)}
                   />
                 ))}
               </cube-scroll-nav-panel>
@@ -114,7 +116,7 @@ export default class Order extends tsx.Component<any> {
                       'btn-checkbox_active': this.allBuffeted,
                     }}
                   />
-                  <span>全自助</span>
+                  <span>{__('全自助')}</span>
                 </div>
               )}
               {this.randomBtn && (
@@ -128,7 +130,7 @@ export default class Order extends tsx.Component<any> {
                       'btn-checkbox_active': this.allRandomed,
                     }}
                   />
-                  <span>随机选</span>
+                  <span>{__('随机选')}</span>
                 </div>
               )}
             </div>
@@ -136,7 +138,7 @@ export default class Order extends tsx.Component<any> {
               class={{ submit: true, submit_disable: this.submitDisable }}
               onclick={this.submit.bind(this)}
             >
-              下单
+              {__('下单')}
             </button>
           </div>
         </div>
@@ -166,6 +168,19 @@ export default class Order extends tsx.Component<any> {
     const config = this.$store.state.user.config;
     this.randomBtn = config.randomBtn;
     this.allBuffetBtn = config.buffetBtn;
+    this.randomForNoSpicy = config.randomForNoSpicy;
+    this.randomForEmpty = config.randomForEmpty;
+
+    if (this.randomForEmpty) {
+      this.randomRules = [];
+    } else {
+      this.randomRules = ['NO_EMPTY'];
+    }
+
+    if (this.randomForNoSpicy) {
+      this.randomRules.push('NO_SPICY');
+    }
+
     let list = this.$store.state.order.list;
     if (this.isSpecial) {
       list = list.filter((item: IStoreDining) => /加班/.test(item.title));
@@ -180,6 +195,11 @@ export default class Order extends tsx.Component<any> {
     this.list = getMenuGroupBy(list);
     this.selector = selector;
     (this.$refs.cubeScrollNav as any).refresh();
+    this.refreshError();
+  }
+  private diningChange(dining: IStoreDining, value: string) {
+    this.allRandomed = false;
+    this.refreshBuffeted();
     this.refreshError();
   }
   // method
@@ -199,15 +219,19 @@ export default class Order extends tsx.Component<any> {
       });
     });
     this.allBuffeted = !this.allBuffeted;
+    this.refreshError();
   }
   private selectAllRandom() {
     this.allRandomed = true;
     this.list.forEach(({ value }) => {
       value.forEach((dining) => {
-        const index = Math.floor(dining.menu.length * Math.random());
-        this.selector[dining._id] = dining.menu[index]._id;
+        const menu = filterMenuList(dining.menu, this.randomRules);
+        const index = Math.floor(menu.length * Math.random());
+        this.selector[dining._id] = menu[index]._id;
       });
     });
+    this.refreshError();
+    this.refreshBuffeted();
   }
   private refreshBuffeted() {
     const regex = /自助/;
@@ -249,8 +273,8 @@ export default class Order extends tsx.Component<any> {
 
     this.$createDialog({
       type: 'confirm',
-      title: '下单',
-      content: '确认要下单嘛？下单后还是可以更改的哟！',
+      content:
+        '<span class="dialog-pc-order">确认要这样恰饭嘛？<br>( • ̀ω•́ )✧</span>',
       icon: 'cubeic-alert',
       onConfirm: async () => {
         const res = await orderDishes(ids);
@@ -273,14 +297,7 @@ export default class Order extends tsx.Component<any> {
   private changeHandler(label: any) {
     this.current = label;
   }
-  private refreshList() {
-    // 由于 vue 的更新机制原因，这里主动使用 set 告诉 vue 需要更新 list
-    this.$set(this, 'list', Array.from(this.list));
-    (this.$refs.cubeScrollNav as any).refresh();
-  }
   private refreshError() {
-    this.refreshBuffeted();
-    this.allRandomed = false;
     for (const { value } of this.list) {
       for (const item of value) {
         if (!this.selector[item._id]) {

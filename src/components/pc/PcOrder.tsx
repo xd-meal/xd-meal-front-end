@@ -27,10 +27,6 @@ declare interface IChooseItem {
   isBuffet: boolean;
   id: string;
 }
-declare interface IOrder {
-  title: string;
-  chooseList: IChooseItem[];
-}
 @Component({
   components: {
     Checkbox,
@@ -52,7 +48,7 @@ export default class PcOrder extends tsx.Component<any> {
           <div class='pc-header-wrap'>
             <div class='pc-header-logo'></div>
             <div class='pc-header-right'>
-              <button onClick={this.loginOut.bind(this)}>退出登陆</button>
+              <button onClick={this.loginOut.bind(this)}>退出</button>
               {/*<button>下载app</button>*/}
             </div>
           </div>
@@ -96,13 +92,6 @@ export default class PcOrder extends tsx.Component<any> {
                   <a onClick={this.download}>这里</a>
                   下载日历
                 </h4>
-                {/*<div style={{ marginTop: '24px' }}>*/}
-                {/*  <qriously*/}
-                {/*    className='pay-qr-code'*/}
-                {/*    value={'http://meal.xd.com/#/'}*/}
-                {/*    size={140}*/}
-                {/*  />*/}
-                {/*</div>*/}
               </div>
             </div>
           </div>
@@ -137,9 +126,6 @@ export default class PcOrder extends tsx.Component<any> {
                 >
                   提交
                 </button>
-                {/*<button class='progress-right-btn btn-primary calendar'>*/}
-                {/*  下载日历*/}
-                {/*</button>*/}
               </div>
             </div>
           </div>
@@ -174,9 +160,9 @@ export default class PcOrder extends tsx.Component<any> {
 
     this.$createDialog({
       type: 'confirm',
-      title: '下单',
-      content: '请确认下单内容正确，下单后不可更改',
-      icon: 'cubeic-alert',
+      content:
+        '<span class="dialog-pc-order">确认要这样恰饭嘛？<br>( • ̀ω•́ )✧</span>',
+      icon: 'cubeic-important',
       onConfirm: async () => {
         const toastLoading = this.$createToast({
           txt: 'loading',
@@ -234,6 +220,7 @@ export default class PcOrder extends tsx.Component<any> {
       moment(timeMax).format(TIME_STRING_TEMPLATE) +
       '一周选饭';
   }
+
   private async mounted() {
     const toast = this.$createToast({
       txt: 'loading...',
@@ -275,6 +262,7 @@ export default class PcOrder extends tsx.Component<any> {
     }
     this.show = true;
   }
+
   private loginOut() {
     loginOut(this);
   }

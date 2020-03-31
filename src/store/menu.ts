@@ -62,12 +62,12 @@ const mutations: MutationTree<IMenuGlobal> = {
     _,
     { dish, isVoteDown }: { dish: ISingleMenuItem; isVoteDown: boolean },
   ) {
-    // for (const item of _.list) {
-    //   if (item.id === dish.id) {
-    //     item.isVoteDown = isVoteDown;
-    //     return;
-    //   }
-    // }
+    for (const item of _.list) {
+      if (item.id === dish.id) {
+        item.isVoteDown = isVoteDown;
+        return;
+      }
+    }
   },
 };
 export default {

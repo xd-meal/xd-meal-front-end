@@ -1,5 +1,3 @@
-import { IMyDining } from '@/api/menu';
-import { IStoreDining } from '@/store/order';
 import lodash from 'lodash';
 import moment from 'moment';
 export interface IInstanceHasPickStartTime {

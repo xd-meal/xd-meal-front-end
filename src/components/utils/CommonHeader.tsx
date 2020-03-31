@@ -1,6 +1,6 @@
 import './CommonHeader.scss';
 import { VNode } from 'vue';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import { RouteConfig } from 'vue-router';
 import * as tsx from 'vue-tsx-support';
 

@@ -1,7 +1,7 @@
 import ChildPageConstruction from '@/components/utils/ChildPageConstruction';
 import CommonHeader from '@/components/utils/CommonHeader';
 import { VNode } from 'vue';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import { RouteConfig } from 'vue-router';
 import * as tsx from 'vue-tsx-support';
 
