@@ -4,6 +4,8 @@ import Vue from 'vue';
 import './vendor/quasar';
 import './vendor/cube-ui';
 import './vendor/qriously';
+import * as Sentry from '@sentry/browser';
+import * as Integrations from '@sentry/integrations';
 
 import App from './App.vue';
 import router, { ROUTER_NAME } from '@/router';
@@ -12,6 +14,11 @@ import store from './store';
 import { gotoIndex, gotoLogin } from './utils/common';
 
 Vue.config.productionTip = false;
+
+Sentry.init({
+  dsn: 'https://b707537c5a0d40568713e374732d24df@sentry.xindong.com/3',
+  integrations: [new Integrations.Vue({ Vue, attachProps: true })],
+});
 
 new Vue({
   router,
