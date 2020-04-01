@@ -6,6 +6,8 @@ pipeline {
     }
     environment {
         CI = 'true'
+        HOME=${pwd()}/cache
+        CYPRESS_CACHE_FOLDER=${pwd()}/cache
     }
     stages {
         // first stage installs node dependencies and Cypress binary
@@ -19,7 +21,6 @@ pipeline {
             steps {
                 sh 'yarn lint:travis'
                 sh 'yarn test:unit'
-                sh 'export CYPRESS_CACHE_FOLDER=./node_modules/cypress/cache/Cypress'
                 sh ' yarn test:e2e:travis'
                 sh 'codecov ./test/unit/coverage/clover.xml'
             }
