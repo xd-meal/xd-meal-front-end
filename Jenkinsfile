@@ -8,13 +8,13 @@ pipeline {
         CI = 'true'
     }
     stages {
-        stage ('before_build') {
+        stage ('Before Build') {
             steps {
                 sh 'npx cypress install'
             }
         }
         // first stage installs node dependencies and Cypress binary
-        stage('build') {
+        stage('Build') {
             steps {
                 echo "Running build ${env.BUILD_ID} on ${env.JENKINS_URL}"
                 sh 'yarn install'
@@ -24,9 +24,18 @@ pipeline {
             steps {
                 sh 'yarn lint:travis'
                 sh 'yarn test:unit'
-                sh ' yarn test:e2e:travis'
-                sh 'codecov ./test/unit/coverage/clover.xml'
+                sh 'yarn test:e2e:travis'
             }
+        }
+        stage('Upload') {
+            steps {
+                sh 'npx codecov ./test/unit/coverage/clover.xml'
+            }
+        }
+    }
+    post {
+        always {
+            junit './test/unit/coverage/clover.xml'
         }
     }
 }
