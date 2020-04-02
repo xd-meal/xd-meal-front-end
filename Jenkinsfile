@@ -38,7 +38,7 @@ pipeline {
     }
     post {
         always {
-            junit './test/unit/coverage/clover.xml'
+            junit './test/e2e/result.xml'
         }
     }
 }
