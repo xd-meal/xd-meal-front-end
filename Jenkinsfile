@@ -6,8 +6,6 @@ pipeline {
     }
     environment {
         CI = 'true'
-        HOME= './.cache'
-        CYPRESS_CACHE_FOLDER= './.cache'
     }
     stages {
         // first stage installs node dependencies and Cypress binary
