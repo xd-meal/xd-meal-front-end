@@ -11,6 +11,8 @@ pipeline {
     stages {
         stage ('Before Build') {
             steps {
+                sh 'echo $CYPRESS_CACHE_FOLDER'
+                sh 'echo $YARN_CACHE_FOLDER'
                 sh 'npx cypress install'
             }
         }
