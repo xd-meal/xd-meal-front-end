@@ -8,6 +8,11 @@ pipeline {
         CI = 'true'
     }
     stages {
+        stage ('before_build') {
+            steps {
+                sh 'npx cypress install'
+            }
+        }
         // first stage installs node dependencies and Cypress binary
         stage('build') {
             steps {
