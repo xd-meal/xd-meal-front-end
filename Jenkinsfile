@@ -32,7 +32,7 @@ pipeline {
         }
         stage('Upload') {
             steps {
-                sh 'npx codecov ./test/unit/coverage/clover.xml'
+                sh 'npx codecov ./test/unit/coverage/clover.xml -t $codecov_front'
             }
         }
     }
