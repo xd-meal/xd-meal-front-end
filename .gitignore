@@ -40,4 +40,6 @@ test/
 test/e2e/*.xml
 test/e2e/**/*.xml
 
+build.tar.gz
+
 tests/e2e/videos

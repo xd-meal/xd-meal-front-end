@@ -33,7 +33,7 @@ pipeline {
         stage('Upload') {
             steps {
                 sh 'npx codecov ./test/unit/coverage/clover.xml -t $codecov_front'
-                sh 'tar -zcvf build.tar.gz dist'
+                sh 'tar -zcvf build.tar.gz cordova-app/www'
             }
         }
     }
