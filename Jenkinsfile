@@ -6,6 +6,7 @@ pipeline {
     }
     environment {
         CI = 'true'
+        CYPRESS_CACHE_FOLDER = '/var/jenkins_home/.cache/Cypress'
     }
     stages {
         stage ('Before Build') {
