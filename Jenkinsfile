@@ -16,7 +16,6 @@ pipeline {
                 sh 'npx cypress install'
             }
         }
-        // first stage installs node dependencies and Cypress binary
         stage('Build') {
             steps {
                 echo "Running build ${env.BUILD_ID} on ${env.JENKINS_URL}"
