@@ -13,6 +13,7 @@ pipeline {
             steps {
                 sh 'echo $CYPRESS_CACHE_FOLDER'
                 sh 'npx cypress install'
+                sh 'printenv'
             }
         }
         // first stage installs node dependencies and Cypress binary
