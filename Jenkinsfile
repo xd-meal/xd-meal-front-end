@@ -34,8 +34,6 @@ pipeline {
             steps {
                 sh 'npx codecov ./test/unit/coverage/clover.xml -t $codecov_front'
                 sh 'tar -zcvf build.tar.gz cordova-app/www'
-                input message: '是否要以此版本为发布到正式版？', parameters: [booleanParam(defaultValue: false, description: '',
-                name: 'front-deploy')]
             }
         }
     }
