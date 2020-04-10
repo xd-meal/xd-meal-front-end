@@ -63,8 +63,14 @@
       width: 100%;
       height: 100%;
       canvas {
-        width: 100%;
-        height: 100%;
+         width: 100%;
+         height: 100%;
+        //width: 3cm;
+        //height: 3cm;
+        //position: absolute;
+        //top: 50%;
+        //left: 50%;
+        //transform: translate(-1.5cm, -1.5cm);
       }
       &_disable {
         background-image: url('./../../../assets/icon/app/qr-disable.svg');

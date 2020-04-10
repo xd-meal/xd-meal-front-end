@@ -11,6 +11,10 @@ export default class Pay extends tsx.Component<any> {
   protected timer: any;
   protected msg: string = '';
   protected timeInterval: number = 0;
+
+  protected time: number = 0;
+  protected delayTime: number = 60;
+
   protected render(): VNode {
     return (
       <div class='pay'>
@@ -24,6 +28,7 @@ export default class Pay extends tsx.Component<any> {
                 <qriously
                   class='pay-qr-code'
                   value={'XY' + this.d.token + 'XZ'}
+                  level={'L'}
                   size={270}
                 />
               )}
@@ -54,18 +59,24 @@ export default class Pay extends tsx.Component<any> {
   private destroyed() {
     this.stopTimer();
   }
-  private startTimer(timeSecond: number) {
+  private async startTimer(timeSecond: number) {
+    // 先调用一次，获取 token
+    await this.refreshToken();
     this.timeInterval = timeSecond;
-    this.timer = setTimeout(() => {
-      this.refreshToken().catch();
+    // 开启定时器，1秒检测一次时间是否正确
+    this.timer = setInterval(async () => {
+      // 当相差时间大于 60 秒的时候，刷新 token
+      if (Date.now() - this.time >= this.delayTime * 1000) {
+        await this.refreshToken();
+      }
     }, this.timeInterval * 1000);
   }
   private stopTimer() {
     if (this.timer) {
-      clearTimeout(this.timer);
+      clearInterval(this.timer);
     }
   }
-  private async refreshToken(withMask = false) {
+  private async refreshToken(withMask = false): Promise<boolean> {
     const toast = this.$createToast({
       txt: 'loading',
     });
@@ -75,26 +86,28 @@ export default class Pay extends tsx.Component<any> {
       }, 300);
     }
     const res = await payCode();
-    this.stopTimer();
+    // 上一个 token 以结果时间为准,不论是否成功
+    this.time = Date.now();
+    // 设置为默认错误重试时间
     if (res.code === 200) {
       this.d = res.data;
       this.msg = res.msg || '';
-      this.startTimer(60);
-    } else if (res.msg) {
-      this.d = {};
-      this.msg = res.msg;
-      this.startTimer(30);
+      // 成功情况下等待 60秒
+      this.delayTime = 60;
     } else {
-      this.d = {};
-      this.startTimer(5);
+      // 如果没有回执，说明有错误，或是没有可以领取的餐次
+      this.d = { token: '12312312312awedq' };
+      this.msg = res.msg || '未知错误，请联系陈总';
+      // 没有可以取餐次情况下等待 30 秒，其余情况下等待 5 秒
+      this.delayTime = res.msg === '目前没有可取餐次' ? 30 : 5;
     }
     toast.hide();
+    return res.code === 200;
   }
-  private userRefresh() {
-    this.stopTimer();
-    this.refreshToken(true);
+  private async userRefresh() {
+    await this.refreshToken(true);
   }
-  private mounted() {
-    this.refreshToken();
+  private async mounted() {
+    await this.startTimer(1);
   }
 }
