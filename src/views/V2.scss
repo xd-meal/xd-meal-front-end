@@ -1,5 +1,10 @@
 .v2 {
   background-color: #f8f8f8;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   &-global-wrap {
     transition: transform 0.5s cubic-bezier(0.55, 0, 0.1, 1);
   }

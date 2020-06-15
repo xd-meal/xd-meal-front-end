@@ -1,13 +1,14 @@
 import './Login.scss';
-import { ROUTER_NAME } from '@/router';
 
 import { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
 import { Component } from 'vue-property-decorator';
 
 import { USER, USER_NAMESPACE } from '@/store/user';
-
-@Component
+import Input from './../components/app/v2/utils/input';
+@Component({
+  components: { Input },
+})
 export default class Login extends tsx.Component<any> {
   protected username: string = '';
   protected password: string = '';
@@ -18,23 +19,19 @@ export default class Login extends tsx.Component<any> {
           <div class='xd-logo' />
           <div class='app-login-form'>
             <div class='app-login__input-wrap'>
-              <input
-                class='app-login-input'
-                type='text'
-                name='username'
-                id='username'
-                placeholder='心动邮箱'
+              <Input
                 vModel={this.username}
+                type='text'
+                label='邮箱'
+                focusPlaceholder='请输入心动邮箱'
               />
             </div>
-            <div class='app-login__input-wrap password'>
-              <input
-                class='app-login-input'
-                type='password'
-                name='password'
-                id='password'
-                placeholder='密码'
+            <div class='app-login__input-wrap'>
+              <Input
                 vModel={this.password}
+                type='password'
+                label='密码'
+                focusPlaceholder='请输入密码'
               />
             </div>
           </div>

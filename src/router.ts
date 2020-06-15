@@ -1,3 +1,4 @@
+import Limited from '@/components/app/v2/order/limited';
 import os from '@/utils/os';
 import V2 from '@/views/V2';
 import Vue from 'vue';
@@ -23,6 +24,7 @@ export const ROUTER_NAME = {
   QR_LOGIN: 'qrlogin',
   APP_ORDER: 'order',
   APP_ORDER_V2: 'order_v2',
+  APP_LIMITED_V2: 'limited_v2',
   TAB_WRAP: 'tab_wrap',
   APP: 'app',
   APP_v2: 'app_v2',
@@ -94,8 +96,17 @@ const router: VueRouter = new Router({
       component: V2,
       children: [
         { path: 'order', component: OrderV2, name: ROUTER_NAME.APP_ORDER_V2 },
+        {
+          path: 'limited',
+          component: Limited,
+          name: ROUTER_NAME.APP_LIMITED_V2,
+        },
         { path: 'main', component: TabWrap, name: ROUTER_NAME.TAB_WRAP },
       ],
+      meta: {
+        rightIn: true,
+        rightOut: true,
+      },
     },
     {
       path: '/setting',

@@ -58,6 +58,13 @@ export default class V2Profile extends tsx.Component<any> {
             </div>
           ))}
         </div>
+        <div
+          class='v2_profile-logout'
+          role='button'
+          onclick={this.loginOut.bind(this)}
+        >
+          退出登录
+        </div>
       </div>
     );
   }
@@ -70,7 +77,7 @@ export default class V2Profile extends tsx.Component<any> {
         icon: 'icon setting',
       },
     ];
-    if (isWework) {
+    if (!isWework) {
       this.routers.push({
         name: __('重设密码'),
         target: ROUTER_NAME.APP_RESET_PSW,
@@ -78,13 +85,18 @@ export default class V2Profile extends tsx.Component<any> {
       });
     }
     this.routers.push({
-      name: __('退出登录'),
-      icon: 'icon logout',
-      onClick: this.loginout.bind(this),
-      class: {
-        error: true,
-      },
+      icon: 'icon setting',
+      name: __('限量菜品'),
+      target: ROUTER_NAME.APP_LIMITED_V2,
     });
+    // this.routers.push({
+    //   name: __('退出登录'),
+    //   icon: 'icon logout',
+    //   onClick: this.loginout.bind(this),
+    //   class: {
+    //     error: true,
+    //   },
+    // });
   }
   private get profileDesc() {
     const config = this.$store.state.user.config;
@@ -93,7 +105,7 @@ export default class V2Profile extends tsx.Component<any> {
     }
     return '再忙也要好好吃饭哟～';
   }
-  private loginout() {
+  private loginOut() {
     loginOut(this);
   }
   private get name() {

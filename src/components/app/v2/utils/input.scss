@@ -1,0 +1,106 @@
+$fix-left-padding: 38px;
+.v2-input {
+  height: 54px;
+  width: 100%;
+  border-radius: 29px;
+  background-color: #f8f8f8;
+  border: 1px solid #f8f8f8;
+  position: relative;
+  box-sizing: border-box;
+  transition: background-color ease-in-out 0.1s;
+  &:before {
+    content: '';
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    pointer-events: none;
+    border-radius: 29px;
+    opacity: 0;
+    display: block;
+    transition: opacity ease-in-out 0.3s;
+  }
+  input {
+    position: absolute;
+    background-color: transparent;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    color: #333;
+    appearance: none;
+    left: 0;
+    outline: none;
+    padding: 0 $fix-left-padding;
+    box-sizing: border-box;
+    border-radius: 29px;
+  }
+
+  .label,
+  .focus-label {
+    position: absolute;
+    pointer-events: none;
+    left: $fix-left-padding - 2px;
+    height: 22px;
+    padding: 2px;
+    line-height: 22px;
+    display: block;
+    top: 0;
+    transform: translate(0, ((52px - 22px) / 2));
+  }
+  .split {
+    width: 32px;
+    position: absolute;
+    height: 2px;
+    left: 30px;
+    top: -1px;
+    background-color: #fff;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out 0s;
+  }
+  .label {
+    color: #999999;
+    width: 32px;
+    transition: transform ease-in-out 0.3s;
+    font-size: 14px;
+    background-color: transparent;
+    z-index: 10;
+  }
+  .focus-label {
+    opacity: 0;
+    font-size: 10px;
+    color: #dddddd;
+    transition: opacity ease-in-out 0.3s;
+  }
+  &.focus {
+    border: 1px solid #ff6600;
+    background-color: #ffffff;
+    &:before {
+      opacity: 1;
+    }
+    .split {
+      opacity: 1 !important;
+      transition: opacity 0.2s ease-in-out 0.1s;
+    }
+    .label {
+      transform: translate(0 - 8px, ((-22px) / 2) - 1px);
+      opacity: 1 !important;
+      &:before {
+        background-color: #fff;
+      }
+    }
+    .label,
+    .focus-label {
+      opacity: 1;
+    }
+  }
+  &.has-value {
+    .label {
+      transform: translate(0 - 8px, ((-22px) / 2) - 1px);
+      transition: opacity ease-in-out 0.2s;
+      opacity: 0;
+    }
+    .split {
+      transition: opacity ease-in-out 0.2s;
+      opacity: 0;
+    }
+  }
+}
