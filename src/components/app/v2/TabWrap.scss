@@ -29,6 +29,9 @@
     bottom: 0;
     z-index: 2;
     background-color: white;
+    &.qrcode, &.profile {
+      box-shadow: rgba(0, 0, 0, 0.02) 0 -5px 20px;
+    }
     &_icons {
       display: flex;
       justify-content: space-between;

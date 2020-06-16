@@ -26,10 +26,8 @@ export interface IProfile {
   username: string;
   wework_userid: string;
 }
-export interface IUserProfileResponse extends IHttpResponse {
-  data: IProfile;
-}
-export async function fetchUserProfile(): Promise<IUserProfileResponse> {
+
+export async function fetchUserProfile(): Promise<IHttpResponse<IProfile>> {
   const response = await axios.get(USER_PROFILE_API);
   return response ? commonResponse(response) : defaultResponse;
 }

@@ -61,7 +61,7 @@ export default class TabWrap extends tsx.Component<any> {
           </transition>
         </div>
 
-        <div class='v2-main-footer'>
+        <div class={'v2-main-footer' + ' ' + this.tabList[this.now].name}>
           <div class='v2-main-footer_icons'>
             {this.tabList.map((_, index) => (
               <div

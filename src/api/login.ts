@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IHttpResponse, ILoginResponse } from '@/api/http';
+import { IHttpResponse } from '@/api/http';
 
 import { defaultResponse, commonResponse, buildParams } from '@/api/common';
 export const LOGIN_API = '/api/v1/user/login';
@@ -13,7 +13,11 @@ export interface IUserLoginData {
 
 export async function loginApi(
   loginData: IUserLoginData,
-): Promise<ILoginResponse> {
+): Promise<
+  IHttpResponse<{
+    token?: string;
+  }>
+> {
   const response = await axios.post(LOGIN_API, loginData);
   return response ? commonResponse(response) : defaultResponse;
 }

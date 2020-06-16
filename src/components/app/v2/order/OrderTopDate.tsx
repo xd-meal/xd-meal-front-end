@@ -180,17 +180,19 @@ export default class OrderTopDate extends tsx.Component<any> {
             <div class='inner' />
           </div>
         </div>
-        <div class='top-date_slide-pagination'>
-          {this.slides.map((_, index) => (
-            <div
-              class={{
-                'top-date_slide-pagination-part': true,
-                'top-date_slide-pagination-part_active':
-                  index === this.currentSlide,
-              }}
-            />
-          ))}
-        </div>
+        {this.canPaging && (
+          <div class='top-date_slide-pagination'>
+            {this.slides.map((_, index) => (
+              <div
+                class={{
+                  'top-date_slide-pagination-part': true,
+                  'top-date_slide-pagination-part_active':
+                    index === this.currentSlide,
+                }}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -242,7 +244,12 @@ export default class OrderTopDate extends tsx.Component<any> {
     }
     return slides;
   }
-
+  private get canPaging() {
+    if (!this.currentDate) {
+      return false;
+    }
+    return this.currentDate?.length > 7;
+  }
   private get pos() {
     if (this.activeTime != null && this.currentDate != null) {
       return {

@@ -53,16 +53,26 @@
     width: auto;
     background-color: #fff;
     border-radius: 18px;
-    padding: 28px 24px;
+    padding: 28px 0 28px 24px;
     background-repeat: no-repeat;
     &-item {
       height: 22px;
       line-height: 22px;
       text-align: left;
       font-size: 16px;
-      border-bottom: .5px #eeeeee solid;
-      padding-bottom: 14px;
-      margin-bottom: 14px;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      position: relative;
+      &:before {
+        content: '';
+        display: block;
+        left: 40px;
+        border-bottom: .5px #F4F4F4 solid;
+        right: 0;
+        position: absolute;
+        width: auto;
+        bottom: 0;
+      }
       &-menu {
         font-size: 16px;
         font-weight: 500;
@@ -100,6 +110,9 @@
       }
     }
     &-item:nth-last-child(1) {
+      &:before {
+        display: none;
+      }
       margin-bottom: 0;
       padding-bottom: 0;
     }

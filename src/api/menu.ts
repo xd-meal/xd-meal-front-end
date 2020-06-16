@@ -1,5 +1,4 @@
 import { IHttpResponse } from '@/api/http';
-import { LOGIN_WEWORK_API } from '@/api/login';
 import lodash from 'lodash';
 import axios from 'axios';
 import { defaultResponse, commonResponse, buildParams } from '@/api/common';
@@ -7,6 +6,7 @@ const WEEKDAY_DISHES_API = '/api/v1/dining/list';
 const ORDER_DISHES_API = '/api/v1/order';
 const MY_DISHES_API = '/api/v1/orders';
 const HATE_DISH_API = '/api/v1/order/:id/hate';
+const DINING_ROLL_API = '/api/v2/dining/roll';
 
 export interface IHttpDish {
   _id: string;
@@ -29,12 +29,7 @@ export interface IHttpOrderDining {
   dining_id: string;
   menu_id: string;
 }
-export interface IWeekdayDishesResponse extends IHttpResponse {
-  data: {
-    dinings: IHttpDining[];
-    orders: IHttpOrderDining[];
-  };
-}
+
 export interface IOrder {
   _id: string;
   dining_id: string;
@@ -52,11 +47,29 @@ export interface IMyDining {
   menu: IHttpDish;
   isVoteDown: boolean;
 }
-export interface IMyDishesResponse extends IHttpResponse {
-  data: IMyDining[];
+
+export interface IDiningRoll {
+  dining: string;
+  meal: string;
+  join: boolean;
 }
 
-export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
+export async function fetchDiningRoll(): Promise<IHttpResponse<IDiningRoll[]>> {
+  const response = await axios.get(DINING_ROLL_API);
+  return response ? commonResponse(response) : defaultResponse;
+}
+
+export async function updateDiningRoll(diningRoll: IDiningRoll[]) {
+  const response = await axios.put(DINING_ROLL_API, diningRoll);
+  return response ? commonResponse(response) : defaultResponse;
+}
+
+export async function fetchWeekdayDishes(): Promise<
+  IHttpResponse<{
+    dinings: IHttpDining[];
+    orders: IHttpOrderDining[];
+  }>
+> {
   const response = await axios.get(WEEKDAY_DISHES_API);
   return response ? commonResponse(response) : defaultResponse;
 }
@@ -68,7 +81,7 @@ export async function orderDishes(
   return response ? commonResponse(response) : defaultResponse;
 }
 
-export async function fetchMyDishes(): Promise<IMyDishesResponse> {
+export async function fetchMyDishes(): Promise<IHttpResponse<IMyDining[]>> {
   const response = await axios.get(MY_DISHES_API);
   const data: {
     dinings: IHttpDining[];
