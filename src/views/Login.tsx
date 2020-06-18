@@ -35,35 +35,39 @@ export default class Login extends tsx.Component<any> {
               />
             </div>
           </div>
-          <div class='app-login-forget'>找回密码</div>
+          {/*<div class='app-login-forget'>找回密码</div>*/}
           <button class='app-login-submit' onClick={() => this.login()}>
-            登录
+            <span class='icon' />
           </button>
           <div class='app-login-buttons'>
             <span class='qrcode-icon-container'>
-              <img
-                src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/03c142137b24ad6b14494ccd0369863010d972e0.svg'
-                class='qrcode-icon-item'
-                onClick={() => {
-                  this.doQRLogin('xd');
-                }}
-              />
-              <img
-                src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/9e5c03ec7e32c8249fe4e51760e609d64a9266a8.png'
-                class='qrcode-icon-item'
-                data-corp='tap'
-                onClick={() => {
-                  this.doQRLogin('tap');
-                }}
-              />
-              <img
-                src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/6ef66098acb8733b767734f098005c2a5ce72f77.png'
-                class='qrcode-icon-item'
-                data-corp='xdg'
-                onClick={() => {
-                  this.doQRLogin('xdg');
-                }}
-              />
+              <span class='qrcode-icon-item'>
+                <img
+                  src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/03c142137b24ad6b14494ccd0369863010d972e0.svg'
+                  onClick={() => {
+                    this.doQRLogin('xd');
+                  }}
+                />
+              </span>
+              <span class='qrcode-icon-item'>
+                <img
+                  src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/9e5c03ec7e32c8249fe4e51760e609d64a9266a8.png'
+                  data-corp='tap'
+                  onClick={() => {
+                    this.doQRLogin('tap');
+                  }}
+                />
+              </span>
+              <span class='qrcode-icon-item'>
+                <img
+                  src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/6ef66098acb8733b767734f098005c2a5ce72f77.png'
+                  data-corp='xdg'
+                  onClick={() => {
+                    this.doQRLogin('xdg');
+                  }}
+                />
+              </span>
+
               {/* <img
                 src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/27f1a88a22d60d0b38e4c0f4d97097a1b5ccd08e.svg'
                 class='qrcode-icon-item'

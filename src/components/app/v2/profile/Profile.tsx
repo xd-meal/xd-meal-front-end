@@ -89,6 +89,15 @@ export default class V2Profile extends tsx.Component<any> {
       name: __('限量菜品'),
       target: ROUTER_NAME.APP_LIMITED_V2,
     });
+    if (this.$store.state.user.corp === 'xd') {
+      this.routers.push({
+        icon: 'icon setting',
+        name: __('举报投诉'),
+        onClick: () => {
+          // TODO: 跳转并联系 陈总
+        },
+      });
+    }
     // this.routers.push({
     //   name: __('退出登录'),
     //   icon: 'icon logout',

@@ -46,7 +46,7 @@
         position: absolute;
         width: $size;
         height: $size;
-        margin: -$size * 0.5 0 0 -$size * 2;
+        margin: (-$size * 0.5) 0 0 (-$size * 0.5);
         top: 50%;
         left: 50%;
       }
@@ -70,7 +70,36 @@
         }
       }
       &_active {
+        @keyframes tab-bounce {
+          0%,20%,53%,to {
+            animation-timing-function: cubic-bezier(.215,.61,.355,1);
+            transform: translateZ(0)
+          }
+
+          40%,43% {
+            animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+            transform: translate3d(0,-8px,0) scaleY(1.1)
+          }
+
+          70% {
+            animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+            transform: translate3d(0,-4px,0) scaleY(1.05)
+          }
+
+          80% {
+            transition-timing-function: cubic-bezier(.215,.61,.355,1);
+            transform: translateZ(0) scaleY(.95)
+          }
+
+          90% {
+            transform: translate3d(0,-4px,0) scaleY(1.02)
+          }
+        }
         i {
+          animation-name: tab-bounce;
+          animation-iteration-count: 1;
+          animation-duration: 0.6s;
+          transform-origin: center bottom;
           &.index {
             background-image: url('../../../assets/icon/v2/dining-active.svg');
             background-size: auto 32px;
