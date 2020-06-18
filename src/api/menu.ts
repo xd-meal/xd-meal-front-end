@@ -38,6 +38,7 @@ export interface IOrder {
   isVoteDown?: boolean;
 }
 export interface IMyDining {
+  dining_id: any;
   id: string;
   title: string;
   order_start: string;
@@ -90,7 +91,7 @@ export async function fetchMyDishes(): Promise<IHttpResponse<IMyDining[]>> {
   const dinings: { [key: string]: IHttpDining } = lodash(data.dinings)
     .keyBy('_id')
     .value();
-  const mydinings: IMyDining[] = lodash(data.ordered)
+  const myDinings: IMyDining[] = lodash(data.ordered)
     .map((orderedItem: IOrder) => {
       const dining = dinings[orderedItem.dining_id];
       const menuKeys: { [key: string]: IHttpDish } = lodash(dining.menu)
@@ -104,6 +105,7 @@ export async function fetchMyDishes(): Promise<IHttpResponse<IMyDining[]>> {
         pick_start: dining.pick_start,
         pick_end: dining.pick_end,
         menu: menuKeys[orderedItem.menu_id],
+        dining_id: orderedItem.dining_id,
         isVoteDown: Boolean(orderedItem.isVoteDown),
       };
     })
@@ -111,7 +113,7 @@ export async function fetchMyDishes(): Promise<IHttpResponse<IMyDining[]>> {
   return response
     ? {
         code: response?.status,
-        data: mydinings,
+        data: myDinings,
         msg: response?.data?.msg,
       }
     : {

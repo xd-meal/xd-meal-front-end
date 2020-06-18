@@ -1,7 +1,6 @@
 .app-login {
   height: 100%;
-  display: flex;
-  align-items: center;
+  padding-top: 135px;
   background-color: #fff;
   input {
     appearance: none;
@@ -83,7 +82,10 @@
     border-radius: 10px;
     color: #ffffff;
     width: 100%;
-    height: 50px;
+    height: 58px;
+    position: fixed;
+    left: 0;
+    bottom: 80px;
   }
 
   &-qrcode {

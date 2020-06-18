@@ -6,7 +6,8 @@ import { filterMenuList, IRule } from '@/components/utils/filter';
 import { getMenuGroupBy } from '@/components/utils/group';
 import { timeMMDD } from '@/components/utils/time';
 import { ROUTER_NAME } from '@/router';
-import { IStoreDining, IStoreDish } from '@/store/order';
+import { MENU, MENU_NAMESPACE } from '@/store/menu';
+import { IStoreDining, IStoreDish, ORDER, ORDER_NAMESPACE } from '@/store/order';
 import _ from 'lodash';
 import moment from 'moment';
 import { VNode } from 'vue';
@@ -67,6 +68,9 @@ export default class OrderV2 extends tsx.Component<any> {
   // 错误提示信息
   private errorText: string = '';
   public resetList() {
+    const orderSelect = this.$store.getters[
+      MENU_NAMESPACE + MENU.ORDER_SELECT_MAP
+    ];
     let list = this.$store.state.order.list;
     if (!this.extra) {
       list = list.filter((item: IStoreDining) => !/加班/.test(item.title));
@@ -75,7 +79,7 @@ export default class OrderV2 extends tsx.Component<any> {
     const selector: { [key: string]: string | null } = {};
     // 生成选项列表
     for (const item of list) {
-      selector[item._id] = null;
+      selector[item._id] = orderSelect[item._id] || null;
     }
     this.selector = selector;
   }
@@ -204,7 +208,7 @@ export default class OrderV2 extends tsx.Component<any> {
                       data={dining}
                       time={diningList.key}
                       index={index}
-                      // onChange={this.diningChange.bind(this, dining)}
+                      onChange={this.diningChange.bind(this, dining)}
                     />
                   ))}
                 </div>
@@ -277,10 +281,23 @@ export default class OrderV2 extends tsx.Component<any> {
   }
   private toggleExtra() {
     this.extra = !this.extra;
-    this.resetList();
+    // 单独实现，防止点击加班餐后刷新掉列表
+    let list = this.$store.state.order.list;
+    if (!this.extra) {
+      list = list.filter((item: IStoreDining) => !/加班/.test(item.title));
+    }
+    this.list = getMenuGroupBy(list);
+    const selector: { [key: string]: string | null } = {};
+    // 生成选项列表
+    for (const item of list) {
+      selector[item._id] = this.selector[item._id] || null;
+    }
+    this.selector = selector;
     this.resetTime();
   }
-  // private diningChange(dining: IStoreDining, value: string) {}
+  private diningChange(dining: IStoreDining, value: string) {
+    this.refreshError();
+  }
   private activeTimeChange(d: string) {
     this.selectTime = d;
     const ref = this.$refs[`d-${d}`];
@@ -447,8 +464,9 @@ export default class OrderV2 extends tsx.Component<any> {
       onConfirm: async () => {
         const res = await orderDishes(ids);
         if (res.code === 200) {
-          await this.$router.replace({
-            name: ROUTER_NAME.TAB_WRAP,
+          this.fadeOutAnimate = true;
+          this.$nextTick(() => {
+            this.$router.replace({ name: ROUTER_NAME.TAB_WRAP });
           });
         } else {
           const toast = this.$createToast({
