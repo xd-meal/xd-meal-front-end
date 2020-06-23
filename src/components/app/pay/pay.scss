@@ -29,13 +29,13 @@
     position: relative;
     margin: 0 auto;
     z-index: 1;
-    width: 316px;
-    height: 322px;
+    width: 282px;
+    height: 292px;
     background-color: #fff;
     border-radius: 24px;
   }
   &-wrap {
-    top: 56%;
+    top: 46%;
     position: absolute;
     width: 100%;
     transform: translateY(-50%);
@@ -43,16 +43,16 @@
   }
   &-qr {
     position: absolute;
-    top: 55px;
+    top: 49px;
     left: 50%;
     transform: translateX(-50%);
-    width: 234px;
-    height: 234px;
+    width: 210px;
+    height: 210px;
     &-tips {
       font-size: 14px;
       position: absolute;
       line-height: 20px;
-      top: -24px;
+      top: 18px;
       width: 100%;
       text-align: center;
       color: #cbcbcb;
@@ -89,9 +89,10 @@
       }
     }
     &-hint {
-      font-size: 20px;
+      font-size: 18px;
+      line-height: 25px;
       color: #333;
-      margin-top: 60px;
+      margin-top: 55px;
     }
   }
 }

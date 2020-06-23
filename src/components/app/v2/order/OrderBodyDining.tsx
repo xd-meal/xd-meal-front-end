@@ -8,7 +8,7 @@ import * as tsx from 'vue-tsx-support';
 @Component
 export default class OrderBodyDining extends tsx.Component<any> {
   @Model('change')
-  protected value: string | null = null;
+  protected value!: string | null;
   @Prop({
     required: true,
   })

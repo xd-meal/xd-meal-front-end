@@ -13,6 +13,7 @@ export interface IHttpDish {
   title: string;
   desc: string;
   supplier?: string;
+  limit?: number;
 }
 export interface IHttpDining {
   _id: string;

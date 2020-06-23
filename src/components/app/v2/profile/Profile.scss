@@ -97,6 +97,12 @@
           &.logout {
             background-image: url("./../../../../assets/icon/v2/logout.svg");
           }
+          &.limit {
+            background-image: url("./../../../../assets/icon/v2/limit.svg")
+          }
+          &.service {
+            background-image: url("./../../../../assets/icon/v2/service.svg")
+          }
         }
         i, span {
           display: inline-block;

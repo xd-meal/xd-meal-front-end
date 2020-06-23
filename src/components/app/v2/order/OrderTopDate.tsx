@@ -28,7 +28,7 @@ export default class OrderTopDate extends tsx.Component<any> {
   })
   private headLoadFinish?: boolean;
 
-  private left: number = 0;
+  private left: number = 30;
   // 左右滑动相关
   private currentSlide: number = 0;
 

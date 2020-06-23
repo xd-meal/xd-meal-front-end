@@ -106,6 +106,7 @@
     margin: auto;
     display: flex;
     justify-content: space-evenly;
+    max-width: 400px;
     > .qrcode-icon-item {
       height: 58px;
       cursor: pointer;

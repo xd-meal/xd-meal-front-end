@@ -50,15 +50,15 @@ export default class Login extends tsx.Component<any> {
                 }}
               />
             </span>
-            <span class='qrcode-icon-item'>
-              <img
-                src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/9e5c03ec7e32c8249fe4e51760e609d64a9266a8.png'
-                data-corp='tap'
-                onClick={() => {
-                  this.doQRLogin('tap');
-                }}
-              />
-            </span>
+            {/*<span class='qrcode-icon-item'>*/}
+            {/*  <img*/}
+            {/*    src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/9e5c03ec7e32c8249fe4e51760e609d64a9266a8.png'*/}
+            {/*    data-corp='tap'*/}
+            {/*    onClick={() => {*/}
+            {/*      this.doQRLogin('tap');*/}
+            {/*    }}*/}
+            {/*  />*/}
+            {/*</span>*/}
             <span class='qrcode-icon-item'>
               <img
                 src='https://osf.xdcdn.net/EntWechat-xdos/c56d2277/6ef66098acb8733b767734f098005c2a5ce72f77.png'

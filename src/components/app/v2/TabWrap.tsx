@@ -1,3 +1,4 @@
+import { ROUTER_NAME } from '@/router';
 import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
@@ -7,6 +8,7 @@ import '@/components/app/v2/TabWrap.scss';
 import IndexWrap from '@/components/app/v2/index/IndexWrap';
 import Pay from '@/components/app/pay/Pay';
 import Profile from '@/components/app/v2/profile/Profile';
+import { isUndefined } from 'lodash';
 @Component({
   components: {
     IndexWrap,
@@ -27,12 +29,22 @@ export default class TabWrap extends tsx.Component<any> {
     },
   ];
   private now = 0;
-  private shows = [true, false, false];
+  private shows = [false, false, false];
   // 动画相关
   private transitionName: string = '';
   private mounted() {
     this.$store.dispatch(ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION);
     this.$store.dispatch(USER_NAMESPACE + USER.FETCH_USER_PROFILE_ACTION);
+    if (isUndefined(this.$route.params.menu)) {
+      this.$router.replace({
+        name: ROUTER_NAME.TAB_WRAP,
+        params: { menu: String(0) },
+      });
+      return;
+    }
+    this.now = parseInt(this.$route.params.menu, 10);
+    this.shows = [false, false, false];
+    this.shows[this.now] = true;
   }
   private render(): VNode {
     return (
@@ -90,6 +102,10 @@ export default class TabWrap extends tsx.Component<any> {
     // 由于更新次序，必须要延迟一个 tick 来更新 show 保证先 slide 动画正确，在移除
     this.$nextTick(() => {
       this.shows = shows;
+    });
+    this.$router.replace({
+      name: ROUTER_NAME.TAB_WRAP,
+      params: { menu: String(this.now) },
     });
   }
 }

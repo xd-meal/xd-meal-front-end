@@ -27,9 +27,35 @@ export enum ORDER {
   SET_MENUS = 'setMenus',
 
   SHOULD_UPDATE = 'shouldUpdate',
+
+  ORDER_NORMAL_LIST = 'orderNormalList',
+  ORDER_LIMIT_LIST = 'orderLimitList',
+}
+function filterEmptyMenu(v: IStoreDining) {
+  return v.menu.length > 0;
 }
 
 const getters: GetterTree<IOrderGlobal, any> = {
+  [ORDER.ORDER_LIMIT_LIST](_) {
+    return _.list
+      .map((v) => {
+        return {
+          ...v,
+          menu: v.menu.filter((menu) => menu.limit),
+        };
+      })
+      .filter(filterEmptyMenu);
+  },
+  [ORDER.ORDER_NORMAL_LIST](_) {
+    return _.list
+      .map((v) => {
+        return {
+          ...v,
+          menu: v.menu.filter((menu) => !menu.limit),
+        };
+      })
+      .filter(filterEmptyMenu);
+  },
   [ORDER.SHOULD_UPDATE]() {
     return moment().unix() - state.lastUpdate.unix() > 15;
   },

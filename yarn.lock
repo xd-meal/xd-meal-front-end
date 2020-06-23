@@ -1246,6 +1246,13 @@
     source-map "~0.6.1"
     vue-template-es2015-compiler "^1.9.0"
 
+"@vue/composition-api@^0.6.4":
+  version "0.6.4"
+  resolved "https://registry.npmjs.org/@vue/composition-api/-/composition-api-0.6.4.tgz#b12a85183eecdbb18453efae28853edb77b4a625"
+  integrity sha512-WQUqp61c1WH5pAmbUM5xUBYZYWh3TV48h1jLl2pofidXGglTS9+bvCfHKTk0bsA/U5ZbzfUMa1IpQGUGdYZYeA==
+  dependencies:
+    tslib "^2.0.0"
+
 "@vue/eslint-config-prettier@^5.0.0":
   version "5.1.0"
   resolved "https://registry.npmjs.org/@vue/eslint-config-prettier/-/eslint-config-prettier-5.1.0.tgz#837241a26ed396976cb8dabd77939303245523cf"
@@ -11042,6 +11049,11 @@ tslib@^1.9.3:
   version "1.11.1"
   resolved "https://registry.npmjs.org/tslib/-/tslib-1.11.1.tgz#eb15d128827fbee2841549e171f45ed338ac7e35"
   integrity sha512-aZW88SY8kQbU7gpV19lN24LtXh/yD4ZZg6qieAJDDg+YBsJcSmLGK9QpnUjAKVG/xefmvJGd1WUmfpT/g6AJGA==
+
+tslib@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/tslib/-/tslib-2.0.0.tgz#18d13fc2dce04051e20f074cc8387fd8089ce4f3"
+  integrity sha512-lTqkx847PI7xEDYJntxZH89L2/aXInsyF2luSafe/+0fHOMjlBNXdH6th7f70qxLDhul7KZK0zC8V5ZIyHl0/g==
 
 tslint@^5.15.0:
   version "5.20.1"

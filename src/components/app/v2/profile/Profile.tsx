@@ -2,6 +2,7 @@ import '@/components/app/v2/profile/Profile.scss';
 import { getActivity } from '@/components/app/ppx/activity';
 import { __ } from '@/components/app/ppx/textTransform';
 import { ROUTER_NAME } from '@/router';
+import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { loginOut } from '@/utils/common';
 import { VNode } from 'vue';
 
@@ -16,6 +17,7 @@ export default class V2Profile extends tsx.Component<any> {
     onClick?: () => void;
     class?: any;
   }> = [];
+  private isWework = true;
   protected render(): VNode {
     return (
       <div class='v2_profile'>
@@ -58,18 +60,20 @@ export default class V2Profile extends tsx.Component<any> {
             </div>
           ))}
         </div>
-        <div
-          class='v2_profile-logout'
-          role='button'
-          onclick={this.loginOut.bind(this)}
-        >
-          退出登录
-        </div>
+        {!this.isWework && (
+          <div
+            class='v2_profile-logout'
+            role='button'
+            onclick={this.loginOut.bind(this)}
+          >
+            退出登录
+          </div>
+        )}
       </div>
     );
   }
   protected mounted() {
-    const isWework = Boolean(this.$store.state.user.wework_userid);
+    this.isWework = Boolean(this.$store.state.user.wework_userid);
     this.routers = [
       {
         name: __('设置'),
@@ -77,7 +81,7 @@ export default class V2Profile extends tsx.Component<any> {
         icon: 'icon setting',
       },
     ];
-    if (!isWework) {
+    if (!this.isWework) {
       this.routers.push({
         name: __('重设密码'),
         target: ROUTER_NAME.APP_RESET_PSW,
@@ -85,13 +89,27 @@ export default class V2Profile extends tsx.Component<any> {
       });
     }
     this.routers.push({
-      icon: 'icon setting',
+      icon: 'icon limit',
       name: __('限量菜品'),
-      target: ROUTER_NAME.APP_LIMITED_V2,
+      onClick: () => {
+        const list = this.$store.getters[
+          ORDER_NAMESPACE + ORDER.ORDER_LIMIT_LIST
+        ];
+        if (list.length === 0) {
+          const toast = this.$createToast({
+            txt: '没有可选择的限量菜品',
+            type: 'text',
+            timeout: 3000,
+          });
+          toast.show();
+          return;
+        }
+        this.$router.replace(ROUTER_NAME.APP_LIMITED_V2);
+      },
     });
     if (this.$store.state.user.corp === 'xd') {
       this.routers.push({
-        icon: 'icon setting',
+        icon: 'icon service',
         name: __('举报投诉'),
         onClick: () => {
           // TODO: 跳转并联系 陈总
