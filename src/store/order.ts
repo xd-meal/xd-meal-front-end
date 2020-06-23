@@ -31,6 +31,7 @@ export enum ORDER {
   ORDER_NORMAL_LIST = 'orderNormalList',
   ORDER_LIMIT_LIST = 'orderLimitList',
 }
+
 function filterEmptyMenu(v: IStoreDining) {
   return v.menu.length > 0;
 }

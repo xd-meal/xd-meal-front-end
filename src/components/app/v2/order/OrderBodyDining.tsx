@@ -38,42 +38,55 @@ export default class OrderBodyDining extends tsx.Component<any> {
         )}
 
         <div class='order-body-dining_title'>
-          {this.data && names && names.length >= 2 && (
-            <div>
-              {names[0] && <span class='name'>{names[0]}</span>}
-              <span>{names[1]}</span>
-            </div>
-          )}
+          {this.data.title}
+          {/*{this.data && names && names.length >= 2 && (*/}
+          {/*  <div>*/}
+          {/*    {names[0] && <span class='name'>{names[0]}</span>}*/}
+          {/*    <span>{names[1]}</span>*/}
+          {/*  </div>*/}
+          {/*)}*/}
         </div>
-        {dataMenu.map((menu) => (
-          <div
-            class='order-body-dining_checkbox'
-            data-for-test={`diningCheckbox`}
-            data-for-test-menuId={menu._id}
-            onClick={() => this.$emit('change', menu._id)}
-          >
-            <div class='order-body-dining_checkbox-wrap'>
-              <div class='order-body-dining_checkbox-title'>{menu.title}</div>
+        {dataMenu.map((menu) => {
+          const didLimit = menu.limit && menu.limit > 0;
+          return (
+            <div
+              class='order-body-dining_checkbox'
+              data-for-test={`diningCheckbox`}
+              data-for-test-menuId={menu._id}
+              onClick={() => this.$emit('change', menu._id)}
+            >
               <div
                 class={{
-                  'order-body-dining_check': true,
-                  'order-body-dining_check_active': menu._id === this.value,
+                  'order-body-dining_checkbox-wrap': true,
+                  'order-body-dining_checkbox-wrap_limited': didLimit,
                 }}
               >
-                <span class='circle' />
-                <span class='active-icon' />
+                <div class='order-body-dining_checkbox-title'>
+                  {didLimit ? '限量餐' : menu.title}
+                </div>
+                <div
+                  class={{
+                    'order-body-dining_check': true,
+                    'order-body-dining_check_active': menu._id === this.value,
+                  }}
+                >
+                  <span class='circle' />
+                  <span class='active-icon' />
+                </div>
               </div>
-            </div>
-            <div class='order-body-dining_wrap'>
-              <div class='order-body-dining_desc'>{menu.desc}</div>
-            </div>
-            {menu.supplier && (
-              <div class='order-body-dining_supplier'>
-                供应商：{menu.supplier}
+              <div class='order-body-dining_wrap'>
+                <div class='order-body-dining_desc'>
+                  {didLimit ? menu.title : menu.desc}
+                </div>
               </div>
-            )}
-          </div>
-        ))}
+              {!didLimit && menu.supplier && (
+                <div class='order-body-dining_supplier'>
+                  供应商：{menu.supplier}
+                </div>
+              )}
+            </div>
+          );
+        })}
         <div class='line-split' />
       </div>
     );

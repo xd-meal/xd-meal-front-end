@@ -46,7 +46,9 @@ export default class IndexWrap extends tsx.Component<any> {
     return this.$store.state.menu.list;
   }
   protected get orderBtnShow() {
-    return this.$store.state.order.list.length > 0;
+    return (
+      this.$store.getters[MENU_NAMESPACE + MENU.ORDER_SELECT_MAP].length > 0
+    );
   }
   private async mounted() {
     await this.$store.dispatch(MENU_NAMESPACE + MENU.FETCH_MY_MENUS_ACTION);

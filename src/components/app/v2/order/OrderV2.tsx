@@ -57,6 +57,7 @@ export default class OrderV2 extends tsx.Component<any> {
   private fadeOutAnimate = false;
   private headLoadFinish = false;
   private foldingTimer: any = null;
+  private nowBodyTransition = 'none';
 
   public resetTime() {
     const list = getMenuGroupBy<IStoreDining>(this.$store.state.order.list);
@@ -120,12 +121,19 @@ export default class OrderV2 extends tsx.Component<any> {
   @Watch('list')
   private onListChange() {
     this.resetTime();
+    this.$nextTick(() => {
+      this.nowBodyTransition = 'list';
+    });
   }
 
   private backToMain() {
     this.fadeOutAnimate = true;
     this.$nextTick(() => {
-      this.$router.push({ name: ROUTER_NAME.TAB_WRAP });
+      this.$router.back();
+      // this.$router.push({
+      //   name: ROUTER_NAME.TAB_WRAP,
+      //   params: { menu: '1' },
+      // });
     });
   }
 
@@ -172,7 +180,7 @@ export default class OrderV2 extends tsx.Component<any> {
           data-for-test='orderBodyScroll'
         >
           <div class='v2-order_body-wrap'>
-            <transition-group name='list' tag='div'>
+            <transition-group name={this.nowBodyTransition} tag='div'>
               {this.list.map((diningList) => (
                 <div
                   class='v2-order_panel'
@@ -192,8 +200,8 @@ export default class OrderV2 extends tsx.Component<any> {
               ))}
             </transition-group>
           </div>
+          {this.$slots.footer}
         </div>
-        {this.$slots.footer}
       </div>
     );
   }

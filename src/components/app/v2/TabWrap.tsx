@@ -3,6 +3,7 @@ import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
+import { Route, VueRouter } from 'vue-router/types/router';
 import * as tsx from 'vue-tsx-support';
 import '@/components/app/v2/TabWrap.scss';
 import IndexWrap from '@/components/app/v2/index/IndexWrap';
@@ -43,8 +44,9 @@ export default class TabWrap extends tsx.Component<any> {
       return;
     }
     this.now = parseInt(this.$route.params.menu, 10);
-    this.shows = [false, false, false];
-    this.shows[this.now] = true;
+    const shows = [false, false, false];
+    shows[this.now] = true;
+    this.shows = shows;
   }
   private render(): VNode {
     return (
@@ -64,6 +66,7 @@ export default class TabWrap extends tsx.Component<any> {
               </div>
             )}
           </transition>
+
           <transition name={this.transitionName}>
             {this.shows[2] && (
               <div class='v2-main_profile-wrap v2-main-transition'>
@@ -92,17 +95,30 @@ export default class TabWrap extends tsx.Component<any> {
       </div>
     );
   }
-  private changeToTab(toIndex: number) {
-    const fromIndex = this.now;
-    this.now = toIndex;
+  @Watch('$route')
+  private onRouteChange(to: Route, from: Route) {
+    if (from.name === ROUTER_NAME.APP_ORDER_V2) {
+      const now = parseInt(this.$route.params.menu, 10);
+      if (now === 0) {
+        this.setShow(0);
+      }
+    }
+  }
+
+  private setShow(toIndex: number) {
     const shows = new Array(3).fill(false);
     shows[toIndex] = true;
-    this.transitionName =
-      toIndex < fromIndex ? 'v2-slide-right' : 'v2-slide-left';
     // 由于更新次序，必须要延迟一个 tick 来更新 show 保证先 slide 动画正确，在移除
     this.$nextTick(() => {
       this.shows = shows;
     });
+  }
+  private changeToTab(toIndex: number) {
+    const fromIndex = this.now;
+    this.now = toIndex;
+    this.setShow(toIndex);
+    this.transitionName =
+      toIndex < fromIndex ? 'v2-slide-right' : 'v2-slide-left';
     this.$router.replace({
       name: ROUTER_NAME.TAB_WRAP,
       params: { menu: String(this.now) },

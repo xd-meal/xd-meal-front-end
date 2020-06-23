@@ -104,7 +104,9 @@ export default class V2Profile extends tsx.Component<any> {
           toast.show();
           return;
         }
-        this.$router.replace(ROUTER_NAME.APP_LIMITED_V2);
+        this.$router.push({
+          name: ROUTER_NAME.APP_LIMITED_V2,
+        });
       },
     });
     if (this.$store.state.user.corp === 'xd') {
