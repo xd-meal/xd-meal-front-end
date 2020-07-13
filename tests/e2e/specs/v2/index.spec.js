@@ -9,7 +9,7 @@ describe('index page', () => {
   it('order link btn show when there is exist dining,then order something', () => {
     cy.doLogin();
     cy.orderRouter();
-    cy.visit('/#/v2/main');
+    cy.visit('/#/v2/main/0');
     // click order btn, then order page should show now
     cy.get('[data-for-test=orderBtn]').should('exist');
     cy.get('[data-for-test=orderBtn]')

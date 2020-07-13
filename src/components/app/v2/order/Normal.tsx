@@ -100,65 +100,64 @@ export default class Limited extends tsx.Component<any> {
           >
             加班
           </div>
-          <div
-            Slot='footer'
-            class={{
-              'v2-order_footer': true,
-              'no-error': !this.errorText,
-            }}
-          >
-            <div class='v2-order_footer_error-text'>{this.errorText}</div>
-            <div class='v2-order_buttons'>
-              <div class='v2-order_buttons-wrap'>
-                <div class='v2-order_buttons-right'>
-                  {this.allBuffetBtn && (
-                    <div
-                      class={{
-                        'v2-order_buttons_button': true,
-                        'v2-order_buttons_button_active': this.allBuffeted,
-                      }}
-                      onclick={this.selectAllBuffet.bind(this)}
-                    >
-                      <button class='v2-order_buttons-checkbox' role='button' />
-                      <div class='v2-order_buttons-label' role='note'>
-                        全自助
-                      </div>
-                    </div>
-                  )}
-                  {this.randomBtn && (
-                    <div
-                      class={{
-                        'v2-order_buttons_button': true,
-                        'v2-order_buttons_button_active': this.allRandom,
-                      }}
-                      onclick={this.selectAllRandom.bind(this)}
-                    >
-                      <button class='v2-order_buttons-checkbox' role='button' />
-                      <div class='v2-order_buttons-label' role='note'>
-                        随机选
-                      </div>
-                    </div>
-                  )}
-                </div>
-                <div
-                  class={{
-                    'v2-order_buttons-left': true,
-                    'v2-order_buttons-left_disable': this.submitDisable,
-                  }}
-                  role='button'
-                >
+        </OrderV2>
+        <div
+          class={{
+            'v2-order_footer': true,
+            'no-error': !this.errorText,
+          }}
+        >
+          <div class='v2-order_footer_error-text'>{this.errorText}</div>
+          <div class='v2-order_buttons'>
+            <div class='v2-order_buttons-wrap'>
+              <div class='v2-order_buttons-right'>
+                {this.allBuffetBtn && (
                   <div
-                    class='v2-order_buttons-left-text'
-                    onclick={this.submit.bind(this)}
-                    data-for-test='orderSubmit'
+                    class={{
+                      'v2-order_buttons_button': true,
+                      'v2-order_buttons_button_active': this.allBuffeted,
+                    }}
+                    onclick={this.selectAllBuffet.bind(this)}
                   >
-                    提交
+                    <button class='v2-order_buttons-checkbox' role='button' />
+                    <div class='v2-order_buttons-label' role='note'>
+                      全自助
+                    </div>
                   </div>
+                )}
+                {this.randomBtn && (
+                  <div
+                    class={{
+                      'v2-order_buttons_button': true,
+                      'v2-order_buttons_button_active': this.allRandom,
+                    }}
+                    onclick={this.selectAllRandom.bind(this)}
+                  >
+                    <button class='v2-order_buttons-checkbox' role='button' />
+                    <div class='v2-order_buttons-label' role='note'>
+                      随机选
+                    </div>
+                  </div>
+                )}
+              </div>
+              <div
+                class={{
+                  'v2-order_buttons-left': true,
+                  'v2-order_buttons-left_disable': this.submitDisable,
+                }}
+                role='button'
+              >
+                <div
+                  class='v2-order_buttons-left-text'
+                  onclick={this.submit.bind(this)}
+                  data-for-test='orderSubmit'
+                >
+                  提交
                 </div>
               </div>
             </div>
           </div>
-        </OrderV2>
+        </div>
       </div>
     );
   }
