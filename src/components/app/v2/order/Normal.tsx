@@ -290,7 +290,16 @@ export default class Limited extends tsx.Component<any> {
         if (res.code === 200) {
           (this.$refs.Orderv2 as OrderV2).setFadeOutAnimate(true);
           this.$nextTick(() => {
-            this.$router.replace({ name: ROUTER_NAME.TAB_WRAP });
+            this.$store.dispatch(
+              ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
+            );
+            // @ts-ignore
+            this.$router.replace({
+              name: ROUTER_NAME.TAB_WRAP,
+              params: {
+                menu: 0,
+              },
+            });
           });
         } else {
           const toast = this.$createToast({
