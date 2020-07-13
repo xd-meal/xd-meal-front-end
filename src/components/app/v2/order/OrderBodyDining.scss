@@ -46,16 +46,20 @@
         line-height: 1;
         .order-body-dining_checkbox-title {
           height: 26px;
-          width: 56px;
-          color: #fff;
-          text-align: center;
+          line-height: 22px;
+          font-size: 14px;
+          width: 100%;
+          text-align: left;
           padding: 0;
-          font-weight: 600;
-          background: linear-gradient(245deg, #ff9f00, #ff6600);
-          border-radius: 13px;
-          line-height: 26px;
-          font-size: 12px;
-          margin-bottom: 6px;
+          //border-radius: 13px;
+          //font-weight: 600;
+          //width: 56px;
+          //color: #fff;
+          //text-align: center;
+          //background: linear-gradient(245deg, #ff9f00, #ff6600);
+          //line-height: 26px;
+          //font-size: 12px;
+          //margin-bottom: 6px;
         }
       }
     }

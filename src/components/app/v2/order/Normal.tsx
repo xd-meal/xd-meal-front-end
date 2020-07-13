@@ -50,7 +50,7 @@ export default class Limited extends tsx.Component<any> {
     const orderSelect = this.$store.getters[
       MENU_NAMESPACE + MENU.ORDER_SELECT_MAP
     ];
-    let list = this.$store.state.order.list;
+    let list = this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_NORMAL_LIST];
     if (!this.extra) {
       list = list.filter((item: IStoreDining) => !/加班/.test(item.title));
     }
@@ -166,7 +166,7 @@ export default class Limited extends tsx.Component<any> {
   private toggleExtra() {
     this.extra = !this.extra;
     // 单独实现，防止点击加班餐后刷新掉列表
-    let list = this.$store.state.order.list;
+    let list = this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_NORMAL_LIST];
     if (!this.extra) {
       list = list.filter((item: IStoreDining) => !/加班/.test(item.title));
     }

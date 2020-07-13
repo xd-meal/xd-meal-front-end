@@ -4,8 +4,9 @@ import { getMenuGroupBy } from '@/components/utils/group';
 import { timeParser } from '@/components/utils/time';
 import { ROUTER_NAME } from '@/router';
 import { MENU, MENU_NAMESPACE } from '@/store/menu';
+import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { VNode } from 'vue';
-import { Component, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import '@/components/app/v2/index/IndexWrap.scss';
 import IndexPanel from '@/components/app/v2/index/IndexPanel';
@@ -47,7 +48,7 @@ export default class IndexWrap extends tsx.Component<any> {
   }
   protected get orderBtnShow() {
     return (
-      this.$store.getters[MENU_NAMESPACE + MENU.ORDER_SELECT_MAP].length > 0
+      this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_NORMAL_LIST]?.length > 0
     );
   }
   private async mounted() {

@@ -20,14 +20,14 @@ export default class Pay extends tsx.Component<any> {
           <div class='pay-container'>
             <div class='pay-qr-tips'>二维码60秒自动刷新</div>
             <div class='pay-qr'>
-              {!this.d.token && (
+              {this.d.token && (
                 <qriously
                   class='pay-qr-code'
                   value={'XY' + this.d.token + 'XZ'}
                   size={210}
                 />
               )}
-              {this.d.token && (
+              {!this.d.token && (
                 <div class='pay-qr-code pay-qr-code_disable'>
                   <button
                     class='pay-qr-code_disable-refresh'
