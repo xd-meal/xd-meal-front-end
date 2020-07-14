@@ -51,17 +51,15 @@ export interface IMyDining {
 }
 
 export interface IDiningRoll {
-  dining: string;
-  meal: string;
-  join: boolean;
+  [key: string]: string | false;
 }
 
-export async function fetchDiningRoll(): Promise<IHttpResponse<IDiningRoll[]>> {
+export async function fetchDiningRoll(): Promise<IHttpResponse<IDiningRoll>> {
   const response = await axios.get(DINING_ROLL_API);
   return response ? commonResponse(response) : defaultResponse;
 }
 
-export async function updateDiningRoll(diningRoll: IDiningRoll[]) {
+export async function updateDiningRoll(diningRoll: IDiningRoll) {
   const response = await axios.put(DINING_ROLL_API, diningRoll);
   return response ? commonResponse(response) : defaultResponse;
 }

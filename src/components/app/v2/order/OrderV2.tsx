@@ -33,6 +33,11 @@ export default class OrderV2 extends tsx.Component<any> {
     default: '下周选饭',
   })
   protected title!: string;
+  @Prop({
+    default: false,
+  })
+  protected optional!: boolean;
+
   // 是否显示加班餐
   protected extra: boolean = false;
   // 上方日历相关设置
@@ -193,6 +198,7 @@ export default class OrderV2 extends tsx.Component<any> {
                       data={dining}
                       time={diningList.key}
                       index={index}
+                      optional={this.optional}
                       onChange={this.diningChange.bind(this, dining)}
                     />
                   ))}
@@ -202,6 +208,7 @@ export default class OrderV2 extends tsx.Component<any> {
           </div>
           {this.$slots.footer}
         </div>
+        {this.$slots.footerOutSide}
       </div>
     );
   }

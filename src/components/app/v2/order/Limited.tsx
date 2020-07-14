@@ -1,12 +1,10 @@
-import { orderDishes, updateDiningRoll } from '@/api/menu';
-import OrderTopDate from '@/components/app/v2/order/OrderTopDate';
+import { fetchDiningRoll, updateDiningRoll } from '@/api/menu';
 import OrderV2 from '@/components/app/v2/order/OrderV2';
 import { getMenuGroupBy } from '@/components/utils/group';
 import { ROUTER_NAME } from '@/router';
 import '@/components/app/v2/order/Limited.scss';
-import { MENU, MENU_NAMESPACE } from '@/store/menu';
 import { IStoreDining, ORDER, ORDER_NAMESPACE } from '@/store/order';
-import { map, some } from 'lodash';
+import { some, mapValues, isNull } from 'lodash';
 import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
@@ -22,18 +20,16 @@ export default class Limited extends tsx.Component<any> {
     key: string;
     value: IStoreDining[];
   }> = [];
-  protected selector: { [key: string]: string | null } = {};
+  protected selector: { [key: string]: string | false } = {};
 
-  public resetList() {
-    const orderSelect = this.$store.getters[
-      MENU_NAMESPACE + MENU.ORDER_SELECT_MAP
-    ];
+  public async resetList() {
+    const rolls = (await fetchDiningRoll()).data;
     const list = this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_LIMIT_LIST];
     this.list = getMenuGroupBy(list);
-    const selector: { [key: string]: string | null } = {};
+    const selector: { [key: string]: string | false } = {};
     // 生成选项列表
     for (const item of list) {
-      selector[item._id] = orderSelect[item._id] || null;
+      selector[item._id] = rolls[item._id] || false;
     }
     this.selector = selector;
   }
@@ -41,13 +37,13 @@ export default class Limited extends tsx.Component<any> {
     await this.$store.dispatch(
       ORDER_NAMESPACE + ORDER.FETCH_ORDER_DISHES_ACTION,
     );
-    this.resetList();
+    await this.resetList();
   }
 
   private render(): VNode {
     const listeners = {
       'update:selector': (val: { [key: string]: string | null }) => {
-        this.selector = val;
+        this.selector = mapValues(val, (v) => (isNull(v) ? false : v));
       },
     };
     return (
@@ -58,6 +54,7 @@ export default class Limited extends tsx.Component<any> {
           {...{ on: listeners }}
           title='限量菜品'
           ref='Orderv2'
+          optional={true}
         >
           <div Slot='footer'>
             <div class='limit-submit-btn btn' onclick={this.submit.bind(this)}>
@@ -83,13 +80,6 @@ export default class Limited extends tsx.Component<any> {
     if (didAllSelected) {
       // todo: tip
     }
-    const ids = map(this.selector, (item, key) => {
-      return {
-        dining: key,
-        meal: String(item),
-        join: true,
-      };
-    });
 
     this.$createDialog({
       type: 'confirm',
@@ -97,7 +87,7 @@ export default class Limited extends tsx.Component<any> {
         '<span class="dialog-pc-order">确定选好了所有的想要恰的饭饭了嘛<br>( • ̀ω•́ )✧</span>',
       icon: 'cubeic-alert',
       onConfirm: async () => {
-        const res = await updateDiningRoll(ids);
+        const res = await updateDiningRoll(this.selector);
         if (res.code === 200) {
           (this.$refs.Orderv2 as OrderV2).setFadeOutAnimate(true);
           this.$nextTick(() => {

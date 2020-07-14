@@ -21,6 +21,17 @@ export default class OrderBodyDining extends tsx.Component<any> {
     required: true,
   })
   protected index!: number;
+  @Prop({
+    required: true,
+  })
+  protected optional!: boolean;
+  private checkboxChange(menu: IStoreDish) {
+    if (this.optional && this.value === menu._id) {
+      this.$emit('change', null);
+      return;
+    }
+    this.$emit('change', menu._id);
+  }
   private render(): VNode {
     const dataMenu: IStoreDish[] = this.data?.menu ?? [];
     const names = getTimeNameV2(this.data);
@@ -53,7 +64,7 @@ export default class OrderBodyDining extends tsx.Component<any> {
               class='order-body-dining_checkbox'
               data-for-test={`diningCheckbox`}
               data-for-test-menuId={menu._id}
-              onClick={() => this.$emit('change', menu._id)}
+              onClick={() => this.checkboxChange(menu)}
             >
               <div
                 class={{
