@@ -88,6 +88,15 @@ export default class V2Profile extends tsx.Component<any> {
         icon: 'icon resetpwd',
       });
     }
+    if (this.$store.state.user.corp === 'xd') {
+      this.routers.push({
+        icon: 'icon service',
+        name: __('猛戳陈总（反馈）'),
+        onClick: () => {
+          // TODO: 跳转并联系 陈总
+        },
+      });
+    }
     this.routers.push({
       icon: 'icon limit',
       name: __('限量菜品'),
@@ -109,15 +118,7 @@ export default class V2Profile extends tsx.Component<any> {
         });
       },
     });
-    if (this.$store.state.user.corp === 'xd') {
-      this.routers.push({
-        icon: 'icon service',
-        name: __('举报投诉'),
-        onClick: () => {
-          // TODO: 跳转并联系 陈总
-        },
-      });
-    }
+
     // this.routers.push({
     //   name: __('退出登录'),
     //   icon: 'icon logout',
@@ -132,13 +133,13 @@ export default class V2Profile extends tsx.Component<any> {
     if (config.ppx) {
       return getActivity(this.name);
     }
-    return '再忙也要好好吃饭哟～';
+    return __('再忙也要好好吃饭哟～');
   }
   private loginOut() {
     loginOut(this);
   }
   private get name() {
-    return this.$store.state.user.username || '木得名字的宝宝';
+    return this.$store.state.user.username || __('木得名字的宝宝');
   }
   private get avatar() {
     return this.$store.state.user.avatar;

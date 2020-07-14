@@ -1,5 +1,5 @@
 import { fetchWeworkCode, logoutApi } from '@/api/login';
-import router from '@/router';
+import router, { ROUTER_NAME } from '@/router';
 import { getCookie } from '@/utils/cookies';
 import os from '@/utils/os';
 import store from 'store';
@@ -69,16 +69,13 @@ export async function gotoLogin() {
 }
 
 export function gotoIndex() {
-  // 在首页 和 login 页的需要跳转到指定的index路由页面
-  if (os.isPc) {
-    router.push({
-      name: 'pcOrder',
-    });
-  } else {
-    router.push({
-      name: 'index',
-    });
-  }
+  // @ts-ignore
+  router.push({
+    name: ROUTER_NAME.TAB_WRAP,
+    params: {
+      menu: 0,
+    },
+  });
 }
 
 export async function loginOut(targetDom: Vue) {
