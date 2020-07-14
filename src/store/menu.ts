@@ -42,9 +42,11 @@ export enum MENU {
   SET_MENU = 'setMenu',
 
   ORDER_SELECT_MAP = 'orderSelectMap',
+  EXTRA = 'orderExtra',
 }
 
 const getters: GetterTree<IMenuGlobal, any> = {
+  [MENU.EXTRA](_) {},
   [MENU.ORDER_SELECT_MAP](_) {
     const map: { [key: string]: string } = {};
     _.list.forEach((v) => {

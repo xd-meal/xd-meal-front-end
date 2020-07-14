@@ -12,10 +12,11 @@ import {
   ORDER,
   ORDER_NAMESPACE,
 } from '@/store/order';
-import { chain, map, some } from 'lodash';
+import { chain, map, some, forEach } from 'lodash';
 import { VNode } from 'vue';
-import { Component, Prop, Vue } from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
+import './Normal.scss';
 @Component({
   components: { OrderV2 },
 })
@@ -159,10 +160,23 @@ export default class Limited extends tsx.Component<any> {
             </div>
           </div>
         </OrderV2>
+        <div class='footer-line'>
+          <div class='inner' style={{ width: this.lineWidth }}></div>
+        </div>
       </div>
     );
   }
-
+  get lineWidth() {
+    let count = 0;
+    let total = 0;
+    forEach(this.selector, (value) => {
+      total++;
+      if (value) {
+        count++;
+      }
+    });
+    return `${((count / total) * 100).toFixed(3)}%`;
+  }
   private toggleExtra() {
     const orderSelect = this.$store.getters[
       MENU_NAMESPACE + MENU.ORDER_SELECT_MAP

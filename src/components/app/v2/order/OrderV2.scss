@@ -271,7 +271,9 @@
     &.no-error {
       height: 80px + $bottom-height;
     }
+
   }
+
   &_buttons {
     position: absolute;
     bottom: 7px + $bottom-height;
@@ -289,7 +291,7 @@
     }
     &-right {
       border-radius: 34px 0 0 34px;
-      background-color: #333333;
+      background: linear-gradient(180deg, #4B4B4B, #333333);
       flex: 1;
       padding: 16px 0 16px 24px;
       white-space: nowrap;
