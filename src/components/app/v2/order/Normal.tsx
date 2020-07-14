@@ -47,6 +47,9 @@ export default class Limited extends tsx.Component<any> {
   // 随机选饭相关
   private randomForNoSpicy: boolean = false;
   private randomForEmpty: boolean = false;
+  // 动画
+
+  private orderBack: boolean = false;
   public resetList() {
     const orderSelect = this.$store.getters[
       MENU_NAMESPACE + MENU.ORDER_SELECT_MAP
@@ -86,6 +89,7 @@ export default class Limited extends tsx.Component<any> {
       <div class='normal-order'>
         <OrderV2
           onDiningChange={this.refreshError.bind(this)}
+          onOrderBack={() => (this.orderBack = true)}
           list={this.list}
           selector={this.selector}
           {...{ on: listeners }}
@@ -104,11 +108,11 @@ export default class Limited extends tsx.Component<any> {
           <div
             class={{
               'v2-order_footer': true,
-              'no-error': !this.errorText,
+              'no-error': true,
             }}
             Slot='footerOutSide'
           >
-            <div class='v2-order_footer_error-text'>{this.errorText}</div>
+            {/*<div class='v2-order_footer_error-text'>{this.errorText}</div>*/}
             <div class='v2-order_buttons'>
               <div class='v2-order_buttons-wrap'>
                 <div class='v2-order_buttons-right'>
@@ -160,7 +164,7 @@ export default class Limited extends tsx.Component<any> {
             </div>
           </div>
         </OrderV2>
-        <div class='footer-line'>
+        <div class={{ 'footer-line': true, 'footer-remove': this.orderBack }}>
           <div class='inner' style={{ width: this.lineWidth }}></div>
         </div>
       </div>

@@ -132,6 +132,7 @@ export default class OrderV2 extends tsx.Component<any> {
 
   private backToMain() {
     this.fadeOutAnimate = true;
+    this.$emit('orderBack');
     this.$nextTick(() => {
       this.$router.back();
       // this.$router.push({
