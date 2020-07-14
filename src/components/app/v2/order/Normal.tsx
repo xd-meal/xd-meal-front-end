@@ -164,6 +164,9 @@ export default class Limited extends tsx.Component<any> {
   }
 
   private toggleExtra() {
+    const orderSelect = this.$store.getters[
+      MENU_NAMESPACE + MENU.ORDER_SELECT_MAP
+    ];
     this.extra = !this.extra;
     // 单独实现，防止点击加班餐后刷新掉列表
     let list = this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_NORMAL_LIST];
@@ -174,7 +177,8 @@ export default class Limited extends tsx.Component<any> {
     const selector: { [key: string]: string | null } = {};
     // 生成选项列表
     for (const item of list) {
-      selector[item._id] = this.selector[item._id] || null;
+      selector[item._id] =
+        this.selector[item._id] || orderSelect[item._id] || null;
     }
     this.selector = selector;
     (this.$refs.Orderv2 as OrderV2).resetTime();
