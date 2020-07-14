@@ -7,7 +7,7 @@ import { VNode } from 'vue';
 import * as tsx from 'vue-tsx-support';
 import { Component } from 'vue-property-decorator';
 
-import { ISingleMenuItem, MENU_NAMESPACE, MENU } from '@/store/menu';
+import { MENU_NAMESPACE, MENU } from '@/store/menu';
 
 import { timeParser } from '@/components/utils/time';
 

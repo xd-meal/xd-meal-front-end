@@ -3,7 +3,7 @@ import { ORDER, ORDER_NAMESPACE } from '@/store/order';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 import { Component, Watch } from 'vue-property-decorator';
-import { Route, VueRouter } from 'vue-router/types/router';
+import { Route } from 'vue-router/types/router';
 import * as tsx from 'vue-tsx-support';
 import '@/components/app/v2/TabWrap.scss';
 import IndexWrap from '@/components/app/v2/index/IndexWrap';

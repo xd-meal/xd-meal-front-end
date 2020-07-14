@@ -1,11 +1,9 @@
 import { IIndexMyDining } from '@/components/app/v2/index/IndexWrap';
 import { timeWeekdayParser } from '@/components/utils/time';
 import { VNode } from 'vue';
-import { Component, Vue, Prop } from 'vue-property-decorator';
+import { Component, Prop } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import '@/components/app/v2/index/IndexPanel.scss';
-const BUFFET_REG = /自助/g;
-
 const TYPE_LIST = [
   {
     name: null,

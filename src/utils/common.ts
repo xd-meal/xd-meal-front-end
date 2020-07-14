@@ -1,7 +1,6 @@
 import { fetchWeworkCode, logoutApi } from '@/api/login';
 import router, { ROUTER_NAME } from '@/router';
 import { getCookie } from '@/utils/cookies';
-import os from '@/utils/os';
 import store from 'store';
 
 export const isDev = false; // process.env.NODE_ENV === 'development';

@@ -1,5 +1,5 @@
 import { VNode } from 'vue';
-import { Component, Model, Prop, Vue } from 'vue-property-decorator';
+import { Component, Model, Prop } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 import './input.scss';
 @Component
