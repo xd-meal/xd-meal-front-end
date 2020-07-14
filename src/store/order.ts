@@ -40,9 +40,16 @@ const getters: GetterTree<IOrderGlobal, any> = {
   [ORDER.ORDER_LIMIT_LIST](_) {
     return _.list
       .map((v) => {
+        const menu = v.menu.filter((m) => m.limit);
+        menu.unshift({
+          _id: '',
+          title: '不喜欢这顿',
+          desc: '这顿不选.jpg',
+          limit: 0,
+        });
         return {
           ...v,
-          menu: v.menu.filter((menu) => menu.limit),
+          menu,
         };
       })
       .filter(filterEmptyMenu);

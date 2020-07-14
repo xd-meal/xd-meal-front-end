@@ -20,16 +20,16 @@ export default class Limited extends tsx.Component<any> {
     key: string;
     value: IStoreDining[];
   }> = [];
-  protected selector: { [key: string]: string | false } = {};
+  protected selector: { [key: string]: string } = {};
 
   public async resetList() {
     const rolls = (await fetchDiningRoll()).data;
     const list = this.$store.getters[ORDER_NAMESPACE + ORDER.ORDER_LIMIT_LIST];
     this.list = getMenuGroupBy(list);
-    const selector: { [key: string]: string | false } = {};
+    const selector: { [key: string]: string } = {};
     // 生成选项列表
     for (const item of list) {
-      selector[item._id] = rolls[item._id] || false;
+      selector[item._id] = rolls[item._id] || '';
     }
     this.selector = selector;
   }
@@ -43,7 +43,7 @@ export default class Limited extends tsx.Component<any> {
   private render(): VNode {
     const listeners = {
       'update:selector': (val: { [key: string]: string | null }) => {
-        this.selector = mapValues(val, (v) => (isNull(v) ? false : v));
+        this.selector = mapValues(val, (v) => (isNull(v) ? '' : v));
       },
     };
     return (
@@ -87,7 +87,9 @@ export default class Limited extends tsx.Component<any> {
         '<span class="dialog-pc-order">确定选好了所有的想要恰的饭饭了嘛<br>( • ̀ω•́ )✧</span>',
       icon: 'cubeic-alert',
       onConfirm: async () => {
-        const res = await updateDiningRoll(this.selector);
+        const res = await updateDiningRoll(
+          mapValues(this.selector, (v) => (v === '' ? false : v)),
+        );
         if (res.code === 200) {
           (this.$refs.Orderv2 as OrderV2).setFadeOutAnimate(true);
           this.$nextTick(() => {
