@@ -23,8 +23,15 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+Cypress.Commands.add('loadFixtures', () => {
+  cy.fixture('diningList.json').as('fixtures:diningList');
+  cy.fixture('orderList.json').as('fixtures:orderList');
+  cy.fixture('userProfile.json').as('fixtures:userProfile');
+  cy.fixture('orderListFromPost.json').as('fixtures:orderListFromPost');
+});
 
 Cypress.Commands.add('doLogin', function() {
+  cy.loadFixtures();
   cy.setCookie('XD-MEAL-SESSION', '111111');
 });
 Cypress.Commands.add('defaultRouter', function() {
@@ -33,15 +40,26 @@ Cypress.Commands.add('defaultRouter', function() {
     dinings: [],
     ordered: [],
   });
-  cy.route('api/v1/user/profile', {
-    config: {
-      advance: false,
-      randomBtn: false,
-      buffetBtn: false,
-    },
-    avatar: '',
-    username: '11',
+  cy.route('api/v1/user/profile', '@fixtures:userProfile');
+  cy.route('/api/v1/dining/list', {
+    dinings: [],
+    orders: [],
   });
+  cy.route('/api/v1/myDish', {});
+});
+Cypress.Commands.add('orderRouter', function() {
+  cy.server();
+  cy.route('/api/v1/orders', '@fixtures:orderList');
+  cy.route('api/v1/user/profile', '@fixtures:userProfile');
+  cy.route('/api/v1/dining/list', '@fixtures:diningList');
+  cy.route('post', '/api/v1/order', {}).as('postOrder');
+  cy.route('/api/v1/myDish', {});
+});
+Cypress.Commands.add('emptyRouter', function() {
+  cy.server();
+  cy.route('/api/v1/orders', '@fixtures:orderList');
+  cy.route('api/v1/user/profile', '@fixtures:userProfile');
+  cy.route('post', '/api/v1/order', {}).as('postOrder');
   cy.route('/api/v1/dining/list', {
     dinings: [],
     orders: [],

@@ -1,7 +1,5 @@
 import './Setting.scss';
-import { orderDishes } from '@/api/menu';
 import { userConfigUpdate } from '@/api/user';
-import { ROUTER_NAME } from '@/router';
 import { USER, USER_NAMESPACE } from '@/store/user';
 import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
@@ -50,13 +48,8 @@ export default class Setting extends tsx.Component<any> {
             {/*</div>*/}
             <p style='font-size: 14px;'>随机选餐设置</p>
             <div class='setting-content'>
-              {/*<p>一键选餐设置</p>*/}
-              {/*<cube-switch vModel={this.buffetForChili}>不自助辣</cube-switch>*/}
               <cube-switch vModel={this.randomForNoSpicy}>不随机辣</cube-switch>
               <cube-switch vModel={this.randomForEmpty}>随机不选餐</cube-switch>
-              {/*<p>系统设定</p>*/}
-              {/*<cube-switch vModel={this.closeCache}>缓存禁用模式</cube-switch>*/}
-              {/*<cube-switch vModel={this.useTest}>启用试验特性</cube-switch>*/}
             </div>
           </div>
         )}

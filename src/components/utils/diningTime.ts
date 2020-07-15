@@ -12,8 +12,8 @@ export const timeIteration = [
     value: ['08:25', '09:45', 0],
     key: MENU_TIME_TYPE.BREAKFAST,
   },
-  { label: '午餐', value: ['11:45', '13:30', 1], key: MENU_TIME_TYPE.LUNCH },
-  { label: '晚餐', value: ['17:45', '19:30', 1], key: MENU_TIME_TYPE.DINNER },
+  { label: '午餐', value: ['09:46', '14:00', 1], key: MENU_TIME_TYPE.LUNCH },
+  { label: '晚餐', value: ['14:01', '22:30', 1], key: MENU_TIME_TYPE.DINNER },
 ];
 const cache: { [key: string]: number[] } = {};
 export function getTimeNumber(time: string | number): number[] {
@@ -93,4 +93,39 @@ export function getTimeName(dining: {
       .format(outputStr);
 
   return timeNameCache[key];
+}
+const timeNameCacheV2: { [key: string]: string[] } = {};
+export function getTimeNameV2(dining: {
+  pick_start: string;
+  pick_end: string;
+}): string[] {
+  const outputStr = 'HH:mm';
+  const fullTime =
+    moment(dining.pick_start)
+      .utcOffset(480)
+      .format(outputStr) +
+    '-' +
+    moment(dining.pick_end)
+      .utcOffset(480)
+      .format(outputStr);
+  const key = dining.pick_start + dining.pick_end;
+  if (timeNameCache[key]) {
+    return timeNameCacheV2[key];
+  }
+  const startTime = getTimeNumber(dining.pick_start);
+  const endTime = getTimeNumber(dining.pick_end);
+  for (const time of timeIteration) {
+    const startTimeNumber = getTimeNumber(time.value[0]);
+    const endTimeNumber = getTimeNumber(time.value[1]);
+    if (
+      timeNumberAfterTarget(startTime, startTimeNumber) &&
+      timeNumberBeforeTarget(endTime, endTimeNumber)
+    ) {
+      timeNameCacheV2[key] = [time.label, fullTime];
+      return timeNameCacheV2[key];
+    }
+  }
+  timeNameCacheV2[key] = ['', timeNameCache[key]];
+
+  return timeNameCacheV2[key];
 }

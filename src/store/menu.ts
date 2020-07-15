@@ -1,5 +1,5 @@
 import { fetchMyDishes, IMyDining } from '@/api/menu';
-import { ActionTree, MutationTree } from 'vuex';
+import { ActionTree, GetterTree, MutationTree } from 'vuex';
 
 export enum MENU_TIME_TYPE {
   BREAKFAST = 'breakfast',
@@ -40,9 +40,21 @@ export enum MENU {
 
   SET_MENUS = 'setMenus',
   SET_MENU = 'setMenu',
+
+  ORDER_SELECT_MAP = 'orderSelectMap',
+  EXTRA = 'orderExtra',
 }
 
-const getters = {};
+const getters: GetterTree<IMenuGlobal, any> = {
+  [MENU.EXTRA](_) {},
+  [MENU.ORDER_SELECT_MAP](_) {
+    const map: { [key: string]: string } = {};
+    _.list.forEach((v) => {
+      map[v.dining_id] = v.menu._id;
+    });
+    return map;
+  },
+};
 const actions: ActionTree<IMenuGlobal, any> = {
   async [MENU.FETCH_MY_MENUS_ACTION]({ commit }) {
     const myDishesRes = await fetchMyDishes();

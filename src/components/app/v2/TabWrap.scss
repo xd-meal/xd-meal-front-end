@@ -1,0 +1,129 @@
+.v2-main {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9;
+  &-transition {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+  &_pay-wrap,
+  &_profile-wrap {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    .pay {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-footer {
+    position: fixed;
+    height: 68px;
+    border-radius: 36px 36px 0 0;
+    box-shadow: rgba(0, 0, 0, 0.05) 0 -5px 20px;
+    width: 100%;
+    bottom: 0;
+    z-index: 2;
+    background-color: white;
+    &.qrcode, &.profile {
+      box-shadow: rgba(0, 0, 0, 0.02) 0 -5px 20px;
+    }
+    &_icons {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 0 58px;
+      height: 100%;
+    }
+    &_icon {
+      position: relative;
+      .click-wrap {
+        $size: 50px;
+        position: absolute;
+        width: $size;
+        height: $size;
+        margin: (-$size * 0.5) 0 0 (-$size * 0.5);
+        top: 50%;
+        left: 50%;
+      }
+      i {
+        width: 32px;
+        height: 32px;
+        background-size: auto 32px;
+        background-color: transparent;
+        background-position: center center;
+        background-repeat: no-repeat;
+        display: inline-block;
+        &.index {
+          background-image: url('../../../assets/icon/v2/dining.svg');
+          background-size: auto 29px;
+        }
+        &.qrcode {
+          background-image: url('../../../assets/icon/v2/qr.svg');
+        }
+        &.profile {
+          background-image: url('../../../assets/icon/v2/profile.svg');
+        }
+      }
+      &_active {
+        @keyframes tab-bounce {
+          0%,20%,53%,to {
+            animation-timing-function: cubic-bezier(.215,.61,.355,1);
+            transform: translateZ(0)
+          }
+
+          40%,43% {
+            animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+            transform: translate3d(0,-8px,0) scaleY(1.1)
+          }
+
+          70% {
+            animation-timing-function: cubic-bezier(.755,.05,.855,.06);
+            transform: translate3d(0,-4px,0) scaleY(1.05)
+          }
+
+          80% {
+            transition-timing-function: cubic-bezier(.215,.61,.355,1);
+            transform: translateZ(0) scaleY(.95)
+          }
+
+          90% {
+            transform: translate3d(0,-4px,0) scaleY(1.02)
+          }
+        }
+        i {
+          animation-name: tab-bounce;
+          animation-iteration-count: 1;
+          animation-duration: 0.6s;
+          transform-origin: center bottom;
+          &.index {
+            background-image: url('../../../assets/icon/v2/dining-active.svg');
+            background-size: auto 32px;
+          }
+          &.qrcode {
+            background-image: url('../../../assets/icon/v2/qr-active.svg');
+          }
+          &.profile {
+            background-image: url('../../../assets/icon/v2/profile-active.svg');
+          }
+        }
+      }
+    }
+  }
+}
+
+.v2-slide-left-enter,
+.v2-slide-right-leave-active {
+  opacity: 0;
+  transform: translate(100%, 0);
+}
+
+.v2-slide-left-leave-active,
+.v2-slide-right-enter {
+  opacity: 0;
+  transform: translate(-100%, 0);
+}
