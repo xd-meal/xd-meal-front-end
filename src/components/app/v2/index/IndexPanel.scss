@@ -1,0 +1,33 @@
+.v2_index-panel {
+  margin: 0 13px 13px 13px;
+  border-radius: 18px;
+  background-color: #fff;
+  padding: 24px 23px;
+  text-align: left;
+  &_tab-list {
+    margin-bottom: 10px;
+    &_tab {
+      margin-right: 10px;
+      border-radius: 22px;
+      height: 26px;
+      padding: 0 10px;
+      background-color: #f9f9f9;
+      color: #aaaaaa;
+      font-size: 12px;
+      line-height: 26px;
+      display: inline-block;
+      box-shadow: rgba(0, 0, 0, 0.03) 0 5px 20px;
+    }
+    .time {
+    }
+    .type {
+    }
+    .name {
+    }
+  }
+  &_text {
+    line-height: 22px;
+    font-size: 14px;
+    color: #333333;
+  }
+}

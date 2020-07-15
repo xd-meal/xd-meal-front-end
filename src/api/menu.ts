@@ -1,5 +1,4 @@
 import { IHttpResponse } from '@/api/http';
-import { LOGIN_WEWORK_API } from '@/api/login';
 import lodash from 'lodash';
 import axios from 'axios';
 import { defaultResponse, commonResponse, buildParams } from '@/api/common';
@@ -7,12 +6,14 @@ const WEEKDAY_DISHES_API = '/api/v1/dining/list';
 const ORDER_DISHES_API = '/api/v1/order';
 const MY_DISHES_API = '/api/v1/orders';
 const HATE_DISH_API = '/api/v1/order/:id/hate';
+const DINING_ROLL_API = '/api/v2/dining/roll';
 
 export interface IHttpDish {
   _id: string;
   title: string;
   desc: string;
-  supplier: string;
+  supplier?: string;
+  limit?: number;
 }
 export interface IHttpDining {
   _id: string;
@@ -29,12 +30,7 @@ export interface IHttpOrderDining {
   dining_id: string;
   menu_id: string;
 }
-export interface IWeekdayDishesResponse extends IHttpResponse {
-  data: {
-    dinings: IHttpDining[];
-    orders: IHttpOrderDining[];
-  };
-}
+
 export interface IOrder {
   _id: string;
   dining_id: string;
@@ -43,6 +39,7 @@ export interface IOrder {
   isVoteDown?: boolean;
 }
 export interface IMyDining {
+  dining_id: any;
   id: string;
   title: string;
   order_start: string;
@@ -52,11 +49,27 @@ export interface IMyDining {
   menu: IHttpDish;
   isVoteDown: boolean;
 }
-export interface IMyDishesResponse extends IHttpResponse {
-  data: IMyDining[];
+
+export interface IDiningRoll {
+  [key: string]: string | false;
 }
 
-export async function fetchWeekdayDishes(): Promise<IWeekdayDishesResponse> {
+export async function fetchDiningRoll(): Promise<IHttpResponse<IDiningRoll>> {
+  const response = await axios.get(DINING_ROLL_API);
+  return response ? commonResponse(response) : defaultResponse;
+}
+
+export async function updateDiningRoll(diningRoll: IDiningRoll) {
+  const response = await axios.put(DINING_ROLL_API, diningRoll);
+  return response ? commonResponse(response) : defaultResponse;
+}
+
+export async function fetchWeekdayDishes(): Promise<
+  IHttpResponse<{
+    dinings: IHttpDining[];
+    orders: IHttpOrderDining[];
+  }>
+> {
   const response = await axios.get(WEEKDAY_DISHES_API);
   return response ? commonResponse(response) : defaultResponse;
 }
@@ -68,7 +81,7 @@ export async function orderDishes(
   return response ? commonResponse(response) : defaultResponse;
 }
 
-export async function fetchMyDishes(): Promise<IMyDishesResponse> {
+export async function fetchMyDishes(): Promise<IHttpResponse<IMyDining[]>> {
   const response = await axios.get(MY_DISHES_API);
   const data: {
     dinings: IHttpDining[];
@@ -77,7 +90,7 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   const dinings: { [key: string]: IHttpDining } = lodash(data.dinings)
     .keyBy('_id')
     .value();
-  const mydinings: IMyDining[] = lodash(data.ordered)
+  const myDinings: IMyDining[] = lodash(data.ordered)
     .map((orderedItem: IOrder) => {
       const dining = dinings[orderedItem.dining_id];
       const menuKeys: { [key: string]: IHttpDish } = lodash(dining.menu)
@@ -91,6 +104,7 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
         pick_start: dining.pick_start,
         pick_end: dining.pick_end,
         menu: menuKeys[orderedItem.menu_id],
+        dining_id: orderedItem.dining_id,
         isVoteDown: Boolean(orderedItem.isVoteDown),
       };
     })
@@ -98,7 +112,7 @@ export async function fetchMyDishes(): Promise<IMyDishesResponse> {
   return response
     ? {
         code: response?.status,
-        data: mydinings,
+        data: myDinings,
         msg: response?.data?.msg,
       }
     : {

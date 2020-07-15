@@ -1,0 +1,20 @@
+.normal-order {
+  .footer-line {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 4px;
+    z-index: 15;
+    .inner {
+      height: 4px;
+      width: 0;
+      transition: width .5s ease-in-out;
+      background: linear-gradient(245deg, #ff9f00, #ff6600);
+    }
+    transition: transform 0.5s ease-in-out;
+    &.footer-remove {
+      transform: translateX(-100%);
+    }
+  }
+}

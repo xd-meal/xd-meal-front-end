@@ -1,8 +1,7 @@
 .app-login {
   height: 100%;
-  display: flex;
-  align-items: center;
-  background-color: #f8f8f8;
+  padding-top: 135px;
+  background-color: #fff;
   input {
     appearance: none;
     box-shadow: none;
@@ -25,7 +24,7 @@
     margin-left: -247px * 0.5;
   }
   &-wrap {
-    width: 288px;
+    width: 258px;
     margin: 0 auto;
     position: relative;
   }
@@ -60,12 +59,22 @@
   }
 
   &-submit {
-    background-color: #ea5c03;
-    border-radius: 10px;
+    background: linear-gradient(245deg, #ff9f00, #ff6600);
+    border-radius: 29px;
     color: #ffffff;
     font-size: 20px;
     width: 100%;
-    height: 50px;
+    height: 54px;
+    box-shadow: rgba(255, 98, 0, 0.36) 0 8px 20px;
+    .icon {
+      background-image: url('./../assets/icon/v2/login-go.svg');
+      width: 29px;
+      height: 25px;
+      line-height: 54px;
+      vertical-align: middle;
+      display: inline-block;
+      background-repeat: no-repeat;
+    }
   }
 
   &-buttons {
@@ -74,7 +83,10 @@
     border-radius: 10px;
     color: #ffffff;
     width: 100%;
-    height: 50px;
+    height: 58px;
+    position: fixed;
+    left: 0;
+    bottom: 80px;
   }
 
   &-qrcode {
@@ -89,19 +101,27 @@
   }
 
   .qrcode-icon-container {
-    display: inline-block;
     position: relative;
-    width: 70%;
+    width: 80%;
     height: 35px;
     margin: auto;
     display: flex;
     justify-content: space-evenly;
+    max-width: 400px;
     > .qrcode-icon-item {
-      height: 35px;
+      height: 58px;
       cursor: pointer;
-      width: 35px;
+      width: 58px;
+      line-height: 58px;
       background: white;
       border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      text-align: center;
+      img {
+        width: 35px;
+        height: 35px;
+        vertical-align: middle;
+      }
     }
   }
 }

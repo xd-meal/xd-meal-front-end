@@ -8,10 +8,10 @@ import * as Sentry from '@sentry/browser';
 import * as Integrations from '@sentry/integrations';
 
 import App from './App.vue';
-import router from '@/router';
+import router, { ROUTER_NAME } from '@/router';
 
 import store from './store';
-import { routerCheck } from './utils/common';
+import { gotoIndex, routerCheck } from './utils/common';
 Vue.config.productionTip = false;
 
 Sentry.init({
@@ -30,15 +30,8 @@ routerCheck();
 router.beforeEach((to, from, next) => {
   if (to.matched.length === 0) {
     // 如果未匹配到路由
-    if (os.isPc) {
-      next({
-        name: 'pcOrder',
-      });
-    } else {
-      next({
-        name: 'index',
-      });
-    }
+    // @ts-ignore
+    gotoIndex();
   } else {
     // 如果匹配到正确跳转
     next();

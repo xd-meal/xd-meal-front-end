@@ -1,4 +1,6 @@
+import Limited from '@/components/app/v2/order/Limited';
 import os from '@/utils/os';
+import V2 from '@/views/V2';
 import Vue from 'vue';
 import Router from 'vue-router';
 
@@ -12,7 +14,8 @@ import Pay from '@/components/app/pay/Pay.tsx';
 import Profile from '@/components/app/profile/Profile.tsx';
 import Setting from '@/components/app/profile/Setting';
 import ResetPassword from '@/components/app/profile/ResetPassword';
-
+import Normal from '@/components/app/v2/order/Normal';
+import TabWrap from '@/components/app/v2/TabWrap';
 import PcOrder from '@/components/pc/PcOrder.tsx';
 
 import { VueRouter } from 'vue-router/types/router';
@@ -20,7 +23,11 @@ export const ROUTER_NAME = {
   LOGIN: 'login',
   QR_LOGIN: 'qrlogin',
   APP_ORDER: 'order',
+  APP_ORDER_V2: 'order_v2',
+  APP_LIMITED_V2: 'limited_v2',
+  TAB_WRAP: 'tab_wrap',
   APP: 'app',
+  APP_v2: 'app_v2',
   APP_INDEX: 'index',
   APP_PAY: 'pay',
   APP_PROFILE: 'profile',
@@ -82,6 +89,25 @@ const router: VueRouter = new Router({
         { path: 'pay', component: Pay, name: ROUTER_NAME.APP_PAY },
         { path: 'profile', component: Profile, name: ROUTER_NAME.APP_PROFILE },
       ],
+    },
+    {
+      path: '/v2',
+      name: ROUTER_NAME.APP_v2,
+      component: V2,
+      children: [
+        { path: 'order', component: Normal, name: ROUTER_NAME.APP_ORDER_V2 },
+        {
+          path: 'limited',
+          component: Limited,
+          name: ROUTER_NAME.APP_LIMITED_V2,
+        },
+        { path: 'main', component: TabWrap },
+        { path: 'main/:menu', component: TabWrap, name: ROUTER_NAME.TAB_WRAP },
+      ],
+      meta: {
+        rightIn: true,
+        rightOut: true,
+      },
     },
     {
       path: '/setting',

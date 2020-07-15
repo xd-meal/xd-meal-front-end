@@ -1,0 +1,126 @@
+.v2_profile {
+  display: flex;
+  flex-direction: column;
+  background-color: #f8f8f8;
+  width: 100%;
+  height: 100%;
+  &-wrap {
+    margin: 0 30px;
+    padding-top: 33px;
+    height: 145px;
+    box-sizing: border-box;
+  }
+  &-name {
+    text-align: left;
+    float: left;
+    width: 80%;
+    &-title {
+      line-height: 45px;
+      font-size: 32px;
+      color: #000;
+      font-weight: 800;
+    }
+    &-desc {
+      font-size: 12px;
+      color: #999;
+      line-height: 14px;
+    }
+  }
+
+  &-avatar {
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    float: right;
+    background-color: #e9e9e9;
+    overflow: hidden;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  &-logout {
+    border-radius: 18px;
+    background-color: #fff;
+    line-height: 56px;
+    font-size: 16px;
+    color: #FF0000;
+    height: 56px;
+    margin: 15px 13px;
+  }
+  &-context {
+    margin: 0 13px;
+    width: auto;
+    background-color: #fff;
+    border-radius: 18px;
+    padding: 28px 0 28px 24px;
+    background-repeat: no-repeat;
+    &-item {
+      height: 22px;
+      line-height: 22px;
+      text-align: left;
+      font-size: 16px;
+      padding-bottom: 18px;
+      margin-bottom: 18px;
+      position: relative;
+      &:before {
+        content: '';
+        display: block;
+        left: 40px;
+        border-bottom: .5px #F4F4F4 solid;
+        right: 0;
+        position: absolute;
+        width: auto;
+        bottom: 0;
+      }
+      &-menu {
+        font-size: 16px;
+        font-weight: 500;
+        color: #000;
+        line-height: 22px;
+        height: 22px;
+        &.error {
+          color: #ff4c40;
+        }
+        i.icon {
+          line-height: 22px;
+          width: 24px;
+          height: 22px;
+          background-repeat: no-repeat;
+          background-size: auto 100%;
+          &.setting {
+            background-image: url("./../../../../assets/icon/v2/setting.svg");
+          }
+          &.resetpwd {
+            background-image: url("./../../../../assets/icon/v2/psw.svg");
+          }
+          &.logout {
+            background-image: url("./../../../../assets/icon/v2/logout.svg");
+          }
+          &.limit {
+            background-image: url("./../../../../assets/icon/v2/limit.svg")
+          }
+          &.service {
+            background-image: url("./../../../../assets/icon/v2/service.svg")
+          }
+        }
+        i, span {
+          display: inline-block;
+          vertical-align: middle;
+          line-height: 22px;
+          margin-right: 14px;
+          font-weight: 500;
+          font-size: 14px;
+          color: #333;
+        }
+      }
+    }
+    &-item:nth-last-child(1) {
+      &:before {
+        display: none;
+      }
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+  }
+}

@@ -8,7 +8,7 @@ import { VNode } from 'vue';
 import { Component } from 'vue-property-decorator';
 import * as tsx from 'vue-tsx-support';
 @Component
-export default class Index extends tsx.Component<any> {
+export default class Profile extends tsx.Component<any> {
   private routers: Array<{
     name: string;
     target?: string;
