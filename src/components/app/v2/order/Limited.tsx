@@ -54,7 +54,7 @@ export default class Limited extends tsx.Component<any> {
           {...{ on: listeners }}
           title='限量菜品'
           ref='Orderv2'
-          optional={true}
+          optional={false}
         >
           <div Slot='footer'>
             <div class='limit-submit-btn btn' onclick={this.submit.bind(this)}>

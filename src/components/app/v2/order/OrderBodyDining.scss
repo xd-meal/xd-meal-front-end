@@ -87,6 +87,7 @@
       width: 18px;
       height: 18px;
       border: 1px solid #e3e3e3;
+      background-color: #f9f9f9;
       border-radius: 20px;
       @media (-webkit-device-pixel-ratio: 2) {
         border: 0.5px solid #e3e3e3;
@@ -121,6 +122,9 @@
           transform: scale3d(1, 1, 1);
         }
       }
+      .circle {
+        opacity: 0;
+      }
       .active-icon {
         animation-name: pulse;
         animation-duration: 0.45s;
@@ -129,7 +133,7 @@
     }
   }
   &_desc {
-    padding-right: 40px;
+    padding-right: 68px;
   }
   &_supplier {
     color: #999999;

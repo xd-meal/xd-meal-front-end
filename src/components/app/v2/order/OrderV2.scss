@@ -196,9 +196,9 @@
       top: 0;
       right: 24px;
       z-index: 10;
-      border-radius: 22px;
-      border: 1px solid #E3E3E3;
-      color: #E3E3E3;
+      border-radius: 20px;
+      background: #f9f9f9;
+      color: #AAA;
       font-size: 14px;
       padding: 3px 12px;
       height: 20px;
@@ -253,7 +253,7 @@
     width: 100%;
     border-radius: 34px 34px 0 0;
     z-index: 10;
-    background: linear-gradient(180deg, #4B4B4B, #333333);
+    background: linear-gradient(180deg, #4b4b4b, #333333);
     box-shadow: rgba(0, 0, 0, 0.15) 0 5px 20px;
     transition: height ease-in-out 0.8s;
     animation-name: btn-down-in;
@@ -273,7 +273,6 @@
     &.no-error {
       height: 80px + $bottom-height;
     }
-
   }
 
   &_buttons {
@@ -300,6 +299,7 @@
     &-left {
       border-radius: 22px;
       width: 90px;
+      margin-right: 14px;
       background: linear-gradient(245deg, #ff9f00, #ff6600);
       &_disable {
         background: none;

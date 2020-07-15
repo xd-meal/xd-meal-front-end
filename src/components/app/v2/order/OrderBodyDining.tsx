@@ -73,7 +73,7 @@ export default class OrderBodyDining extends tsx.Component<any> {
                 }}
               >
                 <div class='order-body-dining_checkbox-title'>
-                  {didLimit ? '限量餐' : menu.title}
+                  {didLimit ? menu.title : menu.title}
                 </div>
                 <div
                   class={{
@@ -87,7 +87,7 @@ export default class OrderBodyDining extends tsx.Component<any> {
               </div>
               <div class='order-body-dining_wrap'>
                 <div class='order-body-dining_desc'>
-                  {didLimit ? menu.title : menu.desc}
+                  {didLimit ? menu.desc : menu.desc}
                 </div>
               </div>
               {!didLimit && menu.supplier && (
