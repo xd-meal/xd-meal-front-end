@@ -197,7 +197,7 @@
       right: 24px;
       z-index: 10;
       border-radius: 22px;
-      //border: 1px solid #E3E3E3;
+      border: 1px solid #E3E3E3;
       color: #E3E3E3;
       font-size: 14px;
       padding: 3px 12px;
@@ -206,6 +206,7 @@
       &_active {
         color: #fff;
         //border: 1px solid #ff6600;
+        border: none;
         background: linear-gradient(245deg, #ff9f00, #ff6600);
       }
     }
