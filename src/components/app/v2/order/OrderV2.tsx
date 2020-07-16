@@ -226,7 +226,7 @@ export default class OrderV2 extends tsx.Component<any> {
     this.lastTop = bodyTop;
     this.inScrolling = bodyTop >= 30;
     if (!this.foldingTimer) {
-      this.folding = bodyTop >= 90 && bodyTop - oldTop >= 0;
+      // this.folding = bodyTop >= 90 && bodyTop - oldTop >= 0;
       this.foldingTimer = setTimeout(() => {
         clearTimeout(this.foldingTimer);
         this.foldingTimer = null;

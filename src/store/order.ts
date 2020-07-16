@@ -40,6 +40,13 @@ const getters: GetterTree<IOrderGlobal, any> = {
   [ORDER.ORDER_LIMIT_LIST](_) {
     return _.list
       .map((v) => {
+        return {
+          ...v,
+          menu: v.menu.filter((m) => m.limit),
+        };
+      })
+      .filter(filterEmptyMenu)
+      .map((v) => {
         const menu = v.menu.filter((m) => m.limit);
         menu.unshift({
           _id: '',
@@ -49,10 +56,9 @@ const getters: GetterTree<IOrderGlobal, any> = {
         });
         return {
           ...v,
-          menu,
+          menu: v.menu.filter((m) => m.limit),
         };
-      })
-      .filter(filterEmptyMenu);
+      });
   },
   [ORDER.ORDER_NORMAL_LIST](_) {
     return _.list
