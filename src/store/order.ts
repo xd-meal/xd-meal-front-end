@@ -47,7 +47,7 @@ const getters: GetterTree<IOrderGlobal, any> = {
       })
       .filter(filterEmptyMenu)
       .map((v) => {
-        const menu = v.menu.filter((m) => m.limit);
+        const menu = v.menu;
         menu.unshift({
           _id: '',
           title: '不喜欢这顿',
@@ -56,7 +56,7 @@ const getters: GetterTree<IOrderGlobal, any> = {
         });
         return {
           ...v,
-          menu: v.menu.filter((m) => m.limit),
+          menu: v.menu,
         };
       });
   },
