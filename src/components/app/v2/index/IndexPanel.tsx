@@ -7,19 +7,19 @@ import '@/components/app/v2/index/IndexPanel.scss';
 const TYPE_LIST = [
   {
     name: null,
-    reg: /不吃饭/g,
+    reg: /不吃饭/,
   },
   {
     name: '自助',
-    reg: /自助/g,
+    reg: /自助/,
   },
   {
     name: '面点',
-    reg: /面/g,
+    reg: /面/,
   },
   {
     name: '简餐',
-    reg: /.*/g,
+    reg: /.*/,
   },
 ];
 function getTitleLabelType(name: string) {
